@@ -7,13 +7,19 @@
     "start": "ts-node -r dotenv/config src/bot.ts",
     "start:debug": "npm run start -- --debug-brk"
   },
-  "author": "",
-  "license": "ISC",
+  "contributors": [
+    "Ceci <admin@cecilias.me>"
+  ],
+  "license": "MIT",
   "dependencies": {
     "@types/node": "^17.0.25",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
+    "ioredis": "^5.0.4",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "redis-memory-server": "^0.5.0"
   }
 }

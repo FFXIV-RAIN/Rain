@@ -19,6 +19,7 @@ client.on('ready', async () => {
 
     await Promise.all([
         autoRoleSetup(client),
+        modMailSetup(client),
     ]);
 });
 
