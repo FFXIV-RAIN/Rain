@@ -1,6 +1,8 @@
 import { Client, GuildMember, PartialGuildMember } from 'discord.js';
-import { ROLES, STAFF_ROLES } from './roles';
-import { ROLE_CHANGED, wasAnyRoleChanged } from './utils/roles';
+import { config } from '../config';
+import { Environment } from 'src/types/environment';
+import { ROLES, STAFF_ROLES } from '../roles';
+import { ROLE_CHANGED, wasAnyRoleChanged } from '../utils/roles';
 
 export class AutoRolesDiff {
     private _added: ROLES[] = [];
@@ -74,7 +76,6 @@ export function autoGuestStaff(diff: AutoRolesDiff, oldMember: GuildMember | Par
 export async function onGuildMemberUpdate(oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
     const diff = new AutoRolesDiff();
 
-    // TODO: Remove once Sapphire supports Bot Join Roles
     autoVerify(diff, oldMember, newMember);
     autoGuestStaff(diff, oldMember, newMember);
 

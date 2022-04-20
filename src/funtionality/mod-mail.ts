@@ -1,7 +1,7 @@
 import { Client, DiscordAPIError, MessageActionRow, MessageButton, MessageOptions, TextChannel } from 'discord.js';
-import { CUSTOM_IDS } from './constants/components';
-import { redis } from './database';
-import { updateOrSave } from './utils/messages';
+import { CUSTOM_IDS } from '../constants/components';
+import { redis } from '../database';
+import { updateOrSave } from '../utils/messages';
 
 export async function modMailSetup(client: Client) {
     const db = await redis();

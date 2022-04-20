@@ -1,5 +1,13 @@
-import { LOG_LEVEL } from 'src/types/logger';
+import chalk from 'chalk';
+import { LOG_LEVEL } from '../types/logger';
 import { config } from '../config';
+
+const formatters = {
+    [LOG_LEVEL.TRACE]: chalk.greenBright,
+    [LOG_LEVEL.INFO]: chalk.blueBright,
+    [LOG_LEVEL.WARN]: chalk.yellow,
+    [LOG_LEVEL.ERROR]: chalk.red
+}
 
 export class Logger {
     private _options: Logger.Options;
@@ -10,9 +18,8 @@ export class Logger {
 
     log(level: LOG_LEVEL, message: any): void {
         if (this._options.level >= level) {
-
+            console.log(`[${formatters[level](LOG_LEVEL[level])}]:`, message);
         }
-        console.log(`[${level}]:`, message);
     }
 
     trace(message: any): void {

@@ -1,6 +1,8 @@
 import { Client } from 'discord.js';
-import { autoRoleSetup } from './auto-role';
-import { modMailSetup } from './mod-mail';
+import { config } from './config';
+import { autoRoleSetup } from './funtionality/auto-role';
+import { modMailSetup } from './funtionality/mod-mail';
+import { logger } from './utils/logger';
 
 const client = new Client({
     partials: [
@@ -17,10 +19,18 @@ client.on('ready', async () => {
 
     console.log(`${client.user.username} is online.`);
 
-    await Promise.all([
-        autoRoleSetup(client),
-        modMailSetup(client),
-    ]);
+    const promises = [];
+
+    if (config.isLive) {
+        await promises.push(
+            config.isLive && autoRoleSetup(client),
+            config.isLive && modMailSetup(client),
+        );
+    } else {
+        logger.info('Not running on the live environment, skipping AutoRoles and ModMail setup...');
+    }
+    
+    await Promise.all(promises);
 });
 
 

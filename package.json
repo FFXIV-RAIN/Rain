@@ -16,7 +16,9 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@types/chalk": "^2.2.0",
     "@types/node": "^17.0.25",
+    "chalk": "^4.1.2",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "ioredis": "^5.0.4",
