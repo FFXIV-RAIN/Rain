@@ -1,6 +1,4 @@
 import { Client, GuildMember, PartialGuildMember } from 'discord.js';
-import { config } from '../config';
-import { Environment } from 'src/types/environment';
 import { ROLES, STAFF_ROLES } from '../roles';
 import { ROLE_CHANGED, wasAnyRoleChanged } from '../utils/roles';
 

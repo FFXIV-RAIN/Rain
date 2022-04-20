@@ -1,4 +1,4 @@
-import { Client, DiscordAPIError, MessageActionRow, MessageButton, MessageOptions, TextChannel } from 'discord.js';
+import { Client, MessageActionRow, MessageButton, MessageOptions } from 'discord.js';
 import { CUSTOM_IDS } from '../constants/components';
 import { redis } from '../database';
 import { updateOrSave } from '../utils/messages';
