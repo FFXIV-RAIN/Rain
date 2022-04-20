@@ -1,4 +1,3 @@
-import { RedisMemoryServer } from 'redis-memory-server';
 import Redis from 'ioredis';
 
 let _client: Redis | undefined;
@@ -12,6 +11,7 @@ export async function redis(): Promise<Redis> {
         console.log('Connecting to production REDIS');
         _client = new Redis(process.env.REDISTOGO_URL);
     } else {
+        const { RedisMemoryServer } = await import('redis-memory-server');
         const redisServer = new RedisMemoryServer();
 
         await redisServer.start();
