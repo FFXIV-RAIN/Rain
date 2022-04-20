@@ -1,5 +1,7 @@
 import Redis from 'ioredis';
 import {URL} from 'url';
+import { config } from './config';
+import { logger } from './utils/logger';
 
 let _client: Redis | undefined;
 
@@ -8,23 +10,23 @@ export async function redis(): Promise<Redis> {
         return _client;
     }
     
-    if (process.env.REDISTOGO_URL) {
-        console.log('Connecting to production database...');
-        const info = new URL(process.env.REDISTOGO_URL)
+    if (config.redisURL) {
+        logger.info('Connecting to production database...');
+        const info = new URL(config.redisURL)
         _client = new Redis({
             host: info.hostname,
             port: Number.parseInt(info.port),
             password: info.password
         });
     } else {
-        console.log('Starting in-memory database...');
+        logger.info('Starting in-memory database...');
         const { RedisMemoryServer } = await import('redis-memory-server');
         const redisServer = new RedisMemoryServer();
 
         await redisServer.start();
-        console.log('Successfully started database!');
+        logger.info('Successfully started database!');
 
-        console.log('Connecting to in-memory database...');
+        logger.info('Connecting to in-memory database...');
         _client = new Redis({
             port: redisServer.instanceInfoSync?.port,
             host: redisServer.instanceInfoSync?.ip,
@@ -32,14 +34,14 @@ export async function redis(): Promise<Redis> {
     }
 
     _client.on('connect', () => {
-        console.log('Connection established!');
+        logger.info('Connection established!');
     })
 
     _client.on('reconnecting', () => {
-        console.log('Reconnecting to database...');
+        logger.info('Reconnecting to database...');
     })
 
-    _client.on('error', console.error);
+    _client.on('error', logger.error);
 
     _client.on('end', () => {
         _client = undefined;
