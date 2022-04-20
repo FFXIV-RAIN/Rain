@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "16"
+  },
   "scripts": {
     "start": "ts-node -r dotenv/config src/bot.ts",
     "start:debug": "npm run start -- --debug-brk",

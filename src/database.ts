@@ -1,4 +1,5 @@
 import Redis from 'ioredis';
+import {URL} from 'url';
 
 let _client: Redis | undefined;
 
@@ -8,8 +9,13 @@ export async function redis(): Promise<Redis> {
     }
     
     if (process.env.REDISTOGO_URL) {
-        console.log('Connecting to production REDIS');
-        _client = new Redis(process.env.REDISTOGO_URL);
+        console.log('Connecting to production database');
+        const info = new URL(process.env.REDISTOGO_URL)
+        _client = new Redis({
+            host: info.hostname,
+            port: Number.parseInt(info.port),
+            password: info.password
+        });
     } else {
         const { RedisMemoryServer } = await import('redis-memory-server');
         const redisServer = new RedisMemoryServer();

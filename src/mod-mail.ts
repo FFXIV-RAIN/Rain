@@ -1,14 +1,12 @@
-import { Client, MessageActionRow, MessageButton, MessageOptions, TextChannel } from 'discord.js';
+import { Client, DiscordAPIError, MessageActionRow, MessageButton, MessageOptions, TextChannel } from 'discord.js';
 import { CUSTOM_IDS } from './constants/components';
 import { redis } from './database';
+import { updateOrSave } from './utils/messages';
 
 export async function modMailSetup(client: Client) {
     const db = await redis();
 
-    const [messageID, channel] = await Promise.all([
-        db.get('modMailMessageID'),
-        client.channels.cache.get('966361080559448074') as TextChannel
-    ])
+    const messageID = await db.get('modMailMessageID');
     
     const messageContents: MessageOptions = {
         embeds: [{
@@ -35,13 +33,9 @@ export async function modMailSetup(client: Client) {
         ]
     };
 
-    if (messageID) {
-        const message = await channel.messages.fetch(messageID);
+    const newMessageID = await updateOrSave(client, '966361080559448074', messageID, messageContents);
 
-        await message.edit(messageContents);
-    } else {
-        const message = await channel.send(messageContents);
-
-        await db.set('modMailMessageID', message.id);
+    if (messageID !== newMessageID) {
+        await db.set('modMailMessageID', newMessageID);
     }
 }
