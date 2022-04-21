@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
 import {URL} from 'url';
-import { config } from './config';
+import { CONFIG } from './config';
 import { logger } from './utils/logger';
 
 let _client: Redis | undefined;
@@ -10,9 +10,9 @@ export async function redis(): Promise<Redis> {
         return _client;
     }
     
-    if (config.redisURL) {
+    if (CONFIG.REDIS_URL) {
         logger.info('Connecting to production database...');
-        const info = new URL(config.redisURL)
+        const info = new URL(CONFIG.REDIS_URL)
         _client = new Redis({
             host: info.hostname,
             port: Number.parseInt(info.port),

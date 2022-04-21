@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { LOG_LEVEL } from '../types/logger';
-import { config } from '../config';
+import { CONFIG } from '../config';
 
 const formatters = {
     [LOG_LEVEL.TRACE]: chalk.greenBright,
@@ -46,5 +46,5 @@ export namespace Logger {
 }
 
 export const logger = new Logger({
-    level: config.logLevel
+    level: CONFIG.LOG_LEVEL
 })
