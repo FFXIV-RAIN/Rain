@@ -1,6 +1,7 @@
 import { Client, Intents } from 'discord.js';
 import { FEATURE_FLAGS } from './config';
 import { autoRoleSetup } from './funtionality/auto-role';
+import { welcomeSetup } from './funtionality/welcome';
 
 const client = new Client({
     partials: [
@@ -19,6 +20,7 @@ client.on('ready', async () => {
 
     await Promise.all([
         FEATURE_FLAGS.AUTO_ROLE && autoRoleSetup(client),
+        FEATURE_FLAGS.WELCOME && welcomeSetup(client),
     ]);
 });
 
