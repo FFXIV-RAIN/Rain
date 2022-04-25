@@ -21,11 +21,13 @@ export enum ROLES {
     /**
      * Discord Bundle Ranks
      */
+    CAFE_CAREGIVERS = '966173096455311370',
     STAFF = '965678287676391504',
 
     /**
      * Fluff and Flair
      */
+    WELCOME_WAGON = '966056005886677052',
     PRONOUNS_HEADER = '965679665064845352',
     PRONOUNS_FOOTER = '965680210924167218',
 }
