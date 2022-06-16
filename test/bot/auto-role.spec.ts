@@ -2,11 +2,26 @@ import { ROLES } from '../../src/roles';
 import { autoAssignGuestAndStaff, autoVerify, onGuildMemberAdd } from '../../src/bot/auto-role';
 import { RoleDiff } from '../../src/utils/role-diff';
 import { mockMember, mockMemberUser, mockMemberRoles, mockMemberRoleCache } from '../__utils__/mock';
+import { DiffCacheManager } from '../../src/managers/diff-cache-manager';
+
+jest.mock('../../src/managers/diff-cache-manager');
+
+const MockedManager = jest.mocked(DiffCacheManager);
 
 describe('bot(AutoRole)', () => {
+    let diff: RoleDiff;
+
+    beforeEach(() => {
+        diff = new RoleDiff();
+        jest.spyOn(diff, 'add');
+        jest.spyOn(diff, 'remove');
+        jest.spyOn(diff, 'commit').mockResolvedValue();
+
+        MockedManager.diff.mockReturnValue(diff);
+    });
+
     describe('func(autoVerify)', () => {
         it('should add the join roles if a member has been accepted', () => {
-            const diff = new RoleDiff();
             const oldMember = mockMember({
                 pending: true
             });
@@ -24,7 +39,6 @@ describe('bot(AutoRole)', () => {
         });
 
         it('should not add the join roles if a member has not been accepted', () => {
-            const diff = new RoleDiff();
             const oldMember = mockMember({
                 pending: true
             });
@@ -38,7 +52,6 @@ describe('bot(AutoRole)', () => {
         });
 
         it('should not add the join roles if a member was accepted previously', () => {
-            const diff = new RoleDiff();
             const oldMember = mockMember({
                 pending: false
             });
@@ -54,7 +67,6 @@ describe('bot(AutoRole)', () => {
 
     describe('func(autoAssignGuestAndStaff)', () => {
         it('should do nothing if no staff roles were added or removed', () => {
-            const diff = new RoleDiff();
             const oldMember = mockMember();
             const newMember = mockMember();
 
@@ -65,7 +77,6 @@ describe('bot(AutoRole)', () => {
         });
 
         it('should add STAFF and remove GUESTS if a staff role was added', () => {
-            const diff = new RoleDiff();
             const oldMember = mockMember({
                 roles: mockMemberRoles({
                     cache: mockMemberRoleCache({
@@ -88,7 +99,6 @@ describe('bot(AutoRole)', () => {
         });
 
         it('should add GUESTS and remove STAFF if a staff role was removed', () => {
-            const diff = new RoleDiff();
             const oldMember = mockMember({
                 roles: mockMemberRoles({
                     cache: mockMemberRoleCache({
@@ -112,16 +122,6 @@ describe('bot(AutoRole)', () => {
     });
 
     describe('func(onGuildMemberAdd)', () => {
-        beforeEach(() => {
-            jest.spyOn(RoleDiff.prototype, 'add');
-            jest.spyOn(RoleDiff.prototype, 'remove');
-            jest.spyOn(RoleDiff.prototype, 'commit');
-
-            (RoleDiff.prototype.add as any).mockClear();
-            (RoleDiff.prototype.remove as any).mockClear();
-            (RoleDiff.prototype.commit as any).mockClear();
-        });
-
         it('should add the bot role if a user is a bot', async () => {
             const member = mockMember({
                 user: mockMemberUser({
@@ -131,9 +131,9 @@ describe('bot(AutoRole)', () => {
 
             await onGuildMemberAdd(member);
 
-            expect(RoleDiff.prototype.add).toHaveBeenCalledWith(ROLES.BOTS);
-            expect(RoleDiff.prototype.remove).not.toHaveBeenCalled();
-            expect(RoleDiff.prototype.commit).toHaveBeenCalledWith(member);
+            expect(diff.add).toHaveBeenCalledWith(ROLES.BOTS);
+            expect(diff.remove).not.toHaveBeenCalled();
+            expect(MockedManager.commit).toHaveBeenCalledWith(member);
         });
 
         it('should not add the bot role if a user is not a bot', async () => {
@@ -145,9 +145,9 @@ describe('bot(AutoRole)', () => {
 
             await onGuildMemberAdd(member);
 
-            expect(RoleDiff.prototype.add).not.toHaveBeenCalledWith(ROLES.BOTS);
-            expect(RoleDiff.prototype.remove).not.toHaveBeenCalled();
-            expect(RoleDiff.prototype.commit).toHaveBeenCalledWith(member);
+            expect(diff.add).not.toHaveBeenCalledWith(ROLES.BOTS);
+            expect(diff.remove).not.toHaveBeenCalled();
+            expect(MockedManager.commit).toHaveBeenCalledWith(member);
         });
     });
 });

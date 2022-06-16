@@ -7,25 +7,15 @@ export class DiffCacheManager {
         [key: string]: RoleDiff;
     } = {};
 
-    public static diff(member: GuildMember | PartialGuildMember): RoleDiff;
-    public static diff(member: GuildMember | PartialGuildMember, diff: RoleDiff|null): null;
-    public static diff(member: GuildMember | PartialGuildMember, diff?: RoleDiff|null): RoleDiff|null {
-        if (diff instanceof RoleDiff) {
-            DiffCacheManager.diffs[member.id] = diff;
-        } else if (diff === null) {
-            delete DiffCacheManager.diffs[member.id];
-        } else {
-            if (!DiffCacheManager.diffs[member.id]) {
-                DiffCacheManager.diffs[member.id] = new RoleDiff();
-            }
-
-            return DiffCacheManager.diffs[member.id];
+    public static diff(member: GuildMember|PartialGuildMember): RoleDiff {
+        if (!DiffCacheManager.diffs[member.id]) {
+            DiffCacheManager.diffs[member.id] = new RoleDiff();
         }
 
-        return null;
+        return DiffCacheManager.diffs[member.id];
     }
 
-    static commit(member: GuildMember | PartialGuildMember) {
+    static commit(member: GuildMember|PartialGuildMember) {
         const diff = DiffCacheManager.diff(member);
 
         if (!diff) return;
@@ -33,7 +23,7 @@ export class DiffCacheManager {
         debounce(`commit-${member.id}`, async () => {
             await diff.commit(member);
 
-            DiffCacheManager.diff(member, null);
+            delete DiffCacheManager.diffs[member.id];
         });
     }
 }

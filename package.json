@@ -10,7 +10,7 @@
     "start": "ts-node -r dotenv/config src/bot.ts",
     "start:debug": "npm run start -- --debug-brk",
     "lint": "eslint src/",
-    "test": "jest",
+    "test": "jest --coverage=false",
     "test:coverage": "jest --coverage"
   },
   "contributors": [
