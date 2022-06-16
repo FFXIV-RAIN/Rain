@@ -7,33 +7,33 @@ export class DiffCacheManager {
         [key: string]: RoleDiff;
     } = {};
 
-    public static diff(id: string): RoleDiff;
-    public static diff(id: string, diff: RoleDiff|null): null;
-    public static diff(id: string, diff?: RoleDiff|null): RoleDiff|null {
+    public static diff(member: GuildMember | PartialGuildMember): RoleDiff;
+    public static diff(member: GuildMember | PartialGuildMember, diff: RoleDiff|null): null;
+    public static diff(member: GuildMember | PartialGuildMember, diff?: RoleDiff|null): RoleDiff|null {
         if (diff instanceof RoleDiff) {
-            DiffCacheManager.diffs[id] = diff;
+            DiffCacheManager.diffs[member.id] = diff;
         } else if (diff === null) {
-            delete DiffCacheManager.diffs[id];
+            delete DiffCacheManager.diffs[member.id];
         } else {
-            if (!DiffCacheManager.diffs[id]) {
-                DiffCacheManager.diffs[id] = new RoleDiff();
+            if (!DiffCacheManager.diffs[member.id]) {
+                DiffCacheManager.diffs[member.id] = new RoleDiff();
             }
 
-            return DiffCacheManager.diffs[id];
+            return DiffCacheManager.diffs[member.id];
         }
 
         return null;
     }
 
-    static submit(id: string, member: GuildMember | PartialGuildMember) {
-        const diff = DiffCacheManager.diff(id);
+    static commit(member: GuildMember | PartialGuildMember) {
+        const diff = DiffCacheManager.diff(member);
 
         if (!diff) return;
 
-        debounce(`submit-${id}`, async () => {
-            await diff.submit(member);
+        debounce(`commit-${member.id}`, async () => {
+            await diff.commit(member);
 
-            DiffCacheManager.diff(id, null);
+            DiffCacheManager.diff(member, null);
         });
     }
 }

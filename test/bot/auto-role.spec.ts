@@ -115,11 +115,11 @@ describe('bot(AutoRole)', () => {
         beforeEach(() => {
             jest.spyOn(RoleDiff.prototype, 'add');
             jest.spyOn(RoleDiff.prototype, 'remove');
-            jest.spyOn(RoleDiff.prototype, 'submit');
+            jest.spyOn(RoleDiff.prototype, 'commit');
 
             (RoleDiff.prototype.add as any).mockClear();
             (RoleDiff.prototype.remove as any).mockClear();
-            (RoleDiff.prototype.submit as any).mockClear();
+            (RoleDiff.prototype.commit as any).mockClear();
         });
 
         it('should add the bot role if a user is a bot', async () => {
@@ -133,7 +133,7 @@ describe('bot(AutoRole)', () => {
 
             expect(RoleDiff.prototype.add).toHaveBeenCalledWith(ROLES.BOTS);
             expect(RoleDiff.prototype.remove).not.toHaveBeenCalled();
-            expect(RoleDiff.prototype.submit).toHaveBeenCalledWith(member);
+            expect(RoleDiff.prototype.commit).toHaveBeenCalledWith(member);
         });
 
         it('should not add the bot role if a user is not a bot', async () => {
@@ -147,7 +147,7 @@ describe('bot(AutoRole)', () => {
 
             expect(RoleDiff.prototype.add).not.toHaveBeenCalledWith(ROLES.BOTS);
             expect(RoleDiff.prototype.remove).not.toHaveBeenCalled();
-            expect(RoleDiff.prototype.submit).toHaveBeenCalledWith(member);
+            expect(RoleDiff.prototype.commit).toHaveBeenCalledWith(member);
         });
     });
 });

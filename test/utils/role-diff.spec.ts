@@ -85,7 +85,7 @@ describe('utils(RoleDiff)', () => {
         });
     });
 
-    describe('func(submit)', () => {
+    describe('func(commit)', () => {
         let member: GuildMember;
 
         beforeEach(() => {
@@ -97,7 +97,7 @@ describe('utils(RoleDiff)', () => {
 
             diff.add(ROLES.STAFF);
 
-            await diff.submit(member);
+            await diff.commit(member);
 
             expect(diff.added).toEqual([]);
             expect(diff.removed).toEqual([]);
@@ -112,7 +112,7 @@ describe('utils(RoleDiff)', () => {
 
             diff.remove(ROLES.STAFF);
 
-            await diff.submit(member);
+            await diff.commit(member);
 
             expect(diff.added).toEqual([]);
             expect(diff.removed).toEqual([]);
@@ -126,7 +126,7 @@ describe('utils(RoleDiff)', () => {
             diff.add(ROLES.BAKERS);
             diff.remove(ROLES.STAFF);
 
-            await diff.submit(member);
+            await diff.commit(member);
 
             expect(diff.added).toEqual([]);
             expect(diff.removed).toEqual([]);

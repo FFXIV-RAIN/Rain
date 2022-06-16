@@ -41,7 +41,7 @@ export class RoleDiff {
         return this._removed;
     }
 
-    async submit(member: GuildMember | PartialGuildMember) {
+    async commit(member: GuildMember | PartialGuildMember) {
         const promises = [];
 
         if (this.added.length > 0) {

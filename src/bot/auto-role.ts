@@ -29,23 +29,23 @@ export function autoAssignGuestAndStaff(diff: RoleDiff, oldMember: GuildMember |
 }
 
 export async function onGuildMemberUpdate(oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
-    const diff = DiffCacheManager.diff(newMember.id);
+    const diff = DiffCacheManager.diff(newMember);
 
     autoVerify(diff, oldMember, newMember);
     autoAssignGuestAndStaff(diff, oldMember, newMember);
 
-    await diff.submit(newMember);
+    await DiffCacheManager.commit(newMember);
 }
 
 export async function onGuildMemberAdd(member: GuildMember | PartialGuildMember) {
-    const diff = DiffCacheManager.diff(member.id);
+    const diff = DiffCacheManager.diff(member);
 
     // TODO: Remove once Sapphire supports Bot Join Roles
     if (member.user.bot) {
         diff.add(ROLES.BOTS);
     }
 
-    await diff.submit(member);
+    await DiffCacheManager.commit(member);
 }
 
 export function autoRoleSetup(client: Client) {
