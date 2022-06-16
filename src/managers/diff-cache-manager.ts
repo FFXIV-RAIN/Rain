@@ -9,7 +9,7 @@ export class DiffCacheManager {
 
     public static diff(member: GuildMember|PartialGuildMember): RoleDiff {
         if (!DiffCacheManager.diffs[member.id]) {
-            DiffCacheManager.diffs[member.id] = new RoleDiff();
+            DiffCacheManager.diffs[member.id] = new RoleDiff(member.roles.cache.map((role) => role.id));
         }
 
         return DiffCacheManager.diffs[member.id];

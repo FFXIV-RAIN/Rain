@@ -1,64 +1,38 @@
 import { GuildMember, PartialGuildMember } from 'discord.js';
-import {ROLES} from '../roles';
+import { ROLES } from '../roles';
 
 export class RoleDiff {
-    private _added: ROLES[] = [];
-    private _removed: ROLES[] = [];
+    private _roles: string[];
+
+    constructor(roles: string[] = []) {
+        this._roles = roles;
+    }
 
     add(...roles: ROLES[]) {
         for (const role of roles) {
-            const removedIndex = this._removed.indexOf(role);
+            if (this._roles.includes(role)) continue;
 
-            if (removedIndex !== -1) {
-                this._removed.splice(removedIndex, 1);
-            }
-
-            if (this._added.includes(role)) continue;
-
-            this._added.push(role);
+            this._roles.push(role);
         }
     }
     
     remove(...roles: ROLES[]) {
         for (const role of roles) {
-            const addedIndex = this._added.indexOf(role);
+            const index = this._roles.indexOf(role);
 
-            if (addedIndex !== -1) {
-                this._added.splice(addedIndex, 1);
-            }
+            if (index === -1) continue;
 
-            if (this._removed.includes(role)) continue;
-
-            this._removed.push(role);
+            this._roles.splice(index, 1);
         }
     }
 
-    get added(): ROLES[] {
-        return this._added;
-    }
-
-    get removed(): ROLES[] {
-        return this._removed;
+    get roles() {
+        return this._roles;
     }
 
     async commit(member: GuildMember | PartialGuildMember) {
-        const promises = [];
+        await member.roles.set(this._roles);
 
-        if (this.added.length > 0) {
-            console.log(`Auto adding roles from ${member.user.id}: ${this.added.join(',')}...`);
-
-            promises.push(member.roles.add(this.added));
-        }
-
-        if (this.removed.length > 0) {
-            console.log(`Auto removing roles from ${member.user.id}: ${this.removed.join(',')}...`);
-            
-            promises.push(member.roles.remove(this.removed));
-        }
-
-        await Promise.all(promises);
-
-        this._added = [];
-        this._removed = [];
+        this._roles = [];
     }
 }

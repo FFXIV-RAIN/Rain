@@ -20,6 +20,7 @@ export function mockMemberRoles(overrides?: any): GuildMemberRoleManager {
     return {
         add: jest.fn().mockResolvedValue(true),
         remove: jest.fn().mockResolvedValue(true),
+        set: jest.fn().mockResolvedValue(true),
         cache: mockMemberRoleCache(),
         ...overrides
     } as unknown as GuildMemberRoleManager;

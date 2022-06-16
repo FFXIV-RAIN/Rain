@@ -1,7 +1,6 @@
 import { GuildMember } from 'discord.js';
 import { ROLES } from '../../src/roles';
 import { RoleDiff } from '../../src/utils/role-diff';
-import { chance } from '../__utils__/chance';
 import { mockMember } from '../__utils__/mock';
 
 describe('utils(RoleDiff)', () => {
@@ -11,8 +10,7 @@ describe('utils(RoleDiff)', () => {
 
             diff.add(ROLES.STAFF);
 
-            expect(diff.added).toEqual([ROLES.STAFF]);
-            expect(diff.removed).toEqual([]);
+            expect(diff.roles).toEqual([ROLES.STAFF]);
         });
         
         it('should support adding multiple roles', () => {
@@ -20,18 +18,7 @@ describe('utils(RoleDiff)', () => {
 
             diff.add(ROLES.STAFF, ROLES.BAKERS);
 
-            expect(diff.added).toEqual([ROLES.STAFF, ROLES.BAKERS]);
-            expect(diff.removed).toEqual([]);
-        });
-        
-        it('should support adding removed roles', () => {
-            const diff = new RoleDiff();
-
-            diff.remove(ROLES.STAFF);
-            diff.add(ROLES.STAFF);
-
-            expect(diff.added).toEqual([ROLES.STAFF]);
-            expect(diff.removed).toEqual([]);
+            expect(diff.roles).toEqual([ROLES.STAFF, ROLES.BAKERS]);
         });
         
         it('should dedupe roles', () => {
@@ -40,48 +27,33 @@ describe('utils(RoleDiff)', () => {
             diff.add(ROLES.STAFF);
             diff.add(ROLES.STAFF);
 
-            expect(diff.added).toEqual([ROLES.STAFF]);
-            expect(diff.removed).toEqual([]);
+            expect(diff.roles).toEqual([ROLES.STAFF]);
         });
     });
 
     describe('func(remove)', () => {
         it('should support removing roles', () => {
-            const diff = new RoleDiff();
+            const diff = new RoleDiff([ROLES.STAFF]);
 
             diff.remove(ROLES.STAFF);
 
-            expect(diff.removed).toEqual([ROLES.STAFF]);
-            expect(diff.added).toEqual([]);
+            expect(diff.roles).toEqual([]);
         });
         
         it('should support removing multiple roles', () => {
-            const diff = new RoleDiff();
+            const diff = new RoleDiff([ROLES.STAFF, ROLES.BAKERS]);
 
             diff.remove(ROLES.STAFF, ROLES.BAKERS);
 
-            expect(diff.removed).toEqual([ROLES.STAFF, ROLES.BAKERS]);
-            expect(diff.added).toEqual([]);
+            expect(diff.roles).toEqual([]);
         });
         
-        it('should support removing added roles', () => {
-            const diff = new RoleDiff();
-
-            diff.add(ROLES.STAFF);
-            diff.remove(ROLES.STAFF);
-
-            expect(diff.removed).toEqual([ROLES.STAFF]);
-            expect(diff.added).toEqual([]);
-        });
-        
-        it('should dedupe roles', () => {
+        it('should ignore roles that do not exist', () => {
             const diff = new RoleDiff();
 
             diff.remove(ROLES.STAFF);
-            diff.remove(ROLES.STAFF);
 
-            expect(diff.removed).toEqual([ROLES.STAFF]);
-            expect(diff.added).toEqual([]);
+            expect(diff.roles).toEqual([]);
         });
     });
 
@@ -99,39 +71,31 @@ describe('utils(RoleDiff)', () => {
 
             await diff.commit(member);
 
-            expect(diff.added).toEqual([]);
-            expect(diff.removed).toEqual([]);
-            expect(member.roles.add).toHaveBeenCalledWith([ROLES.STAFF]);
-            expect(member.roles.remove).not.toHaveBeenCalled();
-            expect(member.roles.add).toHaveBeenCalledTimes(1);
-            expect(member.roles.remove).toHaveBeenCalledTimes(0);
+            expect(diff.roles).toEqual([]);
+            expect(member.roles.set).toHaveBeenCalledWith([ROLES.STAFF]);
         });
 
         it('should support removing roles', async () => {
-            const diff = new RoleDiff();
+            const diff = new RoleDiff([ROLES.STAFF]);
 
             diff.remove(ROLES.STAFF);
 
             await diff.commit(member);
 
-            expect(diff.added).toEqual([]);
-            expect(diff.removed).toEqual([]);
-            expect(member.roles.add).not.toHaveBeenCalled();
-            expect(member.roles.remove).toHaveBeenCalledWith([ROLES.STAFF]);
+            expect(diff.roles).toEqual([]);
+            expect(member.roles.set).toHaveBeenCalledWith([]);
         });
 
         it('should support adding and removing roles', async () => {
-            const diff = new RoleDiff();
+            const diff = new RoleDiff([ROLES.STAFF]);
 
             diff.add(ROLES.BAKERS);
             diff.remove(ROLES.STAFF);
 
             await diff.commit(member);
 
-            expect(diff.added).toEqual([]);
-            expect(diff.removed).toEqual([]);
-            expect(member.roles.add).toHaveBeenCalledWith([ROLES.BAKERS]);
-            expect(member.roles.remove).toHaveBeenCalledWith([ROLES.STAFF]);
+            expect(diff.roles).toEqual([]);
+            expect(member.roles.set).toHaveBeenCalledWith([ROLES.BAKERS]);
         });
     });
 });

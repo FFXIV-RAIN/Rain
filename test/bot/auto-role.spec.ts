@@ -31,7 +31,7 @@ describe('bot(AutoRole)', () => {
 
             autoVerify(diff, oldMember, newMember);
 
-            expect(diff.added).toEqual([
+            expect(diff.roles).toEqual([
                 ROLES.GUESTS,
                 ROLES.PRONOUNS_HEADER,
                 ROLES.PRONOUNS_FOOTER,
@@ -48,7 +48,7 @@ describe('bot(AutoRole)', () => {
 
             autoVerify(diff, oldMember, newMember);
 
-            expect(diff.added).toEqual([]);
+            expect(diff.roles).toEqual([]);
         });
 
         it('should not add the join roles if a member was accepted previously', () => {
@@ -61,7 +61,7 @@ describe('bot(AutoRole)', () => {
 
             autoVerify(diff, oldMember, newMember);
 
-            expect(diff.added).toEqual([]);
+            expect(diff.roles).toEqual([]);
         });
     });
 
@@ -72,11 +72,12 @@ describe('bot(AutoRole)', () => {
 
             autoAssignGuestAndStaff(diff, oldMember, newMember);
 
-            expect(diff.added).toEqual([]);
-            expect(diff.removed).toEqual([]);
+            expect(diff.roles).toEqual([]);
         });
 
         it('should add STAFF and remove GUESTS if a staff role was added', () => {
+            diff.add(ROLES.GUESTS);
+
             const oldMember = mockMember({
                 roles: mockMemberRoles({
                     cache: mockMemberRoleCache({
@@ -94,11 +95,12 @@ describe('bot(AutoRole)', () => {
 
             autoAssignGuestAndStaff(diff, oldMember, newMember);
 
-            expect(diff.added).toEqual([ROLES.STAFF]);
-            expect(diff.removed).toEqual([ROLES.GUESTS]);
+            expect(diff.roles).toEqual([ROLES.STAFF]);
         });
 
         it('should add GUESTS and remove STAFF if a staff role was removed', () => {
+            diff.add(ROLES.STAFF);
+
             const oldMember = mockMember({
                 roles: mockMemberRoles({
                     cache: mockMemberRoleCache({
@@ -116,8 +118,7 @@ describe('bot(AutoRole)', () => {
 
             autoAssignGuestAndStaff(diff, oldMember, newMember);
 
-            expect(diff.added).toEqual([ROLES.GUESTS]);
-            expect(diff.removed).toEqual([ROLES.STAFF]);
+            expect(diff.roles).toEqual([ROLES.GUESTS]);
         });
     });
 
