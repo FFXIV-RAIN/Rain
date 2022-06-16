@@ -16,6 +16,7 @@ jobs:
           cache: 'npm'
       - run: npm install
       - run: npm run lint
+      - run: npm run test:coverage
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}

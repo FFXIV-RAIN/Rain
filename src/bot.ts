@@ -1,7 +1,7 @@
 import { Client, Intents } from 'discord.js';
 import { CONFIG } from './config';
-import { autoRoleSetup } from './funtionality/auto-role';
-import { welcomeSetup } from './funtionality/welcome';
+import { autoRoleSetup } from './bot/auto-role';
+import { welcomeSetup } from './bot/welcome';
 
 const client = new Client({
     partials: [
