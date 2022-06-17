@@ -28,6 +28,6 @@ export async function onGuildMemberAdd(this: Client, member: GuildMember | Parti
 }
 }
 
-export function welcomeSetup(client: Client) {
+export function setup(client: Client) {
     client.on('guildMemberAdd', onGuildMemberAdd);
 }

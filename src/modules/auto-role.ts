@@ -3,10 +3,11 @@ import { ROLES, STAFF_ROLES } from '../roles';
 import { ROLE_CHANGED, wasAnyRoleChanged } from '../utils/roles';
 import { RoleDiff } from '../utils/role-diff';
 import { DiffCacheManager } from '../managers/diff-cache-manager';
+import { logger } from '../utils/logger';
 
 export function autoVerify(diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
     if (oldMember.pending && !newMember.pending) {
-        console.log('User verified, adding roles...');
+        logger.info('User verified, adding roles...');
 
         diff.add(
             ROLES.GUESTS,
@@ -48,7 +49,7 @@ export async function onGuildMemberAdd(member: GuildMember | PartialGuildMember)
     await DiffCacheManager.commit(member);
 }
 
-export function autoRoleSetup(client: Client) {
+export function setup(client: Client) {
     client.on('guildMemberAdd', onGuildMemberAdd);
     client.on('guildMemberUpdate', onGuildMemberUpdate);
 }

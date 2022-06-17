@@ -1,0 +1,1 @@
+process.env.DISCORD_TOKEN = '<test-token>';

@@ -1,5 +1,5 @@
 import { ROLES } from '../../src/roles';
-import { autoAssignGuestAndStaff, autoVerify, onGuildMemberAdd } from '../../src/bot/auto-role';
+import { autoAssignGuestAndStaff, autoVerify, onGuildMemberAdd } from '../../src/modules/auto-role';
 import { RoleDiff } from '../../src/utils/role-diff';
 import { mockMember, mockMemberUser, mockMemberRoles, mockMemberRoleCache } from '../__utils__/mock';
 import { DiffCacheManager } from '../../src/managers/diff-cache-manager';
