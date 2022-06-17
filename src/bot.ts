@@ -19,6 +19,10 @@ export async function setup() {
     logger.info('Starting up modules...');
 
     await Promise.all(setups.map((setup) => setup(bot)));
+
+    if (!bot.user) return;
+
+    console.log(`${bot.user.username} is online.`);
 }
 
 setup();

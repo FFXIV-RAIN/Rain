@@ -10,8 +10,14 @@ export class WelcomeConfig extends Model {
 
     enabled!: boolean;
 
+    channelID?: string;
+
     message?: string;
 
     @BelongsTo(() => Guild, 'id')
     guild!: Guild;
+
+    get disabled() {
+        return !this.enabled;
+    }
 }

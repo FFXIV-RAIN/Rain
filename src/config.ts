@@ -6,7 +6,15 @@ export function isFeatureFlagEnabled(name: string) {
 }
 
 export function get(defaultValue: string, ...names: string[]): string {
-    return names.find((name) => process.env[name]) || defaultValue;
+    for (const name of names) {
+        const value = process.env[name];
+
+        if (!value) continue;
+
+        return value;
+    }
+
+    return defaultValue;
 }
 
 export interface Config {

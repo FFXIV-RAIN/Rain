@@ -1,17 +1,26 @@
 import { Sequelize } from 'sequelize-typescript'
 import { logger } from '../utils/logger';
+import { CONFIG } from '../config';
 
-export const db = new Sequelize({
-  dialect: 'sqlite',
-  storage: ':memory:',
-  models: [__dirname + '/models'],
-  logging: logger.trace.bind(logger)
+export const db = new Sequelize(CONFIG.DATABASE_URL, {
+  models: [__dirname + '/models/**/*.ts'],
+  logging: logger.trace.bind(logger),
+  sync: {
+    alter: true,
+  },
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  }
 });
 
 export async function setup() {
-    await db.sync({
-        alter: true,
-    });
+  logger.info('Syncing database...');
 
-    return db;
+  await db.sync();
+
+  logger.info('Database synced!');
+
+  return db;
 }
