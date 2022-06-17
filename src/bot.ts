@@ -1,8 +1,7 @@
 import {setup as botSetup} from './discord';
 import {setup as dbSetup} from './db';
 import {setup as guildSetup} from './services/guild';
-import {setup as welcomeSetup} from './modules/welcome';
-// import {setup as autoRoleSetup} from './modules/auto-role';
+import { setups } from './modules';
 import { logger } from './utils/logger';
 
 export async function setup() {
@@ -17,12 +16,9 @@ export async function setup() {
         guildSetup(bot),
     ]);
 
-    logger.info('Starting up functionality...');
+    logger.info('Starting up modules...');
 
-    await Promise.all([
-        welcomeSetup(bot),
-        // autoRoleSetup(bot),
-    ]);
+    await Promise.all(setups.map((setup) => setup(bot)));
 }
 
 setup();

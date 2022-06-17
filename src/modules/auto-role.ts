@@ -33,7 +33,8 @@ export async function onGuildMemberUpdate(oldMember: GuildMember | PartialGuildM
     const diff = DiffCacheManager.diff(newMember);
 
     autoVerify(diff, oldMember, newMember);
-    autoAssignGuestAndStaff(diff, oldMember, newMember);
+    // TODO: Causing problems so disabling for rn
+    // autoAssignGuestAndStaff(diff, oldMember, newMember);
 
     await DiffCacheManager.commit(newMember);
 }
