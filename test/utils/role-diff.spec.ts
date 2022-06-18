@@ -1,7 +1,7 @@
 import { GuildMember } from 'discord.js';
 import { ROLES } from '../../src/roles';
 import { RoleDiff } from '../../src/utils/role-diff';
-import { mockMember } from '../__utils__/mock';
+import { mockDiscordMember } from '../__utils__/mock';
 
 describe('utils(RoleDiff)', () => {
     describe('func(add)', () => {
@@ -61,7 +61,7 @@ describe('utils(RoleDiff)', () => {
         let member: GuildMember;
 
         beforeEach(() => {
-            member = mockMember();
+            member = mockDiscordMember();
         });
 
         it('should support adding roles', async () => {

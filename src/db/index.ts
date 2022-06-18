@@ -8,6 +8,9 @@ export const db = new Sequelize(CONFIG.DATABASE_URL, {
   sync: {
     alter: true,
   },
+  define: {
+    underscored: true,
+  },
   dialectOptions: {
     ssl: {
       rejectUnauthorized: false

@@ -2,7 +2,7 @@ import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey} from 
 import { Guild } from '../Guild';
 
 @Table
-export class WelcomeConfig extends Model {
+export class AutoRoleConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
@@ -14,11 +14,11 @@ export class WelcomeConfig extends Model {
     })
     enabled!: boolean;
 
-    @Column(DataType.TEXT)
-    channelId?: string;
+    @Column(DataType.ARRAY(DataType.TEXT))
+    memberJoinRoles?: string[];
 
-    @Column(DataType.TEXT)
-    message?: string;
+    @Column(DataType.ARRAY(DataType.TEXT))
+    botJoinRoles?: string[];
 
     @BelongsTo(() => Guild)
     guild!: Guild;

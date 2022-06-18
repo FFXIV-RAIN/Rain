@@ -2,14 +2,14 @@ import { Client, GuildMember, PartialGuildMember } from 'discord.js';
 import { userMention, roleMention, channelMention, inlineCode, formatEmoji } from '@discordjs/builders';
 import endent from 'endent';
 import { ROLES } from '../roles';
-import { WelcomeConfig } from '../db/models/modules/WelcomeConfig';
+import { Configs } from '../services/configs';
 
 export async function onGuildMemberAdd(this: Client, member: GuildMember | PartialGuildMember) {
-    const welcome = await WelcomeConfig.findByPk(member.guild.id);
+    const welcome = await Configs.welcome(member.guild.id);
 
-    if (!welcome || welcome.disabled || !welcome.channelID) return;
+    if (!welcome || welcome.disabled || !welcome.channelId) return;
 
-    const channel = await this.channels.cache.get(welcome.channelID);
+    const channel = await this.channels.cache.get(welcome.channelId);
 
     if (!channel || !channel.isText()) return;
 

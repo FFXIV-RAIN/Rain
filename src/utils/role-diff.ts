@@ -1,5 +1,4 @@
 import { GuildMember, PartialGuildMember } from 'discord.js';
-import { ROLES } from '../roles';
 
 export class RoleDiff {
     private _roles: string[];
@@ -8,7 +7,7 @@ export class RoleDiff {
         this._roles = roles;
     }
 
-    add(...roles: ROLES[]) {
+    add(...roles: string[]) {
         for (const role of roles) {
             if (this._roles.includes(role)) continue;
 
@@ -16,7 +15,7 @@ export class RoleDiff {
         }
     }
     
-    remove(...roles: ROLES[]) {
+    remove(...roles: string[]) {
         for (const role of roles) {
             const index = this._roles.indexOf(role);
 

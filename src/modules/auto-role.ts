@@ -4,16 +4,18 @@ import { ROLE_CHANGED, wasAnyRoleChanged } from '../utils/roles';
 import { RoleDiff } from '../utils/role-diff';
 import { DiffCacheManager } from '../managers/diff-cache-manager';
 import { logger } from '../utils/logger';
+import { Configs } from '../services/configs';
 
-export function autoVerify(diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
+export async function autoVerify(diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
+    const config = await Configs.autoRole(newMember.guild.id);
+
+    if (!config || !config.enabled || !config.memberJoinRoles) return;
+
+    // TODO: Verify if this logic works for non-screening discord servers
     if (oldMember.pending && !newMember.pending) {
         logger.info('User verified, adding roles...');
 
-        diff.add(
-            ROLES.GUESTS,
-            ROLES.PRONOUNS_HEADER,
-            ROLES.PRONOUNS_FOOTER,
-        );
+        diff.add(...config.memberJoinRoles);
     }
 }
 
@@ -40,11 +42,14 @@ export async function onGuildMemberUpdate(oldMember: GuildMember | PartialGuildM
 }
 
 export async function onGuildMemberAdd(member: GuildMember | PartialGuildMember) {
+    const config = await Configs.autoRole(member.guild.id);
+
+    if (!config || !config.enabled || !config.botJoinRoles) return;
+
     const diff = DiffCacheManager.diff(member);
 
-    // TODO: Remove once Sapphire supports Bot Join Roles
-    if (member.user.bot) {
-        diff.add(ROLES.BOTS);
+    if (member.user.bot && config.botJoinRoles) {
+        diff.add(...config.botJoinRoles);
     }
 
     await DiffCacheManager.commit(member);
