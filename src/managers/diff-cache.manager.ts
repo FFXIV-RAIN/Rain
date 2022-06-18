@@ -1,5 +1,4 @@
 import { GuildMember, PartialGuildMember } from 'discord.js';
-import { debounce } from '../utils/debounce';
 import { RoleDiff } from '../utils/role-diff';
 
 export class DiffCacheManager {
@@ -20,10 +19,8 @@ export class DiffCacheManager {
 
         if (!diff || !diff.hasChanged) return;
 
-        debounce(`commit-${member.id}`, async () => {
-            await diff.commit(member);
+        await diff.commit(member);
 
-            delete DiffCacheManager.diffs[member.id];
-        });
+        delete DiffCacheManager.diffs[member.id];
     }
 }
