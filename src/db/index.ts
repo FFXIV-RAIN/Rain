@@ -4,7 +4,7 @@ import { CONFIG } from '../config';
 
 export const db = new Sequelize(CONFIG.DATABASE_URL, {
   models: [__dirname + '/models/**/*.ts'],
-  logging: logger.trace.bind(logger),
+  logging: logger.silly.bind(logger),
   sync: {
     alter: true,
   },

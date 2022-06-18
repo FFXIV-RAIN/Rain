@@ -3,6 +3,7 @@ import { LOG_LEVEL } from '../types/logger';
 import { CONFIG } from '../config';
 
 const formatters = {
+    [LOG_LEVEL.SILLY]: chalk.cyanBright,
     [LOG_LEVEL.TRACE]: chalk.greenBright,
     [LOG_LEVEL.INFO]: chalk.blueBright,
     [LOG_LEVEL.WARN]: chalk.yellow,
@@ -16,26 +17,30 @@ export class Logger {
         this._options = options;
     }
 
-    log(level: LOG_LEVEL, message: any): void {
+    log(level: LOG_LEVEL, ...messages: any[]): void {
         if (this._options.level >= level) {
-            console.log(`[${formatters[level](LOG_LEVEL[level])}]:`, message);
+            console.log(`[${formatters[level](LOG_LEVEL[level])}]:`, messages.map((message) => typeof (message) === 'string' ? message : JSON.stringify(message)).join(', '));
         }
     }
 
-    trace(message: any): void {
-        this.log(LOG_LEVEL.TRACE, message);
+    silly(...messages: any[]): void {
+        this.log(LOG_LEVEL.SILLY, ...messages);
     }
 
-    info(message: any): void {
-        this.log(LOG_LEVEL.INFO, message);
+    trace(...messages: any[]): void {
+        this.log(LOG_LEVEL.TRACE, ...messages);
     }
 
-    warn(message: any): void {
-        this.log(LOG_LEVEL.WARN, message);
+    info(...messages: any[]): void {
+        this.log(LOG_LEVEL.INFO, ...messages);
     }
 
-    error(message: any): void {
-        this.log(LOG_LEVEL.ERROR, message);
+    warn(...messages: any[]): void {
+        this.log(LOG_LEVEL.WARN, ...messages);
+    }
+
+    error(...messages: any[]): void {
+        this.log(LOG_LEVEL.ERROR, ...messages);
     }
 }
 
