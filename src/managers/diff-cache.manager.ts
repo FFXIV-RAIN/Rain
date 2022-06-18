@@ -8,13 +8,13 @@ export class DiffCacheManager {
 
     public static diff(member: GuildMember|PartialGuildMember): RoleDiff {
         if (!DiffCacheManager.diffs[member.id]) {
-            DiffCacheManager.diffs[member.id] = new RoleDiff(member.roles.cache.map((role) => role.id));
+            DiffCacheManager.diffs[member.id] = new RoleDiff(member.roles.cache.filter((role) => role.name !== '@everyone').map((role) => role.id));
         }
 
         return DiffCacheManager.diffs[member.id];
     }
 
-    static commit(member: GuildMember|PartialGuildMember) {
+    public static async commit(member: GuildMember|PartialGuildMember) {
         const diff = DiffCacheManager.diff(member);
 
         if (!diff || !diff.hasChanged) return;

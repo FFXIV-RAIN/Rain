@@ -1,5 +1,6 @@
-import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey} from 'sequelize-typescript';
+import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, HasMany} from 'sequelize-typescript';
 import { Guild } from '../Guild';
+import { AutoRoleAssignments } from './AutoRoleAssignments';
 
 @Table
 export class AutoRoleConfig extends Model {
@@ -22,6 +23,9 @@ export class AutoRoleConfig extends Model {
 
     @BelongsTo(() => Guild)
     guild!: Guild;
+
+    @HasMany(() => AutoRoleAssignments)
+    assignments!: AutoRoleAssignments[];
 
     get disabled() {
         return !this.enabled;

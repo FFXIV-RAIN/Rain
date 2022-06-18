@@ -10,6 +10,16 @@ export function hasRole(member: GuildMember | PartialGuildMember, roleID: string
     return member.roles.cache.has(roleID);
 }
 
+export function hasAllRoles(member: GuildMember | PartialGuildMember, roleID: string | string[]): boolean {
+    const roles = Array.isArray(roleID) ? roleID : [roleID];
+
+    return roles.every((roleID: string) => hasRole(member, roleID));
+}
+
+export function hasNoRoles(member: GuildMember | PartialGuildMember, roleID: string | string[]): boolean {
+    return !hasAnyRole(member, roleID);
+}
+
 export function hasAnyRole(member: GuildMember | PartialGuildMember, roleID: string | string[]): boolean {
     const roles = Array.isArray(roleID) ? roleID : [roleID];
 

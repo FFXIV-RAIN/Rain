@@ -4,6 +4,7 @@ import { RoleDiff } from '../utils/role-diff';
 import { DiffCacheManager } from '../managers/diff-cache.manager';
 import { logger } from '../utils/logger';
 import { Configs } from '../services/configs.service';
+import { hasAnyRole } from '../utils/roles';
 
 async function autoVerifyBot(config: AutoRoleConfig, diff: RoleDiff, member: GuildMember | PartialGuildMember) {
     if (!config.botJoinRoles) return;
@@ -24,22 +25,55 @@ async function autoVerifyUser(config: AutoRoleConfig, diff: RoleDiff, oldMember:
 }
 
 export async function autoVerify(config: AutoRoleConfig, diff: RoleDiff, oldMember: null | GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
-    // TODO: Verify if this logic works for non-screening discord servers
     if (newMember.user.bot) {
-        autoVerifyBot(config, diff, newMember);
+        await autoVerifyBot(config, diff, newMember);
     } else {
-        autoVerifyUser(config, diff, oldMember, newMember);
+        await autoVerifyUser(config, diff, oldMember, newMember);
+    }
+}
+
+export async function autoAssignments(config: AutoRoleConfig, diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
+    if (!config.assignments || config.assignments.length === 0) return;
+
+    logger.silly('Auto Assignments!');
+
+    for (const assignment of config.assignments) {
+        if (!assignment.validationRoles) continue;
+
+        logger.silly('Validation roles detected...');
+
+        const previouslyHadRole = hasAnyRole(oldMember, assignment.validationRoles);
+        const currentlyHasRole = hasAnyRole(newMember, assignment.validationRoles);
+
+        if (previouslyHadRole === currentlyHasRole) continue;
+
+        logger.trace(`Change detected... (${currentlyHasRole})`);
+
+        if (currentlyHasRole) {
+            logger.silly('Validation roles added...');
+            
+            if (assignment.trueRoles) diff.add(...assignment.trueRoles);
+            if (assignment.falseRoles) diff.remove(...assignment.falseRoles);
+        } else {
+            logger.silly('Validation roles removed...');
+
+            if (assignment.trueRoles) diff.remove(...assignment.trueRoles);
+            if (assignment.falseRoles) diff.add(...assignment.falseRoles);
+        }
     }
 }
 
 export async function onGuildMemberUpdate(oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
-    const config = await Configs.autoRole(newMember.guild.id);
+    const config = await Configs.autoRole(newMember.guild.id, true);
 
     if (!config || !config.enabled) return;
 
     const diff = DiffCacheManager.diff(newMember);
 
-    autoVerify(config, diff, oldMember, newMember);
+    await autoVerify(config, diff, oldMember, newMember);
+    await autoAssignments(config, diff, oldMember, newMember);
+
+    logger.info(diff.roles);
 
     await DiffCacheManager.commit(newMember);
 }
@@ -48,10 +82,10 @@ export async function onGuildMemberAdd(member: GuildMember | PartialGuildMember)
     const config = await Configs.autoRole(member.guild.id);
 
     if (!config || !config.enabled) return;
-
+    
     const diff = DiffCacheManager.diff(member);
 
-    autoVerify(config, diff, null, member);
+    await autoVerify(config, diff, null, member);
 
     await DiffCacheManager.commit(member);
 }
