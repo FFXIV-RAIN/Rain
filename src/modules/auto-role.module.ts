@@ -2,7 +2,7 @@ import { Client, GuildMember, PartialGuildMember } from 'discord.js';
 import { ROLES, STAFF_ROLES } from '../roles';
 import { ROLE_CHANGED, wasAnyRoleChanged } from '../utils/roles';
 import { RoleDiff } from '../utils/role-diff';
-import { DiffCacheManager } from '../managers/diff-cache-manager';
+import { DiffCacheManager } from '../managers/diff-cache.manager';
 import { logger } from '../utils/logger';
 import { Configs } from '../services/configs.service';
 

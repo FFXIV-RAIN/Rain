@@ -19,8 +19,9 @@
             "node_modules/@types"
         ],
         "sourceMap": false,
-        "baseUrl": "./"
+        "baseUrl": "./",
     },
+    "include": ["src/**/*", "tests/**/*"],
     "exclude": [
         "node_modules",
         "dist"

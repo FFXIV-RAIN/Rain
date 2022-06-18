@@ -1,13 +1,13 @@
 import { ROLES } from '../../src/roles';
-import { autoAssignGuestAndStaff, autoVerify, onGuildMemberAdd } from '../../src/modules/auto-role';
+import { autoAssignGuestAndStaff, autoVerify, onGuildMemberAdd } from '../../src/modules/auto-role.module';
 import { RoleDiff } from '../../src/utils/role-diff';
 import { mockDiscordMember, mockDiscordUser, mockDiscordRoles, mockDiscordRoleCache } from '../__utils__/mock';
-import { DiffCacheManager } from '../../src/managers/diff-cache-manager';
+import { DiffCacheManager } from '../../src/managers/diff-cache.manager';
 import { Configs } from '../../src/services/configs.service';
 import { chance } from '../__utils__/chance';
 
 jest.mock('../../src/services/configs.service');
-jest.mock('../../src/managers/diff-cache-manager');
+jest.mock('../../src/managers/diff-cache.manager');
 
 const MockedManager = jest.mocked(DiffCacheManager);
 const MockedConfigs = jest.mocked(Configs);
