@@ -1,19 +1,17 @@
-import {setup as botSetup} from './discord';
-import {setup as dbSetup} from './db';
-import {setup as guildSetup} from './services/guild';
+import { dbSetup, discordSetup, guildsSetup } from './.setup';
 import { setups } from './modules';
 import { logger } from './utils/logger';
 
 export async function setup() {
     const [bot] = await Promise.all([
-        botSetup(),
+        discordSetup(),
         dbSetup()
     ]);
 
     logger.info('Initializing post startup setup...');
 
     await Promise.all([
-        guildSetup(bot),
+        guildsSetup(bot),
     ]);
 
     logger.info('Starting up modules...');

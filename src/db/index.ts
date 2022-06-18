@@ -17,13 +17,3 @@ export const db = new Sequelize(CONFIG.DATABASE_URL, {
     }
   }
 });
-
-export async function setup() {
-  logger.info('Syncing database...');
-
-  await db.sync();
-
-  logger.info('Database synced!');
-
-  return db;
-}

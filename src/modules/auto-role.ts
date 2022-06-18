@@ -4,7 +4,7 @@ import { ROLE_CHANGED, wasAnyRoleChanged } from '../utils/roles';
 import { RoleDiff } from '../utils/role-diff';
 import { DiffCacheManager } from '../managers/diff-cache-manager';
 import { logger } from '../utils/logger';
-import { Configs } from '../services/configs';
+import { Configs } from '../services/configs.service';
 
 export async function autoVerify(diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
     const config = await Configs.autoRole(newMember.guild.id);

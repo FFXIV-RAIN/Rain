@@ -2,7 +2,7 @@ import { Client, GuildMember, PartialGuildMember } from 'discord.js';
 import { userMention, roleMention, channelMention, inlineCode, formatEmoji } from '@discordjs/builders';
 import endent from 'endent';
 import { ROLES } from '../roles';
-import { Configs } from '../services/configs';
+import { Configs } from '../services/configs.service';
 
 export async function onGuildMemberAdd(this: Client, member: GuildMember | PartialGuildMember) {
     const welcome = await Configs.welcome(member.guild.id);

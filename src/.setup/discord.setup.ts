@@ -1,5 +1,5 @@
 import { Client, Intents } from 'discord.js';
-import { CONFIG } from './config';
+import { CONFIG } from '../config';
 
 export async function setup() {
     const client = new Client({

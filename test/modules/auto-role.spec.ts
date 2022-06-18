@@ -3,10 +3,10 @@ import { autoAssignGuestAndStaff, autoVerify, onGuildMemberAdd } from '../../src
 import { RoleDiff } from '../../src/utils/role-diff';
 import { mockDiscordMember, mockDiscordUser, mockDiscordRoles, mockDiscordRoleCache } from '../__utils__/mock';
 import { DiffCacheManager } from '../../src/managers/diff-cache-manager';
-import { Configs } from '../../src/services/configs';
+import { Configs } from '../../src/services/configs.service';
 import { chance } from '../__utils__/chance';
 
-jest.mock('../../src/services/configs');
+jest.mock('../../src/services/configs.service');
 jest.mock('../../src/managers/diff-cache-manager');
 
 const MockedManager = jest.mocked(DiffCacheManager);
