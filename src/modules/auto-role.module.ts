@@ -1,28 +1,45 @@
 import { Client, GuildMember, PartialGuildMember } from 'discord.js';
+import { AutoRoleConfig } from '../db/models/modules/AutoRoleConfig';
 import { RoleDiff } from '../utils/role-diff';
 import { DiffCacheManager } from '../managers/diff-cache.manager';
 import { logger } from '../utils/logger';
 import { Configs } from '../services/configs.service';
 
-export async function autoVerify(diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
-    const config = await Configs.autoRole(newMember.guild.id);
+async function autoVerifyBot(config: AutoRoleConfig, diff: RoleDiff, member: GuildMember | PartialGuildMember) {
+    if (!config.botJoinRoles) return;
 
-    if (!config || !config.enabled || !config.memberJoinRoles) return;
-    
+    diff.add(...config.botJoinRoles);
+}
+
+async function autoVerifyUser(config: AutoRoleConfig, diff: RoleDiff, oldMember: null | GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
+    if (!config.memberJoinRoles) return;
+
     logger.trace('Old:', oldMember, 'New:', newMember);
 
-    // TODO: Verify if this logic works for non-screening discord servers
-    if (oldMember.pending && !newMember.pending) {
+    if ((!oldMember || oldMember.pending) && !newMember.pending) {
         logger.info('User verified, adding roles...');
 
         diff.add(...config.memberJoinRoles);
     }
 }
 
+export async function autoVerify(config: AutoRoleConfig, diff: RoleDiff, oldMember: null | GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
+    // TODO: Verify if this logic works for non-screening discord servers
+    if (newMember.user.bot) {
+        autoVerifyBot(config, diff, newMember);
+    } else {
+        autoVerifyUser(config, diff, oldMember, newMember);
+    }
+}
+
 export async function onGuildMemberUpdate(oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
+    const config = await Configs.autoRole(newMember.guild.id);
+
+    if (!config || !config.enabled) return;
+
     const diff = DiffCacheManager.diff(newMember);
 
-    autoVerify(diff, oldMember, newMember);
+    autoVerify(config, diff, oldMember, newMember);
 
     await DiffCacheManager.commit(newMember);
 }
@@ -34,9 +51,7 @@ export async function onGuildMemberAdd(member: GuildMember | PartialGuildMember)
 
     const diff = DiffCacheManager.diff(member);
 
-    if (member.user.bot && config.botJoinRoles) {
-        diff.add(...config.botJoinRoles);
-    }
+    autoVerify(config, diff, null, member);
 
     await DiffCacheManager.commit(member);
 }

@@ -4,6 +4,7 @@ import { mockDiscordMember, mockDiscordUser, mockDiscordRoles, mockDiscordRoleCa
 import { DiffCacheManager } from '../../src/managers/diff-cache.manager';
 import { Configs } from '../../src/services/configs.service';
 import { chance } from '../__utils__/chance';
+import { AutoRoleConfig } from '../../src/db/models/modules/AutoRoleConfig';
 
 jest.mock('../../src/services/configs.service');
 jest.mock('../../src/managers/diff-cache.manager');
@@ -14,6 +15,13 @@ const MockedConfigs = jest.mocked(Configs);
 describe('bot(AutoRole)', () => {
     const memberJoinRoles = [chance.string()];
     const botJoinRoles = [chance.string()];
+    const config = {
+        guildId: chance.string(),
+        enabled: true,
+        disabled: false,
+        memberJoinRoles,
+        botJoinRoles,
+    } as unknown as AutoRoleConfig;
 
     let diff: RoleDiff;
 
@@ -25,25 +33,19 @@ describe('bot(AutoRole)', () => {
 
         MockedManager.diff.mockReturnValue(diff);
 
-        MockedConfigs.autoRole.mockResolvedValue({
-            guildId: chance.string(),
-            enabled: true,
-            disabled: false,
-            memberJoinRoles,
-            botJoinRoles,
-        } as any);
+        MockedConfigs.autoRole.mockResolvedValue(config);
     });
 
     describe('func(autoVerify)', () => {
         it('should add the join roles if a member has been accepted', async () => {
             const oldMember = mockDiscordMember({
-                pending: true
+                pending: true,
             });
             const newMember = mockDiscordMember({
-                pending: false
+                pending: false,
             });
 
-            await autoVerify(diff, oldMember, newMember);
+            await autoVerify(config, diff, oldMember, newMember);
 
             expect(diff.roles).toEqual(memberJoinRoles);
         });
@@ -56,7 +58,7 @@ describe('bot(AutoRole)', () => {
                 pending: true
             });
 
-            await autoVerify(diff, oldMember, newMember);
+            await autoVerify(config, diff, oldMember, newMember);
 
             expect(diff.roles).toEqual([]);
         });
@@ -69,7 +71,7 @@ describe('bot(AutoRole)', () => {
                 pending: false
             });
 
-            await autoVerify(diff, oldMember, newMember);
+            await autoVerify(config, diff, oldMember, newMember);
 
             expect(diff.roles).toEqual([]);
         });
