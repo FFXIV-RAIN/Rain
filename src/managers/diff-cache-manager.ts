@@ -18,7 +18,7 @@ export class DiffCacheManager {
     static commit(member: GuildMember|PartialGuildMember) {
         const diff = DiffCacheManager.diff(member);
 
-        if (!diff) return;
+        if (!diff || !diff.hasChanged) return;
 
         debounce(`commit-${member.id}`, async () => {
             await diff.commit(member);

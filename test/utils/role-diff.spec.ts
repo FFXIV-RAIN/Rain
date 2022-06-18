@@ -64,6 +64,14 @@ describe('utils(RoleDiff)', () => {
             member = mockDiscordMember();
         });
 
+        it('should not commit if no changes have occurred', async () => {
+            const diff = new RoleDiff([ROLES.STAFF]);
+
+            diff.add(ROLES.STAFF);
+
+            expect(member.roles.set).not.toHaveBeenCalled();
+        });
+
         it('should support adding roles', async () => {
             const diff = new RoleDiff();
 
@@ -71,7 +79,6 @@ describe('utils(RoleDiff)', () => {
 
             await diff.commit(member);
 
-            expect(diff.roles).toEqual([]);
             expect(member.roles.set).toHaveBeenCalledWith([ROLES.STAFF]);
         });
 
@@ -82,7 +89,6 @@ describe('utils(RoleDiff)', () => {
 
             await diff.commit(member);
 
-            expect(diff.roles).toEqual([]);
             expect(member.roles.set).toHaveBeenCalledWith([]);
         });
 
@@ -94,7 +100,6 @@ describe('utils(RoleDiff)', () => {
 
             await diff.commit(member);
 
-            expect(diff.roles).toEqual([]);
             expect(member.roles.set).toHaveBeenCalledWith([ROLES.BAKERS]);
         });
     });

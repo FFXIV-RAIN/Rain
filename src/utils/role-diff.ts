@@ -2,8 +2,10 @@ import { GuildMember, PartialGuildMember } from 'discord.js';
 
 export class RoleDiff {
     private _roles: string[];
+    private _hasChanged: boolean;
 
     constructor(roles: string[] = []) {
+        this._hasChanged = false;
         this._roles = roles;
     }
 
@@ -11,6 +13,7 @@ export class RoleDiff {
         for (const role of roles) {
             if (this._roles.includes(role)) continue;
 
+            this._hasChanged = true;
             this._roles.push(role);
         }
     }
@@ -21,6 +24,7 @@ export class RoleDiff {
 
             if (index === -1) continue;
 
+            this._hasChanged = true;
             this._roles.splice(index, 1);
         }
     }
@@ -29,9 +33,13 @@ export class RoleDiff {
         return this._roles;
     }
 
-    async commit(member: GuildMember | PartialGuildMember) {
-        await member.roles.set(this._roles);
+    get hasChanged(): boolean {
+        return this._hasChanged;
+    }
 
-        this._roles = [];
+    async commit(member: GuildMember | PartialGuildMember) {
+        if (this._hasChanged) {
+            await member.roles.set(this._roles);
+        }
     }
 }
