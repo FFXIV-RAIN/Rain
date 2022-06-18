@@ -8,6 +8,8 @@ export async function autoVerify(diff: RoleDiff, oldMember: GuildMember | Partia
     const config = await Configs.autoRole(newMember.guild.id);
 
     if (!config || !config.enabled || !config.memberJoinRoles) return;
+    
+    logger.trace(`Old: ${JSON.stringify(oldMember)}, New: ${JSON.stringify(newMember)}`);
 
     // TODO: Verify if this logic works for non-screening discord servers
     if (oldMember.pending && !newMember.pending) {
