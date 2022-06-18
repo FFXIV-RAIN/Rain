@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { LOG_LEVEL } from '../types/logger';
 import { CONFIG } from '../config';
+import { StringifySafe } from './json';
 
 const formatters = {
     [LOG_LEVEL.SILLY]: chalk.cyanBright,
@@ -19,7 +20,7 @@ export class Logger {
 
     log(level: LOG_LEVEL, ...messages: any[]): void {
         if (this._options.level >= level) {
-            console.log(`[${formatters[level](LOG_LEVEL[level])}]:`, messages.map((message) => typeof (message) === 'string' ? message : JSON.stringify(message)).join(', '));
+            console.log(`[${formatters[level](LOG_LEVEL[level])}]:`, messages.map((message) => typeof (message) === 'string' ? message : StringifySafe(message)).join(', '));
         }
     }
 

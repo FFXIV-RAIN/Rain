@@ -35,12 +35,12 @@ export async function autoVerify(config: AutoRoleConfig, diff: RoleDiff, oldMemb
 export async function autoAssignments(config: AutoRoleConfig, diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
     if (!config.assignments || config.assignments.length === 0) return;
 
-    logger.silly('Auto Assignments!');
+    logger.trace('Auto Assignments!');
 
     for (const assignment of config.assignments) {
         if (!assignment.validationRoles) continue;
 
-        logger.silly('Validation roles detected...');
+        logger.trace('Validation roles detected...');
 
         const previouslyHadRole = hasAnyRole(oldMember, assignment.validationRoles);
         const currentlyHasRole = hasAnyRole(newMember, assignment.validationRoles);
@@ -50,12 +50,12 @@ export async function autoAssignments(config: AutoRoleConfig, diff: RoleDiff, ol
         logger.trace(`Change detected... (${currentlyHasRole})`);
 
         if (currentlyHasRole) {
-            logger.silly('Validation roles added...');
+            logger.trace('Validation roles added...');
             
             if (assignment.trueRoles) diff.add(...assignment.trueRoles);
             if (assignment.falseRoles) diff.remove(...assignment.falseRoles);
         } else {
-            logger.silly('Validation roles removed...');
+            logger.trace('Validation roles removed...');
 
             if (assignment.trueRoles) diff.remove(...assignment.trueRoles);
             if (assignment.falseRoles) diff.add(...assignment.falseRoles);
