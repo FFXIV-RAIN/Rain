@@ -7,6 +7,12 @@ export class Guild extends Model {
     @PrimaryKey
     @Column(DataType.TEXT)
     id!: string;
+    
+    @Column({
+        type: DataType.TEXT,
+        defaultValue: false,
+    })
+    inactive!: boolean;
 
     @HasOne(() => Config)
     config!: Config;

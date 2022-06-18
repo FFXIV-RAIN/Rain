@@ -1,5 +1,4 @@
-import { ROLES } from '../../src/roles';
-import { autoAssignGuestAndStaff, autoVerify, onGuildMemberAdd } from '../../src/modules/auto-role.module';
+import { autoVerify, onGuildMemberAdd } from '../../src/modules/auto-role.module';
 import { RoleDiff } from '../../src/utils/role-diff';
 import { mockDiscordMember, mockDiscordUser, mockDiscordRoles, mockDiscordRoleCache } from '../__utils__/mock';
 import { DiffCacheManager } from '../../src/managers/diff-cache.manager';
@@ -73,63 +72,6 @@ describe('bot(AutoRole)', () => {
             await autoVerify(diff, oldMember, newMember);
 
             expect(diff.roles).toEqual([]);
-        });
-    });
-
-    describe('func(autoAssignGuestAndStaff)', () => {
-        it('should do nothing if no staff roles were added or removed', async () => {
-            const oldMember = mockDiscordMember();
-            const newMember = mockDiscordMember();
-
-            await autoAssignGuestAndStaff(diff, oldMember, newMember);
-
-            expect(diff.roles).toEqual([]);
-        });
-
-        it('should add STAFF and remove GUESTS if a staff role was added', async () => {
-            diff.add(ROLES.GUESTS);
-
-            const oldMember = mockDiscordMember({
-                roles: mockDiscordRoles({
-                    cache: mockDiscordRoleCache({
-                        has: jest.fn().mockReturnValue(false),
-                    }),
-                }),
-            });
-            const newMember = mockDiscordMember({
-                roles: mockDiscordRoles({
-                    cache: mockDiscordRoleCache({
-                        has: jest.fn().mockReturnValue(true),
-                    }),
-                }),
-            });
-
-            await autoAssignGuestAndStaff(diff, oldMember, newMember);
-
-            expect(diff.roles).toEqual([ROLES.STAFF]);
-        });
-
-        it('should add GUESTS and remove STAFF if a staff role was removed', async () => {
-            diff.add(ROLES.STAFF);
-
-            const oldMember = mockDiscordMember({
-                roles: mockDiscordRoles({
-                    cache: mockDiscordRoleCache({
-                        has: jest.fn().mockReturnValue(true),
-                    }),
-                }),
-            });
-            const newMember = mockDiscordMember({
-                roles: mockDiscordRoles({
-                    cache: mockDiscordRoleCache({
-                        has: jest.fn().mockReturnValue(false),
-                    }),
-                }),
-            });
-
-            await autoAssignGuestAndStaff(diff, oldMember, newMember);
-
-            expect(diff.roles).toEqual([ROLES.GUESTS]);
         });
     });
 

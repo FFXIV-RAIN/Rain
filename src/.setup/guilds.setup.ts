@@ -6,7 +6,32 @@ import { Guild } from '../db/models/Guild';
 import { WelcomeConfig } from '../db/models/modules/WelcomeConfig';
 import { AutoRoleConfig } from '../db/models/modules/AutoRoleConfig';
 
-export async function setup(client: Client) {
+export async function setup(...guilds: string[]) {
+    await Guild.bulkCreate(guilds.map((guildId) => ({
+        id: guildId,
+    })));
+
+    await Promise.all([
+        Config.bulkCreate(guilds.map((guildId) => ({
+            guildId,
+        }))),
+
+        WelcomeConfig.bulkCreate(guilds.map((guildId) => ({
+            guildId,
+            enabled: false,
+        }))),
+
+        AutoRoleConfig.bulkCreate(guilds.map((guildId) => ({
+            guildId,
+            enabled: false,
+            joinRoles: [
+                '966503428429856768'
+            ]
+        })))
+    ]);
+}
+
+export async function startup(client: Client) {
     logger.info('Verifying all guilds are setup ...');
 
     const guildIds = client.guilds.cache.map((_, id) => id);
@@ -28,24 +53,6 @@ export async function setup(client: Client) {
     logger.info(`Determined ${guildsToSetup.length} guild(s) need to be set up`);
 
     if (guildsToSetup.length > 0) {
-        await Guild.bulkCreate(guildsToSetup.map((guildId) => ({
-            id: guildId,
-        })));
-    
-        await Config.bulkCreate(guildsToSetup.map((guildId) => ({
-            guildId,
-        })));
-    
-        await WelcomeConfig.bulkCreate(guildsToSetup.map((guildId) => ({
-            guildId,
-        })));
-    
-        await AutoRoleConfig.bulkCreate(guildsToSetup.map((guildId) => ({
-            guildId,
-            enabled: true,
-            joinRoles: [
-                '966503428429856768'
-            ]
-        })));
+        await setup(...guildsToSetup);
     }
 }

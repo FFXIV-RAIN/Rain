@@ -1,5 +1,6 @@
-import { dbSetup, discordSetup, guildsSetup } from './.setup';
+import { dbSetup, discordSetup, guildsStartup, guildsSetup } from './.setup';
 import { setups } from './modules';
+import { Guilds } from './services/guilds.service';
 import { logger } from './utils/logger';
 
 export async function setup() {
@@ -11,7 +12,7 @@ export async function setup() {
     logger.info('Initializing post startup setup...');
 
     await Promise.all([
-        guildsSetup(bot),
+        guildsStartup(bot),
     ]);
 
     logger.info('Starting up modules...');
@@ -21,6 +22,9 @@ export async function setup() {
     if (!bot.user) return;
 
     console.log(`${bot.user.username} is online.`);
+
+    bot.on('guildCreate', (guild) => guildsSetup(guild.id));
+    bot.on('guildDelete', (guild) => Guilds.setInactiveStatus(guild.id, true));
 }
 
 setup();
