@@ -12,7 +12,7 @@ export const db = new Sequelize(CONFIG.DATABASE_URL, {
     underscored: true,
   },
   dialectOptions: {
-    ssl: {
+    ssl: CONFIG.DATABASE_URL.includes('localhost') ? false : {
       rejectUnauthorized: false
     }
   }
