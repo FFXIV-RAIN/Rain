@@ -14,6 +14,12 @@ export class WelcomeConfig extends Model {
     })
     enabled!: boolean;
 
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: true,
+    })
+    ignoreBots!: boolean;
+
     @Column(DataType.TEXT)
     channelId?: string;
 

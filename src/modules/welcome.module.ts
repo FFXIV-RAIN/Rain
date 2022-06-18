@@ -5,7 +5,7 @@ import { parseMessage } from '../utils/message';
 export async function onGuildMemberAdd(this: Client, member: GuildMember | PartialGuildMember) {
     const welcome = await Configs.welcome(member.guild.id);
 
-    if (!welcome || welcome.disabled || !welcome.channelId || !welcome.message) return;
+    if (!welcome || welcome.disabled || !welcome.channelId || !welcome.message || (welcome.ignoreBots && member.user.bot)) return;
 
     const channel = await this.channels.cache.get(welcome.channelId);
 

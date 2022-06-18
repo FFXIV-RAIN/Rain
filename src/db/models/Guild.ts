@@ -9,7 +9,7 @@ export class Guild extends Model {
     id!: string;
     
     @Column({
-        type: DataType.TEXT,
+        type: DataType.BOOLEAN,
         defaultValue: false,
     })
     inactive!: boolean;
