@@ -38,7 +38,7 @@ export async function autoAssignments(config: AutoRoleConfig, diff: RoleDiff, ol
     logger.trace('Auto Assignments!');
 
     for (const assignment of config.assignments) {
-        if (!assignment.validationRoles) continue;
+        if (assignment.disabled || !assignment.validationRoles) continue;
 
         logger.trace('Validation roles detected...');
 
