@@ -1,5 +1,5 @@
-import { Collection, Guild, GuildMember, GuildMemberRoleManager, Role, Snowflake, User } from 'discord.js'
-import { chance } from './chance';
+import {Collection, Guild, GuildMember, GuildMemberRoleManager, Role, Snowflake, User} from 'discord.js'
+import {chance} from './chance';
 
 export function mockDiscordMember(overrides?: any): GuildMember {
     return {
@@ -7,21 +7,21 @@ export function mockDiscordMember(overrides?: any): GuildMember {
         user: mockDiscordUser(),
         roles: mockDiscordRoles(),
         ...overrides
-    } as unknown as GuildMember;
+   } as unknown as GuildMember;
 }
 
 export function mockDiscordGuild(overrides?: any): Guild {
     return {
         id: chance.string(),
         ...overrides
-    } as unknown as Guild;
+   } as unknown as Guild;
 }
 
 export function mockDiscordUser(overrides?: any): User {
     return {
         id: chance.string(),
         ...overrides
-    } as unknown as User;
+   } as unknown as User;
 }
 
 export function mockDiscordRoles(overrides?: any): GuildMemberRoleManager {
@@ -31,12 +31,12 @@ export function mockDiscordRoles(overrides?: any): GuildMemberRoleManager {
         set: jest.fn().mockResolvedValue(true),
         cache: mockDiscordRoleCache(),
         ...overrides
-    } as unknown as GuildMemberRoleManager;
+   } as unknown as GuildMemberRoleManager;
 }
 
 export function mockDiscordRoleCache(overrides?: any): Collection<Snowflake, Role> {
     return {
         has: jest.fn().mockReturnValue(true),
         ...overrides
-    } as unknown as Collection<Snowflake, Role>;
+   } as unknown as Collection<Snowflake, Role>;
 }

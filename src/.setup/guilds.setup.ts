@@ -1,25 +1,25 @@
-import { Client } from 'discord.js';
-import { Op } from 'sequelize';
-import { logger } from '../utils/logger';
-import { GuildConfig } from '../db/models/GuildConfig';
-import { Guild } from '../db/models/Guild';
-import { WelcomeConfig } from '../db/models/modules/WelcomeConfig';
-import { AutoRoleConfig } from '../db/models/modules/AutoRoleConfig';
+import {Client} from 'discord.js';
+import {Op} from 'sequelize';
+import {logger} from '../utils/logger';
+import {GuildConfig} from '../db/models/GuildConfig';
+import {Guild} from '../db/models/Guild';
+import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
+import {AutoRoleConfig} from '../db/models/modules/AutoRoleConfig';
 
 export async function setup(...guilds: string[]) {
     await Guild.bulkCreate(guilds.map((guildId) => ({
         id: guildId,
-    })));
+   })));
 
     await Promise.all([
         GuildConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
-        }))),
+       }))),
 
         WelcomeConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
             enabled: false,
-        }))),
+       }))),
 
         AutoRoleConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
@@ -27,7 +27,7 @@ export async function setup(...guilds: string[]) {
             joinRoles: [
                 '966503428429856768'
             ]
-        })))
+       })))
     ]);
 }
 
@@ -41,9 +41,9 @@ export async function startup(client: Client) {
         where: {
             id: {
                 [Op.in]: guildIds
-            }
-        }
-    });
+           }
+       }
+   });
 
     // Find the IDs that don't have a guild yet.
     const guildsToSetup = guildIds.filter((guildId) => 
@@ -54,5 +54,5 @@ export async function startup(client: Client) {
 
     if (guildsToSetup.length > 0) {
         await setup(...guildsToSetup);
-    }
+   }
 }

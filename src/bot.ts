@@ -1,9 +1,12 @@
-import { dbSetup, discordSetup, guildsStartup, guildsSetup } from './.setup';
-import { setups } from './modules';
-import { Guilds } from './services/guilds.service';
-import { logger } from './utils/logger';
+import {dbSetup, discordSetup, guildsStartup, guildsSetup} from './.setup';
+import {CONFIG} from './config';
+import {setups} from './modules';
+import {Guilds} from './services/guilds.service';
+import {logger} from './utils/logger';
 
 export async function setup() {
+    logger.info(`Starting up Rain v${CONFIG.VERSION}`);
+
     const [bot] = await Promise.all([
         discordSetup(),
         dbSetup()
@@ -21,7 +24,7 @@ export async function setup() {
 
     if (!bot.user) return;
 
-    console.log(`${bot.user.username} is online.`);
+    logger.info(`${bot.user.username} is online.`);
     logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=966131732476739595&permissions=8&scope=bot`)
 
     bot.on('guildCreate', (guild) => guildsSetup(guild.id));

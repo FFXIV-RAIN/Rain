@@ -1,4 +1,4 @@
-import { GuildMember, PartialGuildMember } from 'discord.js';
+import {GuildMember, PartialGuildMember} from 'discord.js';
 
 export class RoleDiff {
     private _roles: string[];
@@ -7,7 +7,7 @@ export class RoleDiff {
     constructor(roles: string[] = []) {
         this._hasChanged = false;
         this._roles = roles;
-    }
+   }
 
     add(...roles: string[]) {
         for (const role of roles) {
@@ -15,8 +15,8 @@ export class RoleDiff {
 
             this._hasChanged = true;
             this._roles.push(role);
-        }
-    }
+       }
+   }
     
     remove(...roles: string[]) {
         for (const role of roles) {
@@ -26,20 +26,20 @@ export class RoleDiff {
 
             this._hasChanged = true;
             this._roles.splice(index, 1);
-        }
-    }
+       }
+   }
 
     get roles() {
         return this._roles;
-    }
+   }
 
     get hasChanged(): boolean {
         return this._hasChanged;
-    }
+   }
 
     async commit(member: GuildMember | PartialGuildMember) {
         if (this._hasChanged) {
             await member.roles.set(this._roles);
-        }
-    }
+       }
+   }
 }

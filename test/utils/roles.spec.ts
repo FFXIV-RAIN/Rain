@@ -1,5 +1,5 @@
-import { GuildMember } from 'discord.js';
-import { chance } from '../__utils__/chance';
+import {GuildMember} from 'discord.js';
+import {chance} from '../__utils__/chance';
 import {
     hasRole,
     hasAnyRole,
@@ -8,7 +8,7 @@ import {
     wasAnyRoleRemoved,
     ROLE_CHANGED,
 } from '../../src/utils/roles';
-import { mockDiscordMember, mockDiscordRoleCache, mockDiscordRoles } from '../__utils__/mock';
+import {mockDiscordMember, mockDiscordRoleCache, mockDiscordRoles} from '../__utils__/mock';
 
 describe('utils(Roles)', () => {
     const mockDiscordRolesHas = (hasRole: boolean | ((roleID: string) => boolean)): GuildMember => {
@@ -16,10 +16,10 @@ describe('utils(Roles)', () => {
             roles: mockDiscordRoles({
                 cache: mockDiscordRoleCache({
                     has: typeof hasRole === 'function' ? jest.fn().mockImplementation(hasRole) : jest.fn().mockReturnValue(hasRole)
-                }),
-            }),
-        });
-    };
+               }),
+           }),
+       });
+   };
 
     describe('func(hasRole)', () => {
         it('should return true if the user has the role', () => {
@@ -28,7 +28,7 @@ describe('utils(Roles)', () => {
 
             expect(hasRole(member, roleID)).toEqual(true);
             expect(member.roles.cache.has).toHaveBeenCalledWith(roleID);
-        });
+       });
 
         it('should return false if the user does not have the role', () => {
             const roleID = chance.string();
@@ -36,8 +36,8 @@ describe('utils(Roles)', () => {
 
             expect(hasRole(member, roleID)).toEqual(false);
             expect(member.roles.cache.has).toHaveBeenCalledWith(roleID);
-        });
-    });
+       });
+   });
 
     describe('func(hasAnyRole)', () => {
         it('should return true if the user has all of the roles', () => {
@@ -46,7 +46,7 @@ describe('utils(Roles)', () => {
 
             expect(hasAnyRole(member, roleIDs)).toEqual(true);
             expect(member.roles.cache.has).toHaveBeenCalledTimes(1);
-        });
+       });
 
         it('should return true if the user has any of the roles', () => {
             const roleIDs = chance.n(chance.string, 4);
@@ -56,7 +56,7 @@ describe('utils(Roles)', () => {
 
             expect(hasAnyRole(member, roleIDs)).toEqual(true);
             expect(member.roles.cache.has).toHaveBeenCalledTimes(roleIDs.length);
-        });
+       });
 
         it('should return false if the user has none of the roles', () => {
             const roleIDs = chance.n(chance.string, 4);
@@ -64,7 +64,7 @@ describe('utils(Roles)', () => {
 
             expect(hasAnyRole(member, roleIDs)).toEqual(false);
             expect(member.roles.cache.has).toHaveBeenCalledTimes(roleIDs.length);
-        });
+       });
 
         it('should support individual roles', () => {
             const roleID = chance.string();
@@ -72,8 +72,8 @@ describe('utils(Roles)', () => {
 
             expect(hasAnyRole(member, roleID)).toEqual(false);
             expect(member.roles.cache.has).toHaveBeenCalledTimes(1);
-        });
-    });
+       });
+   });
 
     describe('func(wasAnyRoleChanged)', () => {
         it('should return NO_CHANGE if the roles are the same', () => {
@@ -81,7 +81,7 @@ describe('utils(Roles)', () => {
             const member = mockDiscordRolesHas(true);
 
             expect(wasAnyRoleChanged(member, member, [expectedRoleID])).toEqual(ROLE_CHANGED.NO_CHANGE);
-        });
+       });
         
         it('should return ADDED if the role was added in the new user', () => {
             const expectedRoleID = chance.string();
@@ -89,7 +89,7 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(true);
 
             expect(wasAnyRoleChanged(oldMember, newMember, [expectedRoleID])).toEqual(ROLE_CHANGED.ADDED);
-        });
+       });
         
         it('should return REMOVED if the role was removed from the new user', () => {
             const expectedRoleID = chance.string();
@@ -97,8 +97,8 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(false);
 
             expect(wasAnyRoleChanged(oldMember, newMember, [expectedRoleID])).toEqual(ROLE_CHANGED.REMOVED);
-        });
-    });
+       });
+   });
 
     describe('func(wasAnyRoleAdded)', () => {
         it('should return true if any of the roles were added', () => {
@@ -107,7 +107,7 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(true);
 
             expect(wasAnyRoleAdded(oldMember, newMember, [expectedRoleID])).toEqual(true);
-        });
+       });
         
         it('should return false if any of the roles were removed', () => {
             const expectedRoleID = chance.string();
@@ -115,7 +115,7 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(false);
 
             expect(wasAnyRoleAdded(oldMember, newMember, [expectedRoleID])).toEqual(false);
-        });
+       });
 
         it('should return false if there was no change', () => {
             const expectedRoleID = chance.string();
@@ -123,8 +123,8 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(false);
 
             expect(wasAnyRoleAdded(oldMember, newMember, [expectedRoleID])).toEqual(false);
-        });
-    });
+       });
+   });
 
     describe('func(wasAnyRoleRemoved)', () => {
         it('should return true if any of the roles were removed', () => {
@@ -133,7 +133,7 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(false);
 
             expect(wasAnyRoleRemoved(oldMember, newMember, [expectedRoleID])).toEqual(true);
-        });
+       });
         
         it('should return false if any of the roles were added', () => {
             const expectedRoleID = chance.string();
@@ -141,7 +141,7 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(true);
 
             expect(wasAnyRoleRemoved(oldMember, newMember, [expectedRoleID])).toEqual(false);
-        });
+       });
 
         it('should return false if there was no change', () => {
             const expectedRoleID = chance.string();
@@ -149,6 +149,6 @@ describe('utils(Roles)', () => {
             const newMember = mockDiscordRolesHas(false);
 
             expect(wasAnyRoleRemoved(oldMember, newMember, [expectedRoleID])).toEqual(false);
-        });
-    });
+       });
+   });
 });

@@ -1,7 +1,7 @@
-import { Client, GuildMember, PartialGuildMember } from 'discord.js';
-import { logger } from '../utils/logger';
-import { Configs } from '../services/configs.service';
-import { parseMessage } from '../utils/message';
+import {Client, GuildMember, PartialGuildMember} from 'discord.js';
+import {logger} from '../utils/logger';
+import {Configs} from '../services/configs.service';
+import {parseMessage} from '../utils/message';
 
 export async function onGuildMemberAdd(this: Client, member: GuildMember | PartialGuildMember) {
     const welcome = await Configs.welcome(member.guild.id);
@@ -24,15 +24,15 @@ export async function onGuildMemberAdd(this: Client, member: GuildMember | Parti
         embeds: [{
             image: {
                 url: 'https://imgur.com/1SjRXpE.png'
-            },
+           },
             description: parseMessage(welcome.message, {
                 user: {
                     id: member.user.id,
-                }
-            }),
+               }
+           }),
             color: '#F7A8B8',
-        }],
-    });
+       }],
+   });
 }
 
 export function setup(client: Client) {

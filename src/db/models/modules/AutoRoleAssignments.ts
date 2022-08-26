@@ -1,5 +1,5 @@
-import { Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement } from 'sequelize-typescript';
-import { AutoRoleConfig } from './AutoRoleConfig';
+import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement} from 'sequelize-typescript';
+import {AutoRoleConfig} from './AutoRoleConfig';
 
 @Table
 export class AutoRoleAssignments extends Model {
@@ -15,7 +15,7 @@ export class AutoRoleAssignments extends Model {
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
-    })
+   })
     enabled!: boolean;
 
     @Column(DataType.ARRAY(DataType.TEXT))
@@ -32,5 +32,5 @@ export class AutoRoleAssignments extends Model {
 
     get disabled() {
         return !this.enabled;
-    }
+   }
 }

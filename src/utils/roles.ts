@@ -1,4 +1,4 @@
-import { GuildMember, PartialGuildMember } from 'discord.js';
+import {GuildMember, PartialGuildMember} from 'discord.js';
 
 export enum ROLE_CHANGED {
     ADDED = 1,
@@ -32,9 +32,9 @@ export function wasAnyRoleChanged(oldMember: GuildMember | PartialGuildMember, n
 
     if (oldHasRole === newHasRole) {
         return ROLE_CHANGED.NO_CHANGE;
-    } else if (!oldHasRole && newHasRole) {
+   } else if (!oldHasRole && newHasRole) {
         return ROLE_CHANGED.ADDED;
-    }
+   }
 
     return ROLE_CHANGED.REMOVED;
 }

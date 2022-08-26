@@ -1,5 +1,5 @@
-import { Environment } from '../types/environment';
-import { LOG_LEVEL } from '../types/logger'
+import {Environment} from '../types/environment';
+import {LOG_LEVEL} from '../types/logger'
 
 export function isFeatureFlagEnabled(name: string) {
     return Boolean(process.env[`FF_${name}`] || 'true');
@@ -12,7 +12,7 @@ export function get<T>(defaultValue: T, ...names: string[]): T {
         if (!value) continue;
 
         return value as unknown as T;
-    }
+   }
 
     return defaultValue;
 }
@@ -23,6 +23,7 @@ export interface Config {
     ENVIRONMENT: Environment;
     LOG_LEVEL: LOG_LEVEL;
     IS_LIVE: boolean;
+    VERSION: string;
 }
 
 export interface FeatureFlags {
@@ -42,4 +43,6 @@ export const CONFIG: Config = {
     ENVIRONMENT,
     LOG_LEVEL: get<LOG_LEVEL>(LOG_LEVEL.INFO, 'LOG_LEVEL'),
     IS_LIVE: ENVIRONMENT === Environment.LIVE,
+    // TODO: Make this read the latest git tag and use 'local' otherwise
+    VERSION: '0.1.0',
 }

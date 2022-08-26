@@ -1,5 +1,5 @@
-import { logger } from '../utils/logger';
-import { db } from '../db';
+import {logger} from '../utils/logger';
+import {db} from '../db';
 
 export async function setup() {
     logger.info('Syncing database...');
@@ -9,4 +9,4 @@ export async function setup() {
     logger.info('Database synced!');
   
     return db;
-  }
+ }

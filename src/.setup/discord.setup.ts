@@ -1,5 +1,5 @@
-import { Client, Intents } from 'discord.js';
-import { CONFIG } from '../config';
+import {Client, Intents} from 'discord.js';
+import {CONFIG} from '../config';
 
 export async function setup() {
     const client = new Client({
@@ -10,7 +10,7 @@ export async function setup() {
             Intents.FLAGS.GUILDS,
             Intents.FLAGS.GUILD_MEMBERS,
         ]
-    });
+   });
     
     await client.login(CONFIG.DISCORD_TOKEN);
 

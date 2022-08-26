@@ -1,6 +1,6 @@
 import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, HasMany} from 'sequelize-typescript';
-import { Guild } from '../Guild';
-import { AutoRoleAssignments } from './AutoRoleAssignments';
+import {Guild} from '../Guild';
+import {AutoRoleAssignments} from './AutoRoleAssignments';
 
 @Table
 export class AutoRoleConfig extends Model {
@@ -12,7 +12,7 @@ export class AutoRoleConfig extends Model {
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
-    })
+   })
     enabled!: boolean;
 
     @Column(DataType.ARRAY(DataType.TEXT))
@@ -29,5 +29,5 @@ export class AutoRoleConfig extends Model {
 
     get disabled() {
         return !this.enabled;
-    }
+   }
 }

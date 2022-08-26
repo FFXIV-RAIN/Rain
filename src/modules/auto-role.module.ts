@@ -1,10 +1,10 @@
-import { Client, GuildMember, PartialGuildMember } from 'discord.js';
-import { AutoRoleConfig } from '../db/models/modules/AutoRoleConfig';
-import { RoleDiff } from '../utils/role-diff';
-import { DiffCacheManager } from '../managers/diff-cache.manager';
-import { logger } from '../utils/logger';
-import { Configs } from '../services/configs.service';
-import { hasAnyRole } from '../utils/roles';
+import {Client, GuildMember, PartialGuildMember} from 'discord.js';
+import {AutoRoleConfig} from '../db/models/modules/AutoRoleConfig';
+import {RoleDiff} from '../utils/role-diff';
+import {DiffCacheManager} from '../managers/diff-cache.manager';
+import {logger} from '../utils/logger';
+import {Configs} from '../services/configs.service';
+import {hasAnyRole} from '../utils/roles';
 
 async function autoVerifyBot(config: AutoRoleConfig, diff: RoleDiff, member: GuildMember | PartialGuildMember) {
     if (!config.botJoinRoles) return;
@@ -21,15 +21,15 @@ async function autoVerifyUser(config: AutoRoleConfig, diff: RoleDiff, oldMember:
         logger.info('User verified, adding roles...');
 
         diff.add(...config.memberJoinRoles);
-    }
+   }
 }
 
 export async function autoVerify(config: AutoRoleConfig, diff: RoleDiff, oldMember: null | GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
     if (newMember.user.bot) {
         await autoVerifyBot(config, diff, newMember);
-    } else {
+   } else {
         await autoVerifyUser(config, diff, oldMember, newMember);
-    }
+   }
 }
 
 export async function autoAssignments(config: AutoRoleConfig, diff: RoleDiff, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
@@ -54,13 +54,13 @@ export async function autoAssignments(config: AutoRoleConfig, diff: RoleDiff, ol
             
             if (assignment.trueRoles) diff.add(...assignment.trueRoles);
             if (assignment.falseRoles) diff.remove(...assignment.falseRoles);
-        } else {
+       } else {
             logger.trace('Validation roles removed...');
 
             if (assignment.trueRoles) diff.remove(...assignment.trueRoles);
             if (assignment.falseRoles) diff.add(...assignment.falseRoles);
-        }
-    }
+       }
+   }
 }
 
 export async function onGuildMemberUpdate(oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {

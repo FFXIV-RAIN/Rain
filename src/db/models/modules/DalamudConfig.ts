@@ -2,7 +2,7 @@ import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey} from 
 import {Guild} from '../Guild';
 
 @Table
-export class WelcomeConfig extends Model {
+export class DalamudConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
@@ -16,15 +16,9 @@ export class WelcomeConfig extends Model {
 
     @Column({
         type: DataType.BOOLEAN,
-        defaultValue: true,
+        defaultValue: false,
    })
-    ignoreBots!: boolean;
-
-    @Column(DataType.TEXT)
-    channelId?: string;
-
-    @Column(DataType.TEXT)
-    message?: string;
+    autoPromotion!: boolean;
 
     @BelongsTo(() => Guild)
     guild!: Guild;
