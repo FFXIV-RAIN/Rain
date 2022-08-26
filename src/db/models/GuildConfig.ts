@@ -1,8 +1,8 @@
 import {Table, Column, Model, ForeignKey, BelongsTo, PrimaryKey, DataType} from 'sequelize-typescript';
-import { Guild } from './Guild';
+import {Guild} from './Guild';
 
 @Table
-export class Config extends Model {
+export class GuildConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)

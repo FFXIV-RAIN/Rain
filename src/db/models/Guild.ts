@@ -1,5 +1,5 @@
 import {Table, Column, Model, PrimaryKey, HasOne, DataType} from 'sequelize-typescript';
-import { Config } from './Config';
+import { GuildConfig } from './GuildConfig';
 import { WelcomeConfig } from './modules/WelcomeConfig';
 
 @Table
@@ -14,8 +14,8 @@ export class Guild extends Model {
     })
     inactive!: boolean;
 
-    @HasOne(() => Config)
-    config!: Config;
+    @HasOne(() => GuildConfig)
+    config!: GuildConfig;
 
     @HasOne(() => WelcomeConfig)
     welcomeConfig!: WelcomeConfig;
