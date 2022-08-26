@@ -26,10 +26,13 @@ export async function onGuildMemberAdd(this: Client, member: GuildMember | Parti
                 url: 'https://imgur.com/1SjRXpE.png'
            },
             description: parseMessage(welcome.message, {
+                guild: {
+                    name: member.guild.name,
+                },
                 user: {
                     id: member.user.id,
-               }
-           }),
+                }
+            }),
             color: '#F7A8B8',
        }],
    });
