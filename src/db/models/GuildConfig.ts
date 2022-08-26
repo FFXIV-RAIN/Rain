@@ -8,6 +8,6 @@ export class GuildConfig extends Model {
     @Column(DataType.TEXT)
     guildId!: string;
 
-    @BelongsTo(() => Guild, 'id')
+    @BelongsTo(() => Guild)
     guild!: Guild;
 }
