@@ -1,4 +1,4 @@
-import { Environment } from './types/environment';
+import { Environment } from '../types/environment';
 import { LOG_LEVEL } from '../types/logger'
 
 export function isFeatureFlagEnabled(name: string) {

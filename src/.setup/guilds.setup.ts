@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 import { Op } from 'sequelize';
 import { logger } from '../utils/logger';
-import { Config } from '../db/models/Config';
+import { GuildConfig } from '../db/models/GuildConfig';
 import { Guild } from '../db/models/Guild';
 import { WelcomeConfig } from '../db/models/modules/WelcomeConfig';
 import { AutoRoleConfig } from '../db/models/modules/AutoRoleConfig';
@@ -12,7 +12,7 @@ export async function setup(...guilds: string[]) {
     })));
 
     await Promise.all([
-        Config.bulkCreate(guilds.map((guildId) => ({
+        GuildConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
         }))),
 
