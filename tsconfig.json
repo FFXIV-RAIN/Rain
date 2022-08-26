@@ -1,4 +1,7 @@
 {
+    "ts-node": {
+        "files": true
+    },
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
@@ -16,12 +19,13 @@
         "forceConsistentCasingInFileNames": true,
         "removeComments": true,
         "typeRoots": [
-            "node_modules/@types"
+            "node_modules/@types",
+            "types"
         ],
         "sourceMap": false,
         "baseUrl": "./",
     },
-    "include": ["src/**/*", "tests/**/*"],
+    "include": ["src/**/*", "tests/**/*", "types/*"],
     "exclude": [
         "node_modules",
         "dist"

@@ -20,7 +20,7 @@ export async function onGuildMemberAdd(this: Client, member: GuildMember | Parti
 
     logger.trace(`Sending welcome message...`);
     
-    channel.send({
+    await channel.send({
         embeds: [{
             image: {
                 url: 'https://imgur.com/1SjRXpE.png'
