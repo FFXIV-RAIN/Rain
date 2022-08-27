@@ -1,5 +1,5 @@
 import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, HasMany} from 'sequelize-typescript';
-import {Guild} from '../Guild';
+import {Guild} from '../Guild/Guild';
 import {AutoRoleAssignments} from './AutoRoleAssignments';
 
 @Table

@@ -1,4 +1,4 @@
-import {GuildConfig} from '../db/models/GuildConfig';
+import {GuildConfig} from '../db/models/Guild/GuildConfig';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
 import {AutoRoleConfig} from '../db/models/modules/AutoRoleConfig';
 import {AutoRoleAssignments} from '../db/models/modules/AutoRoleAssignments';

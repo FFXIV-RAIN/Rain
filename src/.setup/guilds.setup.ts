@@ -1,8 +1,8 @@
 import {Client} from 'discord.js';
 import {Op} from 'sequelize';
 import {logger} from '../utils/logger';
-import {GuildConfig} from '../db/models/GuildConfig';
-import {Guild} from '../db/models/Guild';
+import {GuildConfig} from '../db/models/Guild/GuildConfig';
+import {Guild} from '../db/models/Guild/Guild';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
 import {AutoRoleConfig} from '../db/models/modules/AutoRoleConfig';
 

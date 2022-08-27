@@ -1,4 +1,4 @@
-import {Guild} from '../db/models/Guild';
+import {Guild} from '../db/models/Guild/Guild';
 
 export class Guilds {
     static async setInactiveStatus(guildId: string, inactive: boolean) {

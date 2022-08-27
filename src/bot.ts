@@ -25,7 +25,7 @@ export async function setup() {
     if (!bot.user) return;
 
     logger.info(`${bot.user.username} is online.`);
-    logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=966131732476739595&permissions=8&scope=bot`)
+    logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.CLIENT_ID}&permissions=8&scope=bot`)
 
     bot.on('guildCreate', (guild) => guildsSetup(guild.id));
     bot.on('guildDelete', (guild) => Guilds.setInactiveStatus(guild.id, true));

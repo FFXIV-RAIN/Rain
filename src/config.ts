@@ -18,8 +18,9 @@ export function get<T>(defaultValue: T, ...names: string[]): T {
 }
 
 export interface Config {
-    DATABASE_URL: string;
+    CLIENT_ID: string;
     DISCORD_TOKEN: string;
+    DATABASE_URL: string;
     ENVIRONMENT: Environment;
     LOG_LEVEL: LOG_LEVEL;
     IS_LIVE: boolean;
@@ -31,6 +32,13 @@ export interface FeatureFlags {
     WELCOME: boolean;
 }
 
+const CLIENT_IDS: {
+    [key in Environment]: string;
+} = {
+    [Environment.LIVE]: '966131732476739595',
+    [Environment.LOCAL]: '966202122599292948'
+};
+
 const ENVIRONMENT = get<Environment>(Environment.LOCAL, 'ENVIRONMENT');
 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
@@ -38,6 +46,7 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 if (!DISCORD_TOKEN) throw new Error(`Token cannot be null or undefined`);
 
 export const CONFIG: Config = {
+    CLIENT_ID: CLIENT_IDS[ENVIRONMENT],
     DISCORD_TOKEN,
     DATABASE_URL: get('sqlite::memory:', 'DATABASE_URL'),
     ENVIRONMENT,

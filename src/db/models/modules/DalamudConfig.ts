@@ -1,5 +1,5 @@
 import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey} from 'sequelize-typescript';
-import {Guild} from '../Guild';
+import {Guild} from '../Guild/Guild';
 
 @Table
 export class DalamudConfig extends Model {
