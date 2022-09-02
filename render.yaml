@@ -1,0 +1,11 @@
+services:
+  # A Docker web service
+  - type: web
+    name: rain-bot
+    env: docker
+    branch: main # optional
+    plan: free
+
+databases:
+  - name: rain
+    plan: free
