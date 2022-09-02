@@ -3,6 +3,7 @@ import endent from 'endent';
 import {RainCommand} from '../../types/command';
 import {CONFIG} from '../config';
 import {Formatters} from 'discord.js';
+import {modules} from '../modules';
 
 export const command: RainCommand = {
     data: new SlashCommandBuilder()
@@ -12,6 +13,7 @@ export const command: RainCommand = {
         await interaction.reply(endent`
             ${Formatters.bold('Environment:')} ${CONFIG.ENVIRONMENT}
             ${Formatters.bold('Version:')} ${CONFIG.VERSION}
+            ${Formatters.bold('Available Modules:')} ${modules.map((module) => module.name).join(', ')}
         `);
     }
 };
