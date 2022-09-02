@@ -1,5 +1,5 @@
 import {Client, GuildMember, PartialGuildMember} from 'discord.js';
-import {AutoRoleConfig} from '../db/models/modules/AutoRoleConfig';
+import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {RoleDiff} from '../utils/role-diff';
 import {DiffCacheManager} from '../managers/diff-cache.manager';
 import {logger} from '../utils/logger';

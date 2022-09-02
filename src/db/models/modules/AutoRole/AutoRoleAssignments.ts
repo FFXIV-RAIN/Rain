@@ -1,4 +1,5 @@
 import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement} from 'sequelize-typescript';
+import {Guild} from '../../Guild/Guild';
 import {AutoRoleConfig} from './AutoRoleConfig';
 
 @Table
@@ -8,6 +9,7 @@ export class AutoRoleAssignments extends Model {
     @Column(DataType.BIGINT)
     id!: number;
 
+    @ForeignKey(() => Guild)
     @ForeignKey(() => AutoRoleConfig)
     @Column(DataType.TEXT)
     guildId!: string;
@@ -26,6 +28,9 @@ export class AutoRoleAssignments extends Model {
 
     @Column(DataType.ARRAY(DataType.TEXT))
     falseRoles?: string[];
+
+    @BelongsTo(() => Guild)
+    guild!: Guild;
     
     @BelongsTo(() => AutoRoleConfig)
     autoRoleConfig!: AutoRoleConfig;

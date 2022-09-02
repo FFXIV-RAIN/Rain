@@ -1,9 +1,9 @@
 import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, HasMany} from 'sequelize-typescript';
-import {Guild} from '../Guild/Guild';
-import {AutoRoleAssignments} from './AutoRoleAssignments';
+import {Guild} from '../../Guild/Guild';
+import {ScheduledMessage} from './ScheduledMessage';
 
 @Table
-export class AutoRoleConfig extends Model {
+export class ScheduledMessagesConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
@@ -15,19 +15,13 @@ export class AutoRoleConfig extends Model {
    })
     enabled!: boolean;
 
-    @Column(DataType.ARRAY(DataType.TEXT))
-    memberJoinRoles?: string[];
-
-    @Column(DataType.ARRAY(DataType.TEXT))
-    botJoinRoles?: string[];
-
     @BelongsTo(() => Guild)
     guild!: Guild;
 
-    @HasMany(() => AutoRoleAssignments)
-    assignments!: AutoRoleAssignments[];
+    @HasMany(() => ScheduledMessage)
+    messages!: ScheduledMessage[];
 
     get disabled() {
         return !this.enabled;
-   }
+    }
 }

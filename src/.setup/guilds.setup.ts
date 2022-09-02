@@ -3,7 +3,7 @@ import {logger} from '../utils/logger';
 import {GuildConfig} from '../db/models/Guild/GuildConfig';
 import {Guild} from '../db/models/Guild/Guild';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
-import {AutoRoleConfig} from '../db/models/modules/AutoRoleConfig';
+import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {RainBot} from 'src/@rain/bot';
 
 export async function setup(...guilds: string[]) {
