@@ -10,10 +10,13 @@ export const command: RainCommand = {
         .setName('info')
         .setDescription('Y-you want my number!?! >w<'),
     async execute(interaction) {
-        await interaction.reply(endent`
-            ${Formatters.bold('Environment:')} ${CONFIG.ENVIRONMENT}
-            ${Formatters.bold('Version:')} ${CONFIG.VERSION}
-            ${Formatters.bold('Available Modules:')} ${modules.map((module) => module.name).join(', ')}
-        `);
+        await interaction.reply({
+            content: endent`
+                ${Formatters.bold('Environment:')} ${CONFIG.ENVIRONMENT}
+                ${Formatters.bold('Version:')} ${CONFIG.VERSION}
+                ${Formatters.bold('Available Modules:')} ${modules.map((module) => module.name).join(', ')}
+            `,
+            ephemeral: true
+        });
     }
 };
