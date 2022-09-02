@@ -62,7 +62,7 @@ export class RainBot {
             setInterval(() => {
                 const msOfLastUpdate = Timestamp.now().ms;
                 this._listeners.tick.forEach((listener) => listener(this.client, msOfLastUpdate));
-            }, Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE]);
+            }, Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.HOUR]);
         }
 
         listeners.push(listener);

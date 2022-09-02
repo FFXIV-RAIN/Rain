@@ -9,7 +9,7 @@ export interface IModule {
     onInitialize?(client: Client): void;
 
     /**
-     * Fires off every minute
+     * Fires off every hour
      */
     onTick?(client: Client, msOfLastUpdate: number): void;
 
