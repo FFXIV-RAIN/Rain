@@ -2,42 +2,43 @@ import {Client, GuildMember, PartialGuildMember} from 'discord.js';
 import {logger} from '../utils/logger';
 import {Configs} from '../services/configs.service';
 import {parseMessage} from '../utils/message';
+import {IModule} from '../../types/module';
 
-export async function onGuildMemberAdd(this: Client, member: GuildMember | PartialGuildMember) {
-    const welcome = await Configs.welcome(member.guild.id);
+export class WelcomeModule implements IModule {
+    name = 'Welcome Message';
 
-    logger.trace('WelcomeConfig:', welcome, 'Bot:', member.user.bot);
-
-    if (!welcome || welcome.disabled || !welcome.channelId || !welcome.message || (welcome.ignoreBots && member.user.bot)) return;
-
-    logger.trace(`Getting channel...`);
-
-    const channel = await this.channels.cache.get(welcome.channelId);
-
-    logger.trace(`Channel retrieved! (exists: ${Boolean(channel)})`);
-
-    if (!channel || !channel.isText()) return;
-
-    logger.trace(`Sending welcome message...`);
+    async onGuildMemberAdd(client: Client, member: GuildMember | PartialGuildMember) {
+        const welcome = await Configs.welcome(member.guild.id);
     
-    await channel.send({
-        embeds: [{
-            image: {
-                url: 'https://imgur.com/1SjRXpE.png'
-           },
-            description: parseMessage(welcome.message, {
-                guild: {
-                    name: member.guild.name,
-                },
-                user: {
-                    id: member.user.id,
-                }
-            }),
-            color: '#F7A8B8',
-       }],
-   });
-}
-
-export function setup(client: Client) {
-    client.on('guildMemberAdd', onGuildMemberAdd);
+        logger.trace('WelcomeConfig:', welcome, 'Bot:', member.user.bot);
+    
+        if (!welcome || welcome.disabled || !welcome.channelId || !welcome.message || (welcome.ignoreBots && member.user.bot)) return;
+    
+        logger.trace(`Getting channel...`);
+    
+        const channel = await client.channels.cache.get(welcome.channelId);
+    
+        logger.trace(`Channel retrieved! (exists: ${Boolean(channel)})`);
+    
+        if (!channel || !channel.isText()) return;
+    
+        logger.trace(`Sending welcome message...`);
+        
+        await channel.send({
+            embeds: [{
+                image: {
+                    url: 'https://imgur.com/1SjRXpE.png'
+               },
+                description: parseMessage(welcome.message, {
+                    guild: {
+                        name: member.guild.name,
+                    },
+                    user: {
+                        id: member.user.id,
+                    }
+                }),
+                color: '#F7A8B8',
+           }],
+       });
+    }
 }

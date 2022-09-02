@@ -53,5 +53,5 @@ export const CONFIG: Config = {
     LOG_LEVEL: get<LOG_LEVEL>(LOG_LEVEL.INFO, 'LOG_LEVEL'),
     IS_LIVE: ENVIRONMENT === Environment.LIVE,
     // TODO: Make this read the latest git tag and use 'local' otherwise
-    VERSION: '0.1.0',
+    VERSION: '0.2.0',
 }

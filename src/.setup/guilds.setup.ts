@@ -1,10 +1,10 @@
-import {Client} from 'discord.js';
 import {Op} from 'sequelize';
 import {logger} from '../utils/logger';
 import {GuildConfig} from '../db/models/Guild/GuildConfig';
 import {Guild} from '../db/models/Guild/Guild';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
 import {AutoRoleConfig} from '../db/models/modules/AutoRoleConfig';
+import {RainBot} from 'src/@rain/bot';
 
 export async function setup(...guilds: string[]) {
     await Guild.bulkCreate(guilds.map((guildId) => ({
@@ -31,10 +31,10 @@ export async function setup(...guilds: string[]) {
     ]);
 }
 
-export async function startup(client: Client) {
+export async function startup(bot: RainBot) {
     logger.info('Verifying all guilds are setup ...');
 
-    const guildIds = client.guilds.cache.map((_, id) => id);
+    const guildIds = bot.client.guilds.cache.map((_, id) => id);
 
     const guilds = await Guild.findAll({
         attributes: ['id'],

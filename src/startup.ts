@@ -1,16 +1,19 @@
 import {dbSetup, discordSetup, guildsStartup, guildsSetup} from './.setup';
+import {RainBot} from './@rain/bot';
 import {CONFIG} from './config';
-import {setups} from './modules';
+import {modules} from './modules';
 import {Guilds} from './services/guilds.service';
 import {logger} from './utils/logger';
 
-export async function setup() {
+export async function startup() {
     logger.info(`Starting up Rain v${CONFIG.VERSION}`);
 
-    const [bot] = await Promise.all([
+    const [client] = await Promise.all([
         discordSetup(),
         dbSetup()
     ]);
+
+    const bot = new RainBot(client);
 
     logger.info('Initializing post startup setup...');
 
@@ -20,15 +23,15 @@ export async function setup() {
 
     logger.info('Starting up modules...');
 
-    await Promise.all(setups.map((setup) => setup(bot)));
+    bot.addModules(modules);
 
-    if (!bot.user) return;
+    if (!bot.client.user) return;
 
-    logger.info(`${bot.user.username} is online.`);
+    logger.info(`${bot.client.user.username} is online.`);
     logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.CLIENT_ID}&permissions=8&scope=bot`)
 
-    bot.on('guildCreate', (guild) => guildsSetup(guild.id));
-    bot.on('guildDelete', (guild) => Guilds.setInactiveStatus(guild.id, true));
+    bot.client.on('guildCreate', (guild) => guildsSetup(guild.id));
+    bot.client.on('guildDelete', (guild) => Guilds.setInactiveStatus(guild.id, true));
 }
 
-setup();
+startup();

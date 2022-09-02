@@ -1,7 +1,8 @@
-import {setup as autoRoleSetup} from './auto-role.module';
-import {setup as welcomeSetup} from './welcome.module';
+import {IModule} from '../../types/module';
+import {WelcomeModule} from './welcome.module';
+import {AutoRoleModule} from './auto-role.module';
 
-export const setups = [
-    welcomeSetup,
-    autoRoleSetup,
+export const modules: IModule[] = [
+    new WelcomeModule(),
+    new AutoRoleModule(),
 ];
