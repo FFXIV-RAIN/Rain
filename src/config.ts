@@ -1,5 +1,6 @@
 import {Environment} from '../types/environment';
-import {LOG_LEVEL} from '../types/logger'
+import {LOG_LEVEL} from '../types/logger';
+import {version} from '../package.json';
 
 export function isFeatureFlagEnabled(name: string) {
     return Boolean(process.env[`FF_${name}`] || 'true');
@@ -53,5 +54,5 @@ export const CONFIG: Config = {
     LOG_LEVEL: get<LOG_LEVEL>(LOG_LEVEL.INFO, 'LOG_LEVEL'),
     IS_LIVE: ENVIRONMENT === Environment.LIVE,
     // TODO: Make this read the latest git tag and use 'local' otherwise
-    VERSION: '0.2.0',
+    VERSION: version,
 }
