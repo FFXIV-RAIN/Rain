@@ -35,3 +35,7 @@ export async function startup() {
 }
 
 startup();
+
+process.on('SIGTERM', () => {
+    logger.info('Acknowledged request for the heat death of the universe, terminating...');
+});
