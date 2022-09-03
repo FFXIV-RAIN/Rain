@@ -1,4 +1,4 @@
-import {Op} from 'sequelize/types';
+import {Op} from 'sequelize';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
 import {ScheduledMessagesConfig} from '../db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
 import {Timestamp} from '../utils/timestamp';
