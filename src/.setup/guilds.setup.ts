@@ -5,29 +5,33 @@ import {Guild} from '../db/models/Guild/Guild';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
 import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {RainBot} from 'src/@rain/bot';
+import {ScheduledMessagesConfig} from 'src/db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
 
 export async function setup(...guilds: string[]) {
     await Guild.bulkCreate(guilds.map((guildId) => ({
         id: guildId,
-   })));
+    })));
 
     await Promise.all([
         GuildConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
-       }))),
+        }))),
 
         WelcomeConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
             enabled: false,
-       }))),
+        }))),
 
         AutoRoleConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
             enabled: false,
-            joinRoles: [
-                '966503428429856768'
-            ]
-       })))
+            joinRoles: []
+        }))),
+
+        ScheduledMessagesConfig.bulkCreate(guilds.map((guildId) => ({
+            guildId,
+            enabled: false,
+        })))
     ]);
 }
 
@@ -41,12 +45,12 @@ export async function startup(bot: RainBot) {
         where: {
             id: {
                 [Op.in]: guildIds
-           }
-       }
-   });
+            }
+        }
+    });
 
     // Find the IDs that don't have a guild yet.
-    const guildsToSetup = guildIds.filter((guildId) => 
+    const guildsToSetup = guildIds.filter((guildId) =>
         !guilds.find((guild) => guild.id === guildId)
     );
 
@@ -54,5 +58,5 @@ export async function startup(bot: RainBot) {
 
     if (guildsToSetup.length > 0) {
         await setup(...guildsToSetup);
-   }
+    }
 }
