@@ -8,8 +8,14 @@ export class Timestamp {
     
     private _ms: number;
 
-    constructor(ms?: number) {
-        this._ms = ms ?? Date.now();
+    constructor(time?: number | Date) {
+        if (!time) {
+            this._ms = Date.now();
+        } else if (time instanceof Date) {
+            this._ms = time.getTime();
+        } else {
+            this._ms = time;
+        }
     }
 
     add(type: Timestamp.UnitTypes, value: number) {
@@ -54,6 +60,14 @@ export class Timestamp {
     
     get ms() {
         return this._ms;
+    }
+
+    private timeOfUnit(unit: Timestamp.UnitTypes): number {
+        return this.ms % Timestamp.UNIT_TYPE_TO_UNIT[unit];
+    }
+
+    timeOfDay(): number {
+        return this.timeOfUnit(Timestamp.UnitTypes.DAY);
     }
     
     dayOfWeek(): number;

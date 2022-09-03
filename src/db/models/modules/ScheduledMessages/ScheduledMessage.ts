@@ -1,4 +1,5 @@
 import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement} from 'sequelize-typescript';
+import {Timestamp} from '../../../../utils/timestamp';
 import {Guild} from '../../Guild/Guild';
 import {ScheduledMessagesConfig} from './ScheduledMessagesConfig';
 
@@ -82,4 +83,11 @@ export class ScheduledMessage extends Model {
 
     @BelongsTo(() => ScheduledMessagesConfig)
     scheduledMessagesConfig!: ScheduledMessagesConfig;
+
+    get timeTill(): number {
+        const milliseconds = this.minutes * Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE];
+        const millisecondsIntoDay = Timestamp.now().floor(Timestamp.UnitTypes.MINUTE).timeOfDay();
+
+        return milliseconds - millisecondsIntoDay;
+    }
 }

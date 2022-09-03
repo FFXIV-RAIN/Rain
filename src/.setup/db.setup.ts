@@ -4,7 +4,7 @@ import {db} from '../db';
 export async function setup() {
     logger.info('Syncing database...');
   
-    await db.sync();
+    // await db.sync();
   
     logger.info('Database synced!');
   

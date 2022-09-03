@@ -15,7 +15,7 @@ export class ScheduledMessagesService {
             where: {
                 [dayOfWeek]: true,
                 minutes: {
-                    [Op.gte]: (Timestamp.now().round(Timestamp.UnitTypes.MINUTE).ms % Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.DAY]) / Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE]
+                    [Op.gte]: Timestamp.now().round(Timestamp.UnitTypes.MINUTE).timeOfDay() / Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE]
                 }
             }
         });

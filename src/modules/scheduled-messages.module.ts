@@ -65,6 +65,6 @@ export class ScheduledMessagesModule implements IModule {
         this.timeouts[message.id] = setTimeout(() => {
             callback();
             this.clear(message);
-        }, message.minutes * Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE] - Timestamp.now().floor(Timestamp.UnitTypes.MINUTE).ms % Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.DAY]);
+        }, message.timeTill);
     }
 }
