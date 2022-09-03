@@ -1,3 +1,4 @@
+import {Op} from 'sequelize/types';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
 import {ScheduledMessagesConfig} from '../db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
 import {Timestamp} from '../utils/timestamp';
@@ -12,7 +13,10 @@ export class ScheduledMessagesService {
 
         return await ScheduledMessage.findAll({
             where: {
-                [dayOfWeek]: true
+                [dayOfWeek]: true,
+                minutes: {
+                    [Op.gte]: Timestamp.now().ms % Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.DAY]
+                }
             }
         });
     }
