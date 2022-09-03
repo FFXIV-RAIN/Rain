@@ -9,11 +9,6 @@ export interface IModule {
     onInitialize?(client: Client): void;
 
     /**
-     * Fires off every hour
-     */
-    onTick?(client: Client, msOfLastUpdate: number): void;
-
-    /**
      * Fires off when a guild member is added to the server.
      * @param member - The guild member added
      */

@@ -55,9 +55,35 @@ export class Timestamp {
     get ms() {
         return this._ms;
     }
+    
+    dayOfWeek(): number;
+    dayOfWeek(humanized: boolean): string;
+    dayOfWeek(humanized?: boolean): number|string {
+        const dayOfWeek = new Date(this._ms).getUTCDay();
+
+        if (!humanized) {
+            return dayOfWeek;
+        }
+
+        switch (dayOfWeek) {
+            case 0: return 'sunday';
+            case 1: return 'monday';
+            case 2: return 'tuesday';
+            case 3: return 'wednesday';
+            case 4: return 'thursday';
+            case 5: return 'friday';
+            default: return 'saturday';
+        }
+    }
 }
 
 export namespace Timestamp {
+    export enum RepeatUnits {
+        DAY,
+        WEEK,
+        MONTH,
+    }
+
     export enum UnitTypes {
         YEAR,
         WEEK,

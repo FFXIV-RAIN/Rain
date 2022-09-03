@@ -15,13 +15,64 @@ export class ScheduledMessage extends Model {
     guildId!: string;
 
     @Column({
-        type: DataType.DATE,
+        type: DataType.TEXT,
         allowNull: false
     })
-    date!: Date;
+    channelId!: string;
 
     @Column({
-        type: DataType.TEXT,
+        type: DataType.BOOLEAN,
+        defaultValue: false,
+    })
+    monday!: boolean;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false,
+    })
+    tuesday!: boolean;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false,
+    })
+    wednesday!: boolean;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false,
+    })
+    thursday!: boolean;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false,
+    })
+    friday!: boolean;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false,
+    })
+    saturday!: boolean;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false,
+    })
+    sunday!: boolean;
+
+    /**
+     * The number of minutes into the day we should send the message. (between 0 and 1440)
+     */
+    @Column({
+        type: DataType.SMALLINT,
+        allowNull: false,
+    })
+    minutes!: number;
+
+    @Column({
+        type: DataType.STRING(2000),
         allowNull: false
     })
     message!: string;

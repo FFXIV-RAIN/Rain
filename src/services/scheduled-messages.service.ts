@@ -1,4 +1,3 @@
-import {Op} from 'sequelize';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
 import {ScheduledMessagesConfig} from '../db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
 import {Timestamp} from '../utils/timestamp';
@@ -8,15 +7,12 @@ export class ScheduledMessagesService {
         return await ScheduledMessagesConfig.findByPk(guildId);
     }
 
-    static async findUpcommingMessages(startTime: number): Promise<ScheduledMessage[]> {
+    static async findUpcommingMessages(): Promise<ScheduledMessage[]> {
+        const dayOfWeek = Timestamp.now().dayOfWeek(true);
+
         return await ScheduledMessage.findAll({
             where: {
-                date: {
-                    [Op.between]: [
-                        startTime, 
-                        new Timestamp(startTime).ceil(Timestamp.UnitTypes.MINUTE).ms
-                    ]
-                }
+                [dayOfWeek]: true
             }
         });
     }

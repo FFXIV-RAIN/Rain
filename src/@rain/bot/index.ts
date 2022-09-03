@@ -1,8 +1,10 @@
 import {Client} from 'discord.js';
-import {Timestamp} from '../../utils/timestamp';
 import {IModule} from '../../../types/module';
 import {logger} from '../../utils/logger';
 import {StringUtils} from '../../utils/string';
+import {getCronHooks} from './decorators';
+import {CronManager} from './managers/cron.manager';
+export * from './decorators';
 
 export class RainBot {
     public client: Client;
@@ -27,15 +29,15 @@ export class RainBot {
         logger.trace(`Registering hooks for "${module.name}" module~`);
 
         if (module.onInitialize) module.onInitialize(this.client);
-        if (module.onTick) this.hook(module, 'onTick');
         if (module.onGuildMemberAdd) this.hook(module, 'onGuildMemberAdd');
         if (module.onGuildMemberUpdate) this.hook(module, 'onGuildMemberUpdate');
+        this.cron(module);
 
         logger.trace(`Finished registering hooks for the "${module.name}" module!!`);
         logger.info(`"${module.name}" module setup successfully!~`);
     }
 
-    private hook(module: IModule, eventFunction: 'onGuildMemberAdd' | 'onGuildMemberUpdate' | 'onTick') {
+    private hook(module: IModule, eventFunction: 'onGuildMemberAdd' | 'onGuildMemberUpdate') {
         const listener: any = module[eventFunction];
         const event: any = StringUtils.lowercaseChar(eventFunction.replace('on', ''), 0);
 
@@ -43,41 +45,17 @@ export class RainBot {
 
         logger.trace(`Detected "${event}" for "${module.name}"!!`);
 
-        if (eventFunction === 'onTick') {
-            this.on(event, listener.bind(module));
-        } else {
-            this.client.on(event, listener.bind(module, this.client));
-        }
+        this.client.on(event, listener.bind(module, this.client));
     }
 
-    private on(event: 'tick', listener: RainBot.Listeners.Tick): void;
-    private on(event: RainBot.ListenerTypes, listener: RainBot.Listeners.Unified): void {
-        const listeners = this._listeners[event];
+    private cron(module: IModule): void {
+        const hooks = getCronHooks(module);
 
-        if (!listeners) return;
+        if (hooks.length === 0) return;
 
-        // TODO: Find a better way of doing this >.>
-        if (event === 'tick' && listeners.length === 0) {
-            listener(this.client, Timestamp.now().ms);
-            setInterval(() => {
-                const msOfLastUpdate = Timestamp.now().ms;
-                this._listeners.tick.forEach((listener) => listener(this.client, msOfLastUpdate));
-            }, Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.HOUR]);
+        for (const hook of hooks) {
+            CronManager.cron(hook, this.client);
         }
-
-        listeners.push(listener);
-    }
-
-    private off(event: RainBot.ListenerTypes, listener: (client: Client) => void) {
-        const listeners = this._listeners[event];
-
-        if (!listeners) return;
-
-        const index = listeners.indexOf(listener);
-
-        if (index === -1) return;
-
-        listeners.splice(index, 1);
     }
 }
 
@@ -92,4 +70,5 @@ export namespace RainBot {
     }
 
     export type ListenerTypes = keyof Listeners;
+
 }
