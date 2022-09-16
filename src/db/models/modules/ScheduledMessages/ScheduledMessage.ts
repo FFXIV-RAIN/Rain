@@ -74,7 +74,10 @@ export class ScheduledMessage extends Model {
     minutes!: number;
 
     @ForeignKey(() => GuildMessageTemplate)
-    @Column(DataType.BIGINT)
+    @Column({
+        type: DataType.BIGINT,
+        allowNull: false
+    })
     messageTemplateId!: number;
 
     @BelongsTo(() => GuildMessageTemplate)

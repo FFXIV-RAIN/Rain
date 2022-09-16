@@ -26,7 +26,7 @@ export class ScheduledMessagesModule implements IModule {
         logger.info(`Detected ${upcommingMessages.length} upcomming message(s)...`);
         
         for (const message of upcommingMessages) {
-            logger.info(`Message ${message.id} will trigger in ${message.timeTill}ms`);
+            logger.info(`Message ${message.id} will trigger in ${message.timeTill}ms (template: ${Boolean(message.messageTemplate)})`);
             this.timeout(message, async () => {
                 const guild = await client.guilds.cache.get(message.guildId);
 
