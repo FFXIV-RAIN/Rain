@@ -1,4 +1,4 @@
-import {Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, AutoIncrement} from 'sequelize-typescript';
+import {Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, AutoIncrement, HasOne} from 'sequelize-typescript';
 import {ScheduledMessage} from '../modules/ScheduledMessages/ScheduledMessage';
 import {Guild} from './Guild';
 
@@ -6,7 +6,6 @@ import {Guild} from './Guild';
 export class GuildMessageTemplate extends Model {
     @AutoIncrement
     @PrimaryKey
-    @ForeignKey(() => ScheduledMessage)
     @Column(DataType.BIGINT)
     id!: number;
 
@@ -26,7 +25,7 @@ export class GuildMessageTemplate extends Model {
     @BelongsTo(() => Guild)
     config!: Guild;
 
-    @BelongsTo(() => ScheduledMessage)
+    @HasOne(() => ScheduledMessage)
     scheduledMessage?: ScheduledMessage;
 }
 

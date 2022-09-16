@@ -77,8 +77,8 @@ export class ScheduledMessage extends Model {
     @Column(DataType.BIGINT)
     messageTemplateId!: number;
 
-    @HasOne(() => GuildMessageTemplate)
-    messageTemplate!: GuildMessageTemplate;
+    @BelongsTo(() => GuildMessageTemplate)
+    messageTemplate?: GuildMessageTemplate;
 
     @BelongsTo(() => Guild)
     guild!: Guild;
