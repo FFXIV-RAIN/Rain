@@ -5,6 +5,7 @@ import {logger} from '../utils/logger';
 import {Cron} from '../@rain/bot';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
 import {convertMessageTemplateToMessage} from '../utils/message';
+import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';
 
 export class ScheduledMessagesModule implements IModule {
     name = 'Scheduled Messages';
@@ -28,15 +29,20 @@ export class ScheduledMessagesModule implements IModule {
         for (const message of upcommingMessages) {
             logger.info(`Message ${message.id} will trigger in ${message.timeTill}ms (template: ${Boolean(message.messageTemplate)})`);
             this.timeout(message, async () => {
-                const guild = await client.guilds.cache.get(message.guildId);
+                const [
+                    messageTemplate,
+                    guild,
+                    channel,
+                ] = await Promise.all([
+                    // TODO: Figure out lazy fetching
+                    GuildMessageTemplateService.findById(message.messageTemplateId),
+                    client.guilds.cache.get(message.guildId),
+                    client.channels.cache.get(message.channelId)
+                ]);
 
-                if (!guild) return;
+                if (!messageTemplate || !guild || !channel || !channel.isText()) return;
 
-                const channel = await client.channels.cache.get(message.channelId);
-
-                if (!channel || !channel.isText()) return;
-
-                const processedMessage = convertMessageTemplateToMessage(message.messageTemplate, {
+                const processedMessage = convertMessageTemplateToMessage(messageTemplate, {
                     guild: {
                         name: guild.name,
                     },
