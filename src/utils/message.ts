@@ -1,4 +1,5 @@
 import {MessageOptions} from 'discord.js';
+import {DISCORD} from '../constants/discord';
 import {GuildMessageTemplate} from '../db/models/Guild/GuildMessageTemplate';
 
 export function convertMessageTemplateToMessage<T extends object>(messageTemplate?: GuildMessageTemplate, values?: T): MessageOptions|undefined {
@@ -15,8 +16,11 @@ export function convertMessageTemplateToMessage<T extends object>(messageTemplat
                 description: parseMessage(embed.description, values),
                 url: embed.url,
                 color: embed.color ? `#${embed.color}` : undefined,
-                // TODO: Add parseMessage support
-                fields: embed.fields,
+                fields: embed.fields?.map((field) => ({
+                    inline: field.inline,
+                    name: parseMessage(field.name, values) || DISCORD.INVISIBLE_CHARACTER,
+                    value: parseMessage(field.value, values) || DISCORD.INVISIBLE_CHARACTER,
+                })),
                 author: embed.author ? {
                     ...embed.author,
                     name: parseMessage(embed.author.name, values),
