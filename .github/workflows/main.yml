@@ -17,9 +17,3 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm run test:coverage
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ffxiv-rain
-          heroku_email: "admin@cecilias.me"
-          procfile: "worker: npm start"
