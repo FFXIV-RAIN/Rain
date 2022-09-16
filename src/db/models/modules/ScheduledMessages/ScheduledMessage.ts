@@ -1,6 +1,7 @@
-import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement} from 'sequelize-typescript';
+import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement, HasOne} from 'sequelize-typescript';
 import {Timestamp} from '../../../../utils/timestamp';
 import {Guild} from '../../Guild/Guild';
+import {GuildMessageTemplate} from '../../Guild/GuildMessageTemplate';
 import {ScheduledMessagesConfig} from './ScheduledMessagesConfig';
 
 @Table
@@ -72,11 +73,12 @@ export class ScheduledMessage extends Model {
     })
     minutes!: number;
 
-    @Column({
-        type: DataType.STRING(2000),
-        allowNull: false
-    })
-    message!: string;
+    @ForeignKey(() => GuildMessageTemplate)
+    @Column(DataType.BIGINT)
+    messageTemplateId!: number;
+
+    @HasOne(() => GuildMessageTemplate)
+    messageTemplate!: GuildMessageTemplate;
 
     @BelongsTo(() => Guild)
     guild!: Guild;

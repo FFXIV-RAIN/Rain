@@ -2,10 +2,9 @@ import {Client} from 'discord.js';
 import {ScheduledMessagesService} from '../services/scheduled-messages.service';
 import {IModule} from '../../types/module';
 import {logger} from '../utils/logger';
-import {Timestamp} from '../utils/timestamp';
 import {Cron} from '../@rain/bot';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
-import {parseMessage} from '../utils/message';
+import {convertMessageTemplateToMessage} from '../utils/message';
 
 export class ScheduledMessagesModule implements IModule {
     name = 'Scheduled Messages';
@@ -37,22 +36,18 @@ export class ScheduledMessagesModule implements IModule {
 
                 if (!channel || !channel.isText()) return;
 
-                await channel.send({
-                    embeds: [{
-                        image: {
-                            url: 'https://imgur.com/1SjRXpE.png'
-                       },
-                        description: parseMessage(message.message, {
-                            guild: {
-                                name: guild.name,
-                            },
-                            user: {
-                                id: null,
-                            }
-                        }),
-                        color: '#F7A8B8',
-                   }],
-               });
+                const processedMessage = convertMessageTemplateToMessage(message.messageTemplate, {
+                    guild: {
+                        name: guild.name,
+                    },
+                    user: {
+                        id: null,
+                    }
+                });
+
+                if (!processedMessage) return;
+
+                await channel.send(processedMessage);
             });
         }
     }
