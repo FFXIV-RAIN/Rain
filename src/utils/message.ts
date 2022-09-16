@@ -15,6 +15,7 @@ export function convertMessageTemplateToMessage<T extends object>(messageTemplat
                 description: parseMessage(embed.description, values),
                 url: embed.url,
                 color: embed.color ? `#${embed.color}` : undefined,
+                // TODO: Add parseMessage support
                 fields: embed.fields,
                 author: embed.author ? {
                     ...embed.author,

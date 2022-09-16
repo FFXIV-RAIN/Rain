@@ -91,8 +91,9 @@ export class ScheduledMessage extends Model {
 
     get timeTill(): number {
         const milliseconds = this.minutes * Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE];
-        const millisecondsIntoDay = Timestamp.now().floor(Timestamp.UnitTypes.MINUTE).timeOfDay();
+        const millisecondsIntoDay = Timestamp.now().floor(Timestamp.UnitTypes.SECOND).timeOfDay();
 
-        return milliseconds - millisecondsIntoDay;
+        // Add 1s to increase likelihood of it happening on the right minute
+        return Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.SECOND] + milliseconds - millisecondsIntoDay;
     }
 }
