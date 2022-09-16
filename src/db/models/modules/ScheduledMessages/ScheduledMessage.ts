@@ -80,11 +80,11 @@ export class ScheduledMessage extends Model {
     })
     messageTemplateId!: number;
 
-    @BelongsTo(() => GuildMessageTemplate)
-    messageTemplate?: GuildMessageTemplate;
-
     @BelongsTo(() => Guild)
     guild!: Guild;
+
+    @BelongsTo(() => GuildMessageTemplate)
+    messageTemplate?: GuildMessageTemplate;
 
     @BelongsTo(() => ScheduledMessagesConfig)
     scheduledMessagesConfig!: ScheduledMessagesConfig;

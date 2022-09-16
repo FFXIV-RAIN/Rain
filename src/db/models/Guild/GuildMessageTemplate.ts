@@ -1,4 +1,4 @@
-import {Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, AutoIncrement, HasOne} from 'sequelize-typescript';
+import {Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, AutoIncrement, HasOne, HasMany} from 'sequelize-typescript';
 import {ScheduledMessage} from '../modules/ScheduledMessages/ScheduledMessage';
 import {Guild} from './Guild';
 
@@ -25,7 +25,7 @@ export class GuildMessageTemplate extends Model {
     @BelongsTo(() => Guild)
     config!: Guild;
 
-    @HasOne(() => ScheduledMessage)
+    @HasMany(() => ScheduledMessage)
     scheduledMessage?: ScheduledMessage;
 }
 

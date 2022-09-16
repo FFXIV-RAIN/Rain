@@ -27,7 +27,7 @@ export class ScheduledMessagesModule implements IModule {
         logger.info(`Detected ${upcommingMessages.length} upcomming message(s)...`);
         
         for (const message of upcommingMessages) {
-            logger.info(`Message ${message.id} will trigger in ${message.timeTill}ms (template: ${Boolean(message.messageTemplate)})`);
+            logger.info(`Message ${message.id} will trigger in ${message.timeTill}ms`);
             this.timeout(message, async () => {
                 const [
                     messageTemplate,
