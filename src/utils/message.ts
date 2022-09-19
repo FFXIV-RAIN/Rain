@@ -2,6 +2,7 @@ import {MessageOptions} from 'discord.js';
 import {DISCORD} from '../constants/discord';
 import {GuildMessageTemplate} from '../db/models/Guild/GuildMessageTemplate';
 
+export function convertMessageTemplateToMessage<T extends object>(messageTemplate: GuildMessageTemplate, values: T): MessageOptions;
 export function convertMessageTemplateToMessage<T extends object>(messageTemplate?: GuildMessageTemplate, values?: T): MessageOptions|undefined {
     if (!messageTemplate) return undefined;
 

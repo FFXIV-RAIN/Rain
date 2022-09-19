@@ -1,8 +1,9 @@
 import {Client, GuildMember, PartialGuildMember} from 'discord.js';
 import {logger} from '../utils/logger';
 import {Configs} from '../services/configs.service';
-import {parseMessage} from '../utils/message';
+import {convertMessageTemplateToMessage} from '../utils/message';
 import {IModule} from '../../types/module';
+import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';
 
 export class WelcomeModule implements IModule {
     name = 'Welcome Message';
@@ -12,11 +13,19 @@ export class WelcomeModule implements IModule {
     
         logger.trace('WelcomeConfig:', welcome, 'Bot:', member.user.bot);
     
-        if (!welcome || welcome.disabled || !welcome.channelId || !welcome.message || (welcome.ignoreBots && member.user.bot)) return;
+        if (!welcome || welcome.disabled || !welcome.channelId || !welcome.messageTemplateId || (welcome.ignoreBots && member.user.bot)) return;
+
+        logger.trace(`Getting Template...`);
     
+        const messageTemplate = await GuildMessageTemplateService.findById(welcome.messageTemplateId);
+    
+        logger.trace(`Template retrieved! (exists: ${Boolean(messageTemplate)})`);
+    
+        if (!messageTemplate) return;
+
         logger.trace(`Getting channel...`);
-    
-        const channel = await client.channels.cache.get(welcome.channelId);
+
+        const channel = client.channels.cache.get(welcome.channelId);
     
         logger.trace(`Channel retrieved! (exists: ${Boolean(channel)})`);
     
@@ -24,21 +33,13 @@ export class WelcomeModule implements IModule {
     
         logger.trace(`Sending welcome message...`);
         
-        await channel.send({
-            embeds: [{
-                image: {
-                    url: 'https://imgur.com/1SjRXpE.png'
-               },
-                description: parseMessage(welcome.message, {
-                    guild: {
-                        name: member.guild.name,
-                    },
-                    user: {
-                        id: member.user.id,
-                    }
-                }),
-                color: '#F7A8B8',
-           }],
-       });
+        await channel.send(convertMessageTemplateToMessage(messageTemplate, {
+            guild: {
+                name: member.guild.name,
+            },
+            user: {
+                id: member.user.id,
+            }
+        }));
     }
 }

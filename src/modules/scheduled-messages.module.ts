@@ -42,18 +42,14 @@ export class ScheduledMessagesModule implements IModule {
 
                 if (!messageTemplate || !guild || !channel || !channel.isText()) return;
 
-                const processedMessage = convertMessageTemplateToMessage(messageTemplate, {
+                await channel.send(convertMessageTemplateToMessage(messageTemplate, {
                     guild: {
                         name: guild.name,
                     },
                     user: {
                         id: null,
                     }
-                });
-
-                if (!processedMessage) return;
-
-                await channel.send(processedMessage);
+                }));
             });
         }
     }

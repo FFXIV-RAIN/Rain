@@ -23,8 +23,8 @@ export class WelcomeConfig extends Model {
     @Column(DataType.TEXT)
     channelId?: string;
 
-    @Column(DataType.TEXT)
-    message?: string;
+    @Column(DataType.BIGINT)
+    messageTemplateId?: number;
 
     @BelongsTo(() => Guild)
     guild!: Guild;
