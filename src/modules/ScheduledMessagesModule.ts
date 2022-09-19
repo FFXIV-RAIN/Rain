@@ -1,5 +1,5 @@
 import {Client} from 'discord.js';
-import {ScheduledMessagesService} from '../services/scheduled-messages.service';
+import {ScheduledMessagesService} from '../services/ScheduledMessagesService';
 import {IModule} from '../@types/module';
 import {logger} from '../utils/logger';
 import {Cron} from '../@rain/bot';

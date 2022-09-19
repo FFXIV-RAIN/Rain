@@ -4,7 +4,7 @@ import { CONFIG } from '../config';
 import { RainCommand } from '../@types/command';
 import { logger } from '../utils/logger';
 
-export class Commands {
+export class CommandService {
     static async deployCommands(commands: RainCommand[]) {
         const rest = new REST({ version: '9' }).setToken(CONFIG.DISCORD_TOKEN);
 

@@ -2,7 +2,7 @@ import {dbSetup, discordSetup, guildsStartup, guildsSetup} from './.setup';
 import {RainBot} from './@rain/bot';
 import {CONFIG} from './config';
 import {modules} from './modules';
-import {Guilds} from './services/guilds.service';
+import {GuildService} from './services/GuildService';
 import {logger} from './utils/logger';
 
 export async function startup() {
@@ -31,7 +31,7 @@ export async function startup() {
     logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.CLIENT_ID}&permissions=8&scope=bot`)
 
     bot.client.on('guildCreate', (guild) => guildsSetup(guild.id));
-    bot.client.on('guildDelete', (guild) => Guilds.setInactiveStatus(guild.id, true));
+    bot.client.on('guildDelete', (guild) => GuildService.setInactiveStatus(guild.id, true));
 }
 
 startup();

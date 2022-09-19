@@ -2,7 +2,7 @@ import { Client, Collection, Intents } from 'discord.js';
 import { CONFIG } from '../config';
 import { getRainCommands } from '../commands';
 import { RainCommand } from '../@types/command';
-import { Commands } from '../services/commands.service';
+import { CommandService } from '../services/CommandService';
 
 declare module 'discord.js' {
     interface Client {
@@ -27,7 +27,7 @@ export async function setup() {
         client.commands.set(command.data.name, command)
     }
 
-    await Commands.deployCommands(commands);
+    await CommandService.deployCommands(commands);
 
     client.on('interactionCreate', async (interaction) => {
         if (!interaction.isCommand()) return;
