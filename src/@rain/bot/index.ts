@@ -39,7 +39,7 @@ export class RainBot {
 
     private hook(module: IModule, eventFunction: 'onGuildMemberAdd' | 'onGuildMemberUpdate') {
         const listener: any = module[eventFunction];
-        const event: any = StringUtils.lowercaseChar(eventFunction.replace('on', ''), 0);
+        const event: string = StringUtils.lowercaseChar(eventFunction.replace('on', ''), 0);
 
         if (!listener) return;
 

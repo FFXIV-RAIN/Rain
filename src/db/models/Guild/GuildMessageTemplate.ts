@@ -1,4 +1,4 @@
-import {Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, AutoIncrement, HasOne, HasMany} from 'sequelize-typescript';
+import {Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, AutoIncrement, HasMany} from 'sequelize-typescript';
 import {ScheduledMessage} from '../modules/ScheduledMessages/ScheduledMessage';
 import {Guild} from './Guild';
 

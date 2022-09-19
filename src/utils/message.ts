@@ -35,16 +35,18 @@ export function convertMessageTemplateToMessage<T extends object>(messageTemplat
    }
 }
 
+export function parseMessage<T extends object>(message: string, values?: T): string;
+export function parseMessage<T extends object>(message?: string|null, values?: T): string|undefined;
 export function parseMessage<T extends object>(message?: string|null, values?: T): string|undefined {
     if (!message) return undefined;
     if (!values) return message;
 
-    return message.replace(/{([^}]+)}/g, (_, group) => {
+    return message.replace(/{([^}]+)}/g, (match, group) => {
         const path = group.split('.');
 
         let value: any = values;
         for (const part of path) {
-            if (!value) return '';
+            if (!value) return match;
 
             value = value[part];
         }

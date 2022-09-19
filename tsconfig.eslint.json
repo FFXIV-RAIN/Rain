@@ -1,7 +1,4 @@
 {
-    "ts-node": {
-        "files": true
-    },
     "compilerOptions": {
         "experimentalDecorators": true,
         "allowJs": true,
@@ -14,12 +11,6 @@
         "declarationDir": "./types",
         "rootDir": "./src",
         "target": "es6"
-    },
-    "include": [
-      "src"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ],
-}
+    }
+  }
+  
