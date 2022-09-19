@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import {LOG_LEVEL} from '../../types/logger';
+import {LOG_LEVEL} from '../@types/logger';
 import {CONFIG} from '../config';
 import {StringifySafe} from './json';
 

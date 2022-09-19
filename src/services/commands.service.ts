@@ -1,7 +1,7 @@
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { CONFIG } from '../config';
-import { RainCommand } from '../../types/command';
+import { RainCommand } from '../@types/command';
 import { logger } from '../utils/logger';
 
 export class Commands {

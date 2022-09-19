@@ -5,7 +5,7 @@ import {DiffCacheManager} from '../managers/diff-cache.manager';
 import {logger} from '../utils/logger';
 import {Configs} from '../services/configs.service';
 import {hasAnyRole} from '../utils/roles';
-import {IModule} from '../../types/module';
+import {IModule} from '../@types/module';
 
 export class AutoRoleModule implements IModule {
     name = 'Automatic Roles';

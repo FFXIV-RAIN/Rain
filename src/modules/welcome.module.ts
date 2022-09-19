@@ -2,7 +2,7 @@ import {Client, GuildMember, PartialGuildMember} from 'discord.js';
 import {logger} from '../utils/logger';
 import {Configs} from '../services/configs.service';
 import {convertMessageTemplateToMessage} from '../utils/message';
-import {IModule} from '../../types/module';
+import {IModule} from '../@types/module';
 import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';
 
 export class WelcomeModule implements IModule {

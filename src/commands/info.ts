@@ -1,6 +1,6 @@
 import {SlashCommandBuilder} from '@discordjs/builders';
 import endent from 'endent';
-import {RainCommand} from '../../types/command';
+import {RainCommand} from '../@types/command';
 import {CONFIG} from '../config';
 import {Formatters} from 'discord.js';
 import {modules} from '../modules';

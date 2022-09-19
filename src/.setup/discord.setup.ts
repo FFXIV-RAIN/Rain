@@ -1,7 +1,7 @@
 import { Client, Collection, Intents } from 'discord.js';
 import { CONFIG } from '../config';
 import { getRainCommands } from '../commands';
-import { RainCommand } from '../../types/command';
+import { RainCommand } from '../@types/command';
 import { Commands } from '../services/commands.service';
 
 declare module 'discord.js' {

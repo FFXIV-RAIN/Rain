@@ -1,4 +1,4 @@
-import {RainCommand} from '../../types/command';
+import {RainCommand} from '../@types/command';
 import fs from 'fs/promises';
 import path from 'path';
 import { logger } from '../utils/logger';

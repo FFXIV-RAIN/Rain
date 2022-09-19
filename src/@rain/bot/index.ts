@@ -1,5 +1,5 @@
 import {Client} from 'discord.js';
-import {IModule} from '../../../types/module';
+import {IModule} from '../../@types/module';
 import {logger} from '../../utils/logger';
 import {StringUtils} from '../../utils/string';
 import {getCronHooks} from './decorators';

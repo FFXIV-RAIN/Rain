@@ -1,4 +1,4 @@
-import {IModule} from '../../types/module';
+import {IModule} from '../@types/module';
 import {WelcomeModule} from './welcome.module';
 import {AutoRoleModule} from './auto-role.module';
 import {ScheduledMessagesModule} from './scheduled-messages.module';

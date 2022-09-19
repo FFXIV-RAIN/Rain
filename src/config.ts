@@ -1,5 +1,5 @@
-import {Environment} from '../types/environment';
-import {LOG_LEVEL} from '../types/logger';
+import {Environment} from './@types/environment';
+import {LOG_LEVEL} from './@types/logger';
 import {version} from '../package.json';
 
 export function isFeatureFlagEnabled(name: string) {
