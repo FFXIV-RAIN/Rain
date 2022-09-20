@@ -9,11 +9,8 @@ export const command: RainCommand = {
         .setName('welcome')
         .setDescription('Let me welcome all of your new members! c:'),
     async execute(interaction) {
-        console.log(interaction.guildId);
         const container = await WelcomeMessageService.createWelcomeMessage(interaction.guild, interaction.member);
-    
-        if (!container) return;
-    
+
         logger.trace(`Sending welcome message...`);
         
         await interaction.reply({

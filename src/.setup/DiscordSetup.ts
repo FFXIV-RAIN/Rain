@@ -1,8 +1,10 @@
-import { Client, Collection, Partials } from 'discord.js';
+import { Client, Collection, InteractionReplyOptions, Partials } from 'discord.js';
 import { CONFIG } from '../config';
 import { getRainCommands } from '../commands';
 import { RainCommand } from '../@types/command';
 import { CommandService } from '../services/CommandService';
+import {RainError} from '../errors/RainError';
+import {logger} from '../utils/logger';
 
 declare module 'discord.js' {
     interface Client {
@@ -38,9 +40,24 @@ export async function setup() {
 
         try {
             await command.execute(interaction);
-        } catch (error) {
-            console.error(error);
-            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        } catch (error: any) {
+            if (error instanceof RainError) {
+                logger.log(error.level, error.message);
+                await interaction.reply({
+                    ...error.toMessageOptions(),
+                    ephemeral: true 
+                } as InteractionReplyOptions);    
+            } else {
+                logger.error(error.toString());
+                await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+            }
+        }
+
+        if (!interaction.replied) {
+            await interaction.reply({
+                content: 'Your command completed, but you never told anyone about it! :<',
+                ephemeral: true
+            });
         }
     });
 

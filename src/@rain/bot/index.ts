@@ -1,5 +1,6 @@
 import {Client} from 'discord.js';
 import {IModule} from '../../@types/module';
+import {RainError} from '../../errors/RainError';
 import {logger} from '../../utils/logger';
 import {StringUtils} from '../../utils/string';
 import {getCronHooks} from './decorators';
@@ -45,7 +46,17 @@ export class RainBot {
 
         logger.trace(`Detected "${event}" for "${module.name}"!!`);
 
-        this.client.on(event, listener.bind(module, this.client));
+        this.client.on(event, async (...args) => {
+            try {
+                await listener(this.client, ...args);
+            } catch (error: any) {
+                if (error instanceof RainError) {
+                    logger.log(error.level, error.message);
+                } else {
+                    logger.error(error.toString());
+                }
+            }
+        });
     }
 
     private cron(module: IModule): void {

@@ -9,8 +9,6 @@ export class WelcomeModule implements IModule {
     async onGuildMemberAdd(client: Client, member: GuildMember | PartialGuildMember) {
         const container = await WelcomeMessageService.createWelcomeMessage(member.guild, member);
     
-        if (!container) return;
-
         logger.trace(`Getting channel...`);
 
         const channel = client.channels.cache.get(container.channelId);
