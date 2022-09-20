@@ -1,4 +1,4 @@
-import { Client, Collection, Intents } from 'discord.js';
+import { Client, Collection, Partials } from 'discord.js';
 import { CONFIG } from '../config';
 import { getRainCommands } from '../commands';
 import { RainCommand } from '../@types/command';
@@ -13,11 +13,11 @@ declare module 'discord.js' {
 export async function setup() {
     const client = new Client({
         partials: [
-            'GUILD_MEMBER',
+            Partials.GuildMember,
         ],
         intents: [
-            Intents.FLAGS.GUILDS, 
-            Intents.FLAGS.GUILD_MEMBERS,
+            'Guilds',
+            'GuildMembers',
         ]
     });
 

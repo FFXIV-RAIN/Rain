@@ -40,7 +40,7 @@ export class ScheduledMessagesModule implements IModule {
                     client.channels.cache.get(message.channelId)
                 ]);
 
-                if (!messageTemplate || !guild || !channel || !channel.isText()) return;
+                if (!messageTemplate || !guild || !channel || !channel.isTextBased()) return;
 
                 await channel.send(convertMessageTemplateToMessage(messageTemplate, {
                     guild: {

@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.18
+FROM node:18-alpine
 
 WORKDIR /rain-bot
 ADD . .

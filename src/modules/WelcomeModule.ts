@@ -1,45 +1,26 @@
 import {Client, GuildMember, PartialGuildMember} from 'discord.js';
 import {logger} from '../utils/logger';
-import {WelcomeConfigService} from '../services/WelcomeConfigService';
-import {convertMessageTemplateToMessage} from '../utils/message';
 import {IModule} from '../@types/module';
-import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';
+import {WelcomeMessageService} from '../services/WelcomeMessageService';
 
 export class WelcomeModule implements IModule {
     name = 'Welcome Message';
 
     async onGuildMemberAdd(client: Client, member: GuildMember | PartialGuildMember) {
-        const welcome = await WelcomeConfigService.findByGuildId(member.guild.id);
+        const container = await WelcomeMessageService.createWelcomeMessage(member.guild, member);
     
-        logger.trace('WelcomeConfig:', welcome, 'Bot:', member.user.bot);
-    
-        if (!welcome || welcome.disabled || !welcome.channelId || !welcome.messageTemplateId || (welcome.ignoreBots && member.user.bot)) return;
-
-        logger.trace(`Getting Template...`);
-    
-        const messageTemplate = await GuildMessageTemplateService.findById(welcome.messageTemplateId);
-    
-        logger.trace(`Template retrieved! (exists: ${Boolean(messageTemplate)})`);
-    
-        if (!messageTemplate) return;
+        if (!container) return;
 
         logger.trace(`Getting channel...`);
 
-        const channel = client.channels.cache.get(welcome.channelId);
+        const channel = client.channels.cache.get(container.channelId);
     
         logger.trace(`Channel retrieved! (exists: ${Boolean(channel)})`);
     
-        if (!channel || !channel.isText()) return;
+        if (!channel || !channel.isTextBased()) return;
     
         logger.trace(`Sending welcome message...`);
         
-        await channel.send(convertMessageTemplateToMessage(messageTemplate, {
-            guild: {
-                name: member.guild.name,
-            },
-            user: {
-                id: member.user.id,
-            }
-        }));
+        await channel.send(container.message);
     }
 }
