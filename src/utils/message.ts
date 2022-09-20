@@ -15,20 +15,12 @@ export function convertMessageTemplateToMessage<T extends object>(messageTemplat
             title: parseMessage(embed.title, values),
             description: parseMessage(embed.description, values),
             url: embed.url,
-            color: embed.color ? parseInt(embed.color, 16) : 0,
+            color: embed.color ? parseInt(embed.color, 16) : 15834299,
             fields: embed.fields?.map((field) => ({
                 inline: field.inline,
                 name: parseMessage(field.name, values) || DISCORD.INVISIBLE_CHARACTER,
                 value: parseMessage(field.value, values) || DISCORD.INVISIBLE_CHARACTER,
             })),
-            author: embed.author ? {
-                ...embed.author,
-                name: parseMessage(embed.author.name, values),
-            } : undefined,
-            footer: embed.footer ? {
-                ...embed.footer,
-                text: parseMessage(embed.footer.text, values),
-            } : undefined,
         })),
     };
 }

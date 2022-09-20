@@ -1,6 +1,7 @@
 import {Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, AutoIncrement, HasMany} from 'sequelize-typescript';
 import {ScheduledMessage} from '../modules/ScheduledMessages/ScheduledMessage';
 import {Guild} from './Guild';
+import {GuildMessageEmbedTemplate} from './GuildMessageEmbedTemplate';
 
 @Table
 export class GuildMessageTemplate extends Model {
@@ -16,9 +17,6 @@ export class GuildMessageTemplate extends Model {
     @Column(DataType.STRING(2000))
     content?: string | null;
 
-    @Column(DataType.JSON)
-    embeds?: GuildMessageEmbedTemplate[];
-
     // TODO: Support Components
     // components?: (MessageActionRow | (Required<BaseMessageComponentOptions> & MessageActionRowOptions))[];
 
@@ -27,32 +25,7 @@ export class GuildMessageTemplate extends Model {
 
     @HasMany(() => ScheduledMessage)
     scheduledMessage?: ScheduledMessage;
-}
 
-export class GuildMessageEmbedTemplate {
-    title?: string;
-    description?: string;
-    url?: string;
-    color?: string;
-    fields?: {
-        name: string;
-        value: string;
-        inline?: boolean;
-    }[];
-    author?: {
-        name: string;
-        url?: string;
-        iconURL?: string;
-        proxyIconURL?: string;
-    };
-
-    // thumbnail?: Partial<MessageEmbedThumbnail> & { proxy_url?: string };
-    // image?: Partial<MessageEmbedImage> & { proxy_url?: string };
-    // video?: Partial<MessageEmbedVideo> & { proxy_url?: string };
-
-    footer?: {
-        text: string;
-        iconURL?: string;
-        proxyIconURL?: string;
-    };
+    @HasMany(() => GuildMessageEmbedTemplate)
+    embeds?: GuildMessageEmbedTemplate[];
 }
