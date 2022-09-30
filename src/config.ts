@@ -56,5 +56,5 @@ export const CONFIG: Config = {
     LOG_LEVEL: get<LOG_LEVEL>(LOG_LEVEL.INFO, 'LOG_LEVEL'),
     IS_LIVE: ENVIRONMENT === Environment.LIVE,
     VERSION,
-    VERSION_LINK: VERSION ? 'https://github.com/rain-cafe-xiv/rain-bot' : `https://github.com/rain-cafe-xiv/rain-bot/commit/${VERSION}`
+    VERSION_LINK: VERSION ? `https://github.com/rain-cafe-xiv/rain-bot/commit/${VERSION}` : 'https://github.com/rain-cafe-xiv/rain-bot'
 }
