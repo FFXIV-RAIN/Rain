@@ -1,17 +1,17 @@
-import {AutoRoleModule} from '../../src/modules/auto-role.module';
+import {AutoRoleModule} from '../../src/modules/AutoRoleModule';
 import {RoleDiff} from '../../src/utils/role-diff';
-import {mockDiscordMember, mockDiscordUser, mockDiscordRoles, mockDiscordRoleCache} from '../__utils__/mock';
-import {DiffCacheManager} from '../../src/managers/diff-cache.manager';
-import {Configs} from '../../src/services/configs.service';
+import {mockDiscordMember, mockDiscordUser} from '../__utils__/mock';
+import {DiffCacheManager} from '../../src/managers/DiffCacheManager';
+import {AutoRoleConfigService} from '../../src/services/AutoRoleConfigService';
 import {chance} from '../__utils__/chance';
 import {AutoRoleConfig} from '../../src/db/models/modules/AutoRole/AutoRoleConfig';
 import {Client} from 'discord.js';
 
-jest.mock('../../src/services/configs.service');
-jest.mock('../../src/managers/diff-cache.manager');
+jest.mock('../../src/services/AutoRoleConfigService');
+jest.mock('../../src/managers/DiffCacheManager');
 
+const MockedConfigs = jest.mocked(AutoRoleConfigService);
 const MockedManager = jest.mocked(DiffCacheManager);
-const MockedConfigs = jest.mocked(Configs);
 
 describe('bot(AutoRole)', () => {
     const memberJoinRoles = [chance.string()];
@@ -37,7 +37,7 @@ describe('bot(AutoRole)', () => {
 
         MockedManager.diff.mockReturnValue(diff);
 
-        MockedConfigs.autoRole.mockResolvedValue(config);
+        MockedConfigs.findByGuildId.mockResolvedValue(config);
     });
 
     describe('func(onGuildMemberUpdate)', () => {

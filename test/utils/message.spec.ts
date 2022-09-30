@@ -26,7 +26,7 @@ describe('utils(message)', () => {
         it('should support values that do not exist', () => {
             const data = {};
 
-            expect(parseMessage('Hello {user.id}!', data)).toEqual(`Hello !`);
+            expect(parseMessage('Hello {user.id}!', data)).toEqual(`Hello {user.id}!`);
        });
    });
 });
