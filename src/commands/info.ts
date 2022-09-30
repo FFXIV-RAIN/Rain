@@ -8,7 +8,9 @@ import {modules} from '../modules';
 export const command: RainCommand = {
     data: new SlashCommandBuilder()
         .setName('info')
-        .setDescription('Y-you want my number!?! >w<'),
+        .setDescription('Y-you want my number!?! >w<')
+        .setDefaultMemberPermissions('0')
+        .setDMPermission(false),
     async execute(interaction) {
         await interaction.reply({
             content: endent`

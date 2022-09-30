@@ -7,7 +7,9 @@ import {logger} from '../utils/logger';
 export const command: RainCommand = {
     data: new SlashCommandBuilder()
         .setName('welcome')
-        .setDescription('Let me welcome all of your new members! c:'),
+        .setDescription('Let me welcome all of your new members! c:')
+        .setDefaultMemberPermissions('0')
+        .setDMPermission(false),
     async execute(interaction) {
         const container = await WelcomeMessageService.createWelcomeMessage(interaction.guild, interaction.member);
 

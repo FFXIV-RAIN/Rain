@@ -6,7 +6,7 @@ import { logger } from '../utils/logger';
 
 export class CommandService {
     static async deployCommands(commands: RainCommand[]) {
-        const rest = new REST({ version: '9' }).setToken(CONFIG.DISCORD_TOKEN);
+        const rest = new REST({ version: '10' }).setToken(CONFIG.DISCORD_TOKEN);
 
         try {
             await rest.put(Routes.applicationCommands(CONFIG.CLIENT_ID), { body: [] })
