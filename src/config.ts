@@ -1,12 +1,11 @@
 import {Environment} from './@types/environment';
 import {LOG_LEVEL} from './@types/logger';
-import {version} from '../package.json';
 
 export function isFeatureFlagEnabled(name: string) {
     return Boolean(process.env[`FF_${name}`] || 'true');
 }
 
-export function get<T>(defaultValue: T, ...names: string[]): T {
+export function get<T = string>(defaultValue: T, ...names: string[]): T {
     for (const name of names) {
         const value = process.env[name];
 
@@ -26,6 +25,7 @@ export interface Config {
     LOG_LEVEL: LOG_LEVEL;
     IS_LIVE: boolean;
     VERSION: string;
+    VERSION_LINK: string;
 }
 
 export interface FeatureFlags {
@@ -46,6 +46,8 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 if (!DISCORD_TOKEN) throw new Error(`Token cannot be null or undefined`);
 
+const VERSION = get('local', 'RENDER_GIT_COMMIT');
+
 export const CONFIG: Config = {
     CLIENT_ID: CLIENT_IDS[ENVIRONMENT],
     DISCORD_TOKEN,
@@ -53,6 +55,6 @@ export const CONFIG: Config = {
     ENVIRONMENT,
     LOG_LEVEL: get<LOG_LEVEL>(LOG_LEVEL.INFO, 'LOG_LEVEL'),
     IS_LIVE: ENVIRONMENT === Environment.LIVE,
-    // TODO: Make this read the latest git tag and use 'local' otherwise
-    VERSION: version,
+    VERSION,
+    VERSION_LINK: VERSION ? 'https://github.com/rain-cafe-xiv/rain-bot' : `https://github.com/rain-cafe-xiv/rain-bot/commit/${VERSION}`
 }

@@ -2,7 +2,7 @@ import {SlashCommandBuilder} from '@discordjs/builders';
 import endent from 'endent';
 import {RainCommand} from '../@types/command';
 import {CONFIG} from '../config';
-import {Formatters} from 'discord.js';
+import {bold} from 'discord.js';
 import {modules} from '../modules';
 
 export const command: RainCommand = {
@@ -12,9 +12,9 @@ export const command: RainCommand = {
     async execute(interaction) {
         await interaction.reply({
             content: endent`
-                ${Formatters.bold('Environment:')} ${CONFIG.ENVIRONMENT}
-                ${Formatters.bold('Version:')} ${CONFIG.VERSION}
-                ${Formatters.bold('Available Modules:')} ${modules.map((module) => module.name).join(', ')}
+                ${bold('Environment:')} ${CONFIG.ENVIRONMENT}
+                ${bold('Version:')} [${CONFIG.VERSION}](${CONFIG.VERSION_LINK})
+                ${bold('Available Modules:')} ${modules.map((module) => module.name).join(', ')}
             `,
             ephemeral: true
         });
