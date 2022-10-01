@@ -18,29 +18,29 @@ export class Logger {
         this._options = options;
    }
 
-    log(level: LOG_LEVEL, ...messages: any[]): void {
+    log(level: LOG_LEVEL, ...messages: Logger.Messages): void {
         if (this._options.level >= level) {
             console.log(`[${formatters[level](LOG_LEVEL[level])}]:`, messages.map((message) => typeof (message) === 'string' ? message : StringifySafe(message)).join(', '));
        }
    }
 
-    silly(...messages: any[]): void {
+    silly(...messages: Logger.Messages): void {
         this.log(LOG_LEVEL.SILLY, ...messages);
    }
 
-    trace(...messages: any[]): void {
+    trace(...messages: Logger.Messages): void {
         this.log(LOG_LEVEL.TRACE, ...messages);
    }
 
-    info(...messages: any[]): void {
+    info(...messages: Logger.Messages): void {
         this.log(LOG_LEVEL.INFO, ...messages);
    }
 
-    warn(...messages: any[]): void {
+    warn(...messages: Logger.Messages): void {
         this.log(LOG_LEVEL.WARN, ...messages);
    }
 
-    error(...messages: any[]): void {
+    error(...messages: Logger.Messages): void {
         this.log(LOG_LEVEL.ERROR, ...messages);
    }
 }
@@ -49,4 +49,10 @@ export namespace Logger {
     export interface Options {
         level: LOG_LEVEL;
    }
+
+   export type Messages = (undefined|null|number|string|boolean|object)[];
 }
+
+export const logger = new Logger({
+    level: process.env.LOG_LEVEL as unknown as LOG_LEVEL || LOG_LEVEL.INFO
+});
