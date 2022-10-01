@@ -66,7 +66,7 @@ export class RainCommandModule implements IModule {
                     ephemeral: true 
                 } as InteractionReplyOptions);    
             } else {
-                this.logger.error(error.toString());
+                this.logger.error(error?.stack || error.toString());
                 await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
             }
         }

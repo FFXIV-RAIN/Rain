@@ -1,0 +1,10 @@
+{
+  "restartable": false,
+  "verbose": true,
+  "events": {
+    "start": "cls || clear"
+  },
+  "ignore": [
+    "*.spec.ts"
+  ]
+}
