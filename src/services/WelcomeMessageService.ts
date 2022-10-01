@@ -1,5 +1,5 @@
 import {APIInteractionGuildMember} from 'discord-api-types/v10';
-import {Guild, GuildMember, MessageOptions, PartialGuildMember} from 'discord.js';
+import {Guild, GuildMember, BaseMessageOptions, PartialGuildMember} from 'discord.js';
 import {RainError} from '@rain/bot';
 import {logger} from '../utils/logger';
 import {convertMessageTemplateToMessage} from '../utils/message';
@@ -93,6 +93,6 @@ export class WelcomeMessageService {
 export namespace WelcomeMessageService {
     export type MessageContainer = {
         channelId: string;
-        message: MessageOptions;
+        message: BaseMessageOptions;
     }
 }

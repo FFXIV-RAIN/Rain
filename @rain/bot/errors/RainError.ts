@@ -1,4 +1,4 @@
-import {MessageOptions} from 'discord.js';
+import {BaseMessageOptions} from 'discord.js';
 import {LOG_LEVEL} from '../../logger';
 
 const DEFAULT_TITLES: {
@@ -24,7 +24,7 @@ export class RainError extends Error {
         return this.options.level;
     }
 
-    toMessageOptions(): MessageOptions {
+    toMessageOptions(): BaseMessageOptions {
         return {
             embeds: [{
                 image: {
