@@ -1,6 +1,6 @@
 import {Partials} from 'discord.js';
+import {RainBot} from '@rain/bot';
 import {dbSetup, guildsStartup, guildsSetup} from './.setup';
-import {RainBot} from './@rain/bot';
 import {getRainCommands} from './commands';
 import {CONFIG} from './config';
 import {modules} from './modules';

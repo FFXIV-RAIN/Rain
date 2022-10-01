@@ -1,8 +1,7 @@
 import {GuildMember, PartialGuildMember} from 'discord.js';
+import {RainBot, IModule} from '@rain/bot';
 import {logger} from '../utils/logger';
-import {IModule} from '../@rain/bot/@types/module';
 import {WelcomeMessageService} from '../services/WelcomeMessageService';
-import {RainBot} from '../@rain/bot';
 
 export class WelcomeModule implements IModule {
     name = 'Welcome Message';

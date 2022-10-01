@@ -78,6 +78,26 @@ export namespace RainError {
             this.options.level = value;
             return this;
         }
+
+        error(): Builder {
+            return this.level(LOG_LEVEL.ERROR);
+        }
+
+        warn(): Builder {
+            return this.level(LOG_LEVEL.WARN);
+        }
+
+        info(): Builder {
+            return this.level(LOG_LEVEL.INFO);
+        }
+
+        trace(): Builder {
+            return this.level(LOG_LEVEL.TRACE);
+        }
+
+        silly(): Builder {
+            return this.level(LOG_LEVEL.SILLY);
+        }
     
         build(): RainError {
             return new RainError(this.options);

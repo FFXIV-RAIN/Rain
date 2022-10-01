@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import {RainCommand} from '../@rain/bot';
+import {RainCommand} from '@rain/bot';
 import {logger} from '../utils/logger';
 
 const COMMAND_DIR = __dirname;

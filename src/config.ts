@@ -1,4 +1,4 @@
-import {LOG_LEVEL} from './@rain/logger';
+import {LOG_LEVEL} from '@rain/logger';
 import {Environment} from './@types/environment';
 
 export function isFeatureFlagEnabled(name: string) {

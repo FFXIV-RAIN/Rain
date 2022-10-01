@@ -1,12 +1,11 @@
 import {GuildMember, PartialGuildMember} from 'discord.js';
+import {RainBot, IModule} from '@rain/bot';
 import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {RoleDiff} from '../utils/role-diff';
 import {DiffCacheManager} from '../managers/DiffCacheManager';
 import {logger} from '../utils/logger';
 import {AutoRoleConfigService} from '../services/AutoRoleConfigService';
 import {hasAnyRole} from '../utils/roles';
-import {IModule} from '../@rain/bot/@types/module';
-import {RainBot} from '../@rain/bot';
 
 export class AutoRoleModule implements IModule {
     name = 'Automatic Roles';

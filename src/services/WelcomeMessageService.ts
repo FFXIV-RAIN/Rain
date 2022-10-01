@@ -1,6 +1,6 @@
 import {APIInteractionGuildMember} from 'discord-api-types/v10';
 import {Guild, GuildMember, MessageOptions, PartialGuildMember} from 'discord.js';
-import {RainError} from '../errors/RainError';
+import {RainError} from '@rain/bot';
 import {logger} from '../utils/logger';
 import {convertMessageTemplateToMessage} from '../utils/message';
 import {GuildMessageTemplateService} from './GuildMessageTemplateService';

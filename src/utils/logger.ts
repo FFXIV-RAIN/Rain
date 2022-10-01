@@ -1,4 +1,4 @@
-import {Logger} from '../@rain/logger';
+import {Logger} from '@rain/logger';
 import {CONFIG} from '../config';
 
 export const logger = new Logger({

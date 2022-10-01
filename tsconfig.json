@@ -1,6 +1,9 @@
 {
     "ts-node": {
-        "files": true
+        "files": true,
+        "require": [
+            "tsconfig-paths/register"
+        ]
     },
     "compilerOptions": {
         "resolveJsonModule": true,
@@ -14,11 +17,17 @@
         "declaration": true,
         "strict": true,
         "declarationDir": "./types",
-        "rootDir": "./src",
-        "target": "es6"
+        "target": "es6",
+        "baseUrl": "./",
+        "paths": {
+            "@rain/*": [
+                "@rain/*"
+            ]
+        }
     },
     "include": [
-        "./src"
+        "src/**/*",
+        "@rain/**/*"
     ],
     "exclude": [
         "node_modules",

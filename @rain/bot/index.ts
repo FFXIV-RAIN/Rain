@@ -1,19 +1,20 @@
 import {Client} from 'discord.js';
-import {RainError} from '../../errors/RainError';
-import {logger} from '../../utils/logger';
-import {StringUtils} from '../../utils/string';
+import {Logger, LOG_LEVEL} from '@rain/logger';
+import {RainError} from './errors/RainError';
+import {StringUtils} from './utils/StringUtils';
 import {getCronHooks} from './decorators';
 import {CronManager} from './managers/CronManager';
 import {RainCommandModule} from './modules/RainCommandModule';
-import type {IModule, RainSharedConfig} from './@types';
+import type {IModule, RSConfig, SanitizedRSConfig} from './@types';
 
 export * from './decorators';
 export * from './errors';
 export * from './@types';
 
 export class RainBot {
-    private config: RainSharedConfig;
-
+    private config: SanitizedRSConfig;
+    
+    public logger: Logger;
     public client: Client;
     public commands: RainCommandModule;
 
@@ -21,7 +22,7 @@ export class RainBot {
         tick: ((client: Client, msOfLastUpdate: number) => void)[];
     };
 
-    public static async Initialize(config: RainSharedConfig): Promise<RainBot> {
+    public static async Initialize(config: RSConfig): Promise<RainBot> {
         const bot = new RainBot(config);
 
         await bot.client.login(config.token);
@@ -29,8 +30,15 @@ export class RainBot {
         return bot;
     }
 
-    private constructor(config: RainSharedConfig) {
-        this.config = config;
+    private constructor(config: RSConfig) {
+        this.config = {
+            logLevel: LOG_LEVEL.INFO,
+            ...config,
+        };
+
+        this.logger = new Logger({
+            level: this.config.logLevel
+        });
 
         this._listeners = {
             tick: [],
@@ -53,7 +61,7 @@ export class RainBot {
     }
 
     addModule(module: IModule) {
-        logger.trace(`Registering hooks for "${module.name}" module~`);
+        this.logger.trace(`Registering hooks for "${module.name}" module~`);
 
         if (module.onInitialize) module.onInitialize(this);
         if (module.onGuildMemberAdd) this.hook(module, 'onGuildMemberAdd');
@@ -61,8 +69,8 @@ export class RainBot {
         if (module.onInteractionCreate) this.hook(module, 'onInteractionCreate');
         this.cron(module);
 
-        logger.trace(`Finished registering hooks for the "${module.name}" module!!`);
-        logger.info(`"${module.name}" module setup successfully!~`);
+        this.logger.trace(`Finished registering hooks for the "${module.name}" module!!`);
+        this.logger.info(`"${module.name}" module setup successfully!~`);
     }
 
     private hook(module: IModule, eventFunction: 'onGuildMemberAdd' | 'onGuildMemberUpdate' | 'onInteractionCreate') {
@@ -71,16 +79,16 @@ export class RainBot {
 
         if (!listener) return;
 
-        logger.trace(`Detected "${event}" for "${module.name}"!!`);
+        this.logger.trace(`Detected "${event}" for "${module.name}"!!`);
 
         this.client.on(event, async (...args) => {
             try {
                 await listener(this, ...args);
             } catch (error: any) {
                 if (error instanceof RainError) {
-                    logger.log(error.level, error.message);
+                    this.logger.log(error.level, error.message);
                 } else {
-                    logger.error(error.toString());
+                    this.logger.error(error.toString());
                 }
             }
         });

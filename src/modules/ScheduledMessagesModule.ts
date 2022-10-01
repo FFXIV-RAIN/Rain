@@ -1,7 +1,6 @@
 import {ScheduledMessagesService} from '../services/ScheduledMessagesService';
-import {IModule} from '../@rain/bot/@types/module';
+import {IModule, Cron, RainBot} from '@rain/bot';
 import {logger} from '../utils/logger';
-import {Cron, RainBot} from '../@rain/bot';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
 import {convertMessageTemplateToMessage} from '../utils/message';
 import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';

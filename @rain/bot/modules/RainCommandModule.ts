@@ -1,17 +1,21 @@
 import {CacheType, Collection, Interaction, InteractionReplyOptions, REST, Routes} from 'discord.js';
+import {Logger} from '@rain/logger';
 import {IModule} from '../@types/module';
-import {logger} from '../../../utils/logger';
-import {RainCommand, RainSharedConfig} from '../@types';
+import {RainCommand, SanitizedRSConfig} from '../@types';
 import {RainBot, RainError} from '..';
 
 export class RainCommandModule implements IModule {
     name = 'Command';
 
-    private config: RainSharedConfig;
+    private config: SanitizedRSConfig;
+    private logger: Logger;
     private commands: Collection<string, RainCommand>;
 
-    constructor(config: RainSharedConfig) {
+    constructor(config: SanitizedRSConfig) {
         this.config = config;
+        this.logger = new Logger({
+            level: this.config.logLevel
+        });
         this.commands = new Collection();
     }
 
@@ -22,7 +26,7 @@ export class RainCommandModule implements IModule {
 
         await rest.put(Routes.applicationCommands(this.config.clientId), { body: [] })
 
-        logger.info('Successfully deleted all application commands.');
+        this.logger.info('Successfully deleted all application commands.');
     }
 
     async publish(commands: RainCommand[]) {
@@ -39,7 +43,7 @@ export class RainCommandModule implements IModule {
                 body: this.commands.map(({ data }) => data.toJSON())
             });
 
-            logger.info('Successfully registered application commands.');
+            this.logger.info('Successfully registered application commands.');
         } catch (error) {
             console.error(error);
         }
@@ -56,13 +60,13 @@ export class RainCommandModule implements IModule {
             await command.execute(interaction);
         } catch (error: any) {
             if (error instanceof RainError) {
-                logger.log(error.level, error.message);
+                this.logger.log(error.level, error.message);
                 await interaction.reply({
                     ...error.toMessageOptions(),
                     ephemeral: true 
                 } as InteractionReplyOptions);    
             } else {
-                logger.error(error.toString());
+                this.logger.error(error.toString());
                 await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
             }
         }

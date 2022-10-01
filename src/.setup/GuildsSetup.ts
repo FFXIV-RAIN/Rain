@@ -1,11 +1,11 @@
 import {Op} from 'sequelize';
+import {RainBot} from '@rain/bot';
 import {logger} from '../utils/logger';
 import {GuildConfig} from '../db/models/Guild/GuildConfig';
 import {Guild} from '../db/models/Guild/Guild';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
 import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {ScheduledMessagesConfig} from '../db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
-import {RainBot} from '../@rain/bot';
 
 export async function setup(...guilds: string[]) {
     await Guild.bulkCreate(guilds.map((guildId) => ({
