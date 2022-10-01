@@ -1,6 +1,6 @@
 import {SlashCommandBuilder} from '@discordjs/builders';
 import {InteractionReplyOptions} from 'discord.js';
-import {RainCommand} from '../@types/command';
+import {RainCommand} from '../@rain/bot';
 import {WelcomeMessageService} from '../services/WelcomeMessageService';
 import {logger} from '../utils/logger';
 

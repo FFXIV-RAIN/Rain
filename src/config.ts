@@ -1,5 +1,5 @@
+import {LOG_LEVEL} from './@rain/logger';
 import {Environment} from './@types/environment';
-import {LOG_LEVEL} from './@types/logger';
 
 export function isFeatureFlagEnabled(name: string) {
     return Boolean(process.env[`FF_${name}`] || 'true');

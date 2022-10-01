@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import {RainBot} from '.';
 
 const METADATA_KEYS = {
   CRON: Symbol('CRON')
@@ -33,7 +33,7 @@ export function getCronHooks(instance: { [key: string]: any }): Cron.Hook[] {
 }
 
 export namespace Cron {
-  export type Listener = (client: Client) => void;
+  export type Listener = (bot: RainBot) => void;
 
   export interface Config {
     cron: string;

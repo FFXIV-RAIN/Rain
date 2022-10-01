@@ -1,16 +1,17 @@
-import {Client, GuildMember, PartialGuildMember} from 'discord.js';
+import {GuildMember, PartialGuildMember} from 'discord.js';
 import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {RoleDiff} from '../utils/role-diff';
 import {DiffCacheManager} from '../managers/DiffCacheManager';
 import {logger} from '../utils/logger';
 import {AutoRoleConfigService} from '../services/AutoRoleConfigService';
 import {hasAnyRole} from '../utils/roles';
-import {IModule} from '../@types/module';
+import {IModule} from '../@rain/bot/@types/module';
+import {RainBot} from '../@rain/bot';
 
 export class AutoRoleModule implements IModule {
     name = 'Automatic Roles';
 
-    async onGuildMemberAdd(_client: Client, member: GuildMember | PartialGuildMember) {
+    async onGuildMemberAdd(_: RainBot, member: GuildMember | PartialGuildMember) {
         const config = await AutoRoleConfigService.findByGuildId(member.guild.id);
     
         if (!config || !config.enabled) return;
@@ -22,7 +23,7 @@ export class AutoRoleModule implements IModule {
         await DiffCacheManager.commit(member);
     }
 
-    async onGuildMemberUpdate(_client: Client, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
+    async onGuildMemberUpdate(_: RainBot, oldMember: GuildMember | PartialGuildMember, newMember: GuildMember | PartialGuildMember) {
         const config = await AutoRoleConfigService.findByGuildId(newMember.guild.id, true);
 
         if (!config || !config.enabled) return;

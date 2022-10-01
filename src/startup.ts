@@ -1,5 +1,7 @@
-import {dbSetup, discordSetup, guildsStartup, guildsSetup} from './.setup';
+import {Partials} from 'discord.js';
+import {dbSetup, guildsStartup, guildsSetup} from './.setup';
 import {RainBot} from './@rain/bot';
+import {getRainCommands} from './commands';
 import {CONFIG} from './config';
 import {modules} from './modules';
 import {GuildService} from './services/GuildService';
@@ -8,16 +10,26 @@ import {logger} from './utils/logger';
 export async function startup() {
     logger.info(`Starting up Rain v${CONFIG.VERSION}`);
 
-    const [client] = await Promise.all([
-        discordSetup(),
+    const [bot, commands] = await Promise.all([
+        RainBot.Initialize({
+            clientId: CONFIG.CLIENT_ID,
+            token: CONFIG.DISCORD_TOKEN,
+            partials: [
+                Partials.GuildMember,
+            ],
+            intents: [
+                'Guilds',
+                'GuildMembers',
+            ]
+        }),
+        getRainCommands(),
         dbSetup()
     ]);
-
-    const bot = new RainBot(client);
 
     logger.info('Initializing post startup setup...');
 
     await Promise.all([
+        bot.commands.publish(commands),
         guildsStartup(bot),
     ]);
 

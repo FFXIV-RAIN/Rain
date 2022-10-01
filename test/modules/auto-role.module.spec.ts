@@ -5,7 +5,7 @@ import {DiffCacheManager} from '../../src/managers/DiffCacheManager';
 import {AutoRoleConfigService} from '../../src/services/AutoRoleConfigService';
 import {chance} from '../__utils__/chance';
 import {AutoRoleConfig} from '../../src/db/models/modules/AutoRole/AutoRoleConfig';
-import {Client} from 'discord.js';
+import {RainBot} from '../../src/@rain/bot';
 
 jest.mock('../../src/services/AutoRoleConfigService');
 jest.mock('../../src/managers/DiffCacheManager');
@@ -49,7 +49,7 @@ describe('bot(AutoRole)', () => {
                 pending: false,
             });
             
-            await module.onGuildMemberUpdate(null as unknown as Client, oldMember, newMember);
+            await module.onGuildMemberUpdate(null as unknown as RainBot, oldMember, newMember);
 
             expect(diff.roles).toEqual(memberJoinRoles);
         });
@@ -62,7 +62,7 @@ describe('bot(AutoRole)', () => {
                 pending: true
             });
 
-            await module.onGuildMemberUpdate(null as unknown as Client, oldMember, newMember);
+            await module.onGuildMemberUpdate(null as unknown as RainBot, oldMember, newMember);
 
             expect(diff.roles).toEqual([]);
         });
@@ -75,7 +75,7 @@ describe('bot(AutoRole)', () => {
                 pending: false
             });
 
-            await module.onGuildMemberUpdate(null as unknown as Client, oldMember, newMember);
+            await module.onGuildMemberUpdate(null as unknown as RainBot, oldMember, newMember);
 
             expect(diff.roles).toEqual([]);
         });
@@ -89,7 +89,7 @@ describe('bot(AutoRole)', () => {
                 }),
             });
 
-            await module.onGuildMemberAdd(null as unknown as Client, member);
+            await module.onGuildMemberAdd(null as unknown as RainBot, member);
 
             expect(diff.add).toHaveBeenCalledWith(...botJoinRoles);
             expect(diff.remove).not.toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('bot(AutoRole)', () => {
                 }),
             });
 
-            await module.onGuildMemberAdd(null as unknown as Client, member);
+            await module.onGuildMemberAdd(null as unknown as RainBot, member);
 
             expect(diff.add).not.toHaveBeenCalledWith(...botJoinRoles);
             expect(diff.remove).not.toHaveBeenCalled();

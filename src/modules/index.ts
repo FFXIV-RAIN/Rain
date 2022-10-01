@@ -1,4 +1,4 @@
-import {IModule} from '../@types/module';
+import {IModule} from '../@rain/bot/@types/module';
 import {WelcomeModule} from './WelcomeModule';
 import {AutoRoleModule} from './AutoRoleModule';
 import {ScheduledMessagesModule} from './ScheduledMessagesModule';

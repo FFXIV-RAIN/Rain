@@ -1,23 +1,49 @@
 import {Client} from 'discord.js';
-import {IModule} from '../../@types/module';
 import {RainError} from '../../errors/RainError';
 import {logger} from '../../utils/logger';
 import {StringUtils} from '../../utils/string';
 import {getCronHooks} from './decorators';
-import {CronManager} from './managers/cron.manager';
+import {CronManager} from './managers/CronManager';
+import {RainCommandModule} from './modules/RainCommandModule';
+import type {IModule, RainSharedConfig} from './@types';
+
 export * from './decorators';
+export * from './errors';
+export * from './@types';
 
 export class RainBot {
+    private config: RainSharedConfig;
+
     public client: Client;
+    public commands: RainCommandModule;
+
     private _listeners: {
         tick: ((client: Client, msOfLastUpdate: number) => void)[];
     };
 
-    constructor(client: Client) {
-        this.client = client;
+    public static async Initialize(config: RainSharedConfig): Promise<RainBot> {
+        const bot = new RainBot(config);
+
+        await bot.client.login(config.token);
+
+        return bot;
+    }
+
+    private constructor(config: RainSharedConfig) {
+        this.config = config;
+
         this._listeners = {
             tick: [],
         };
+
+        this.client = new Client({
+            partials: this.config.partials,
+            intents: this.config.intents
+        });
+
+        this.commands = new RainCommandModule(this.config);
+
+        this.addModule(this.commands);
     }
 
     addModules(modules: IModule[]) {
@@ -29,16 +55,17 @@ export class RainBot {
     addModule(module: IModule) {
         logger.trace(`Registering hooks for "${module.name}" module~`);
 
-        if (module.onInitialize) module.onInitialize(this.client);
+        if (module.onInitialize) module.onInitialize(this);
         if (module.onGuildMemberAdd) this.hook(module, 'onGuildMemberAdd');
         if (module.onGuildMemberUpdate) this.hook(module, 'onGuildMemberUpdate');
+        if (module.onInteractionCreate) this.hook(module, 'onInteractionCreate');
         this.cron(module);
 
         logger.trace(`Finished registering hooks for the "${module.name}" module!!`);
         logger.info(`"${module.name}" module setup successfully!~`);
     }
 
-    private hook(module: IModule, eventFunction: 'onGuildMemberAdd' | 'onGuildMemberUpdate') {
+    private hook(module: IModule, eventFunction: 'onGuildMemberAdd' | 'onGuildMemberUpdate' | 'onInteractionCreate') {
         const listener: any = module[eventFunction];
         const event: string = StringUtils.lowercaseChar(eventFunction.replace('on', ''), 0);
 
@@ -48,7 +75,7 @@ export class RainBot {
 
         this.client.on(event, async (...args) => {
             try {
-                await listener(this.client, ...args);
+                await listener(this, ...args);
             } catch (error: any) {
                 if (error instanceof RainError) {
                     logger.log(error.level, error.message);
@@ -65,7 +92,7 @@ export class RainBot {
         if (hooks.length === 0) return;
 
         for (const hook of hooks) {
-            CronManager.cron(hook, this.client);
+            CronManager.cron(hook, this);
         }
     }
 }

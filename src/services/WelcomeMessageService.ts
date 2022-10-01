@@ -1,6 +1,5 @@
 import {APIInteractionGuildMember} from 'discord-api-types/v10';
 import {Guild, GuildMember, MessageOptions, PartialGuildMember} from 'discord.js';
-import {LOG_LEVEL} from '../@types/logger';
 import {RainError} from '../errors/RainError';
 import {logger} from '../utils/logger';
 import {convertMessageTemplateToMessage} from '../utils/message';
@@ -12,14 +11,14 @@ export class WelcomeMessageService {
         if (!guild) {
             throw RainError.Builder.new()
                 .message('No guild was specified!')
-                .level(LOG_LEVEL.ERROR)
+                .error()
                 .build();
         }
 
         if (!member) {
             throw RainError.Builder.new()
                 .message('No guild member was specified!')
-                .level(LOG_LEVEL.ERROR)
+                .error()
                 .build();
         }
 
@@ -30,35 +29,35 @@ export class WelcomeMessageService {
         if (!welcome) {
             throw RainError.Builder.new()
                 .message('Failed to retrieve the welcome config!')
-                .level(LOG_LEVEL.ERROR)
+                .error()
                 .build();
         }
 
         if (welcome.disabled) {
             throw RainError.Builder.new()
                 .message('The welcome module is currently disabled :3')
-                .level(LOG_LEVEL.INFO)
+                .info()
                 .build();
         }
 
         if (!welcome.channelId) {
             throw RainError.Builder.new()
                 .message('Please provide a channel id! :3')
-                .level(LOG_LEVEL.WARN)
+                .warn()
                 .build();
         }
 
         if (!welcome.messageTemplateId) {
             throw RainError.Builder.new()
                 .message(`How did this happen?!? There's no template!`)
-                .level(LOG_LEVEL.ERROR)
+                .error()
                 .build();
         }
 
         if (welcome.ignoreBots && member.user.bot) {
             throw RainError.Builder.new()
                 .message(`Bot detected, ignoring!`)
-                .level(LOG_LEVEL.TRACE)
+                .trace()
                 .build();
         }
 
@@ -71,7 +70,7 @@ export class WelcomeMessageService {
         if (!messageTemplate) {
             throw RainError.Builder.new()
                 .message(`You seem to have lost your template!`)
-                .level(LOG_LEVEL.ERROR)
+                .error()
                 .build();
         }
     

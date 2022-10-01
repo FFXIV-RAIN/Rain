@@ -1,5 +1,5 @@
 import {MessageOptions} from 'discord.js';
-import {LOG_LEVEL} from '../@rain/logger';
+import {LOG_LEVEL} from '../../logger';
 
 const DEFAULT_TITLES: {
     [key: string]: string;
@@ -77,26 +77,6 @@ export namespace RainError {
         level(value: LOG_LEVEL): Builder {
             this.options.level = value;
             return this;
-        }
-
-        error(): Builder {
-            return this.level(LOG_LEVEL.ERROR);
-        }
-
-        warn(): Builder {
-            return this.level(LOG_LEVEL.WARN);
-        }
-
-        info(): Builder {
-            return this.level(LOG_LEVEL.INFO);
-        }
-
-        trace(): Builder {
-            return this.level(LOG_LEVEL.TRACE);
-        }
-
-        silly(): Builder {
-            return this.level(LOG_LEVEL.SILLY);
         }
     
         build(): RainError {

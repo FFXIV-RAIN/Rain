@@ -1,8 +1,7 @@
-import {Client} from 'discord.js';
 import {ScheduledMessagesService} from '../services/ScheduledMessagesService';
-import {IModule} from '../@types/module';
+import {IModule} from '../@rain/bot/@types/module';
 import {logger} from '../utils/logger';
-import {Cron} from '../@rain/bot';
+import {Cron, RainBot} from '../@rain/bot';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
 import {convertMessageTemplateToMessage} from '../utils/message';
 import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';
@@ -21,7 +20,7 @@ export class ScheduledMessagesModule implements IModule {
         cron: '0 0 * * *',
         allowInit: true
     })
-    public async daily(client: Client) {
+    public async daily(bot: RainBot) {
         const upcommingMessages = await ScheduledMessagesService.findUpcommingMessages();
 
         logger.info(`Detected ${upcommingMessages.length} upcomming message(s)...`);
@@ -36,8 +35,8 @@ export class ScheduledMessagesModule implements IModule {
                 ] = await Promise.all([
                     // TODO: Figure out lazy fetching
                     GuildMessageTemplateService.findById(message.messageTemplateId),
-                    client.guilds.cache.get(message.guildId),
-                    client.channels.cache.get(message.channelId)
+                    bot.client.guilds.cache.get(message.guildId),
+                    bot.client.channels.cache.get(message.channelId)
                 ]);
 
                 if (!messageTemplate || !guild || !channel || !channel.isTextBased()) return;
