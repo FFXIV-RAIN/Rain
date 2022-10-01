@@ -83,7 +83,7 @@ export class RainBot {
 
         this.client.on(event, async (...args) => {
             try {
-                await listener(this, ...args);
+                await listener.bind(module)(this, ...args);
             } catch (error: any) {
                 if (error instanceof RainError) {
                     this.logger.log(error.level, error.message);
