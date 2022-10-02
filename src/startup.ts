@@ -1,4 +1,4 @@
-import {Partials} from 'discord.js';
+import {ActivityType, Partials} from 'discord.js';
 import {RainBot} from '@rain/bot';
 import {dbSetup, guildsStartup, guildsSetup} from './.setup';
 import {getRainCommands} from './commands';
@@ -28,6 +28,9 @@ export async function startup() {
 
     logger.info('Initializing post startup setup...');
 
+    bot.setStatus('online');
+    bot.setActivity(ActivityType.Listening, 'your hopes and dreams~');
+
     await Promise.all([
         bot.commands.publish(commands),
         guildsStartup(bot),
@@ -37,9 +40,12 @@ export async function startup() {
 
     bot.addModules(modules);
 
-    if (!bot.client.user) return;
+    if (!bot.authenticated) {
+        logger.error('Failed to authenticate, shutting down...');
+        process.exit(1);
+    }
 
-    logger.info(`${bot.client.user.username} is online.`);
+    logger.info(`${bot.username} is online.`);
     logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.DISCORD_CLIENT_ID}&permissions=8&scope=bot`)
 
     bot.client.on('guildCreate', (guild) => guildsSetup(guild.id));

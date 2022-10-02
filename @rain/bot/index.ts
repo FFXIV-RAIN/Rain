@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import {ActivityType, Client, PresenceStatusData} from 'discord.js';
 import {Logger, LOG_LEVEL} from '@rain/logger';
 import {RainError} from './errors/RainError';
 import {StringUtils} from './utils/StringUtils';
@@ -44,6 +44,26 @@ export class RainBot {
         this.commands = new RainCommandModule(this.config);
 
         this.addModule(this.commands);
+    }
+
+    setStatus(status: PresenceStatusData, shardId?: number) {
+        this.client.user?.setStatus(status, shardId);
+    }
+
+    setActivity(type: Exclude<ActivityType, ActivityType.Custom>, activity: string, shardId?: number) {
+        this.client.user?.setActivity({
+            type,
+            name: activity,
+            shardId
+        });
+    }
+
+    get authenticated() {
+        return this.client.user !== null;
+    }
+
+    get username() {
+        return this.client.user?.username;
     }
 
     addModules(modules: IModule[]) {
