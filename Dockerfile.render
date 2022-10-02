@@ -1,0 +1,2 @@
+ARG RENDER_GIT_COMMIT
+FROM rainbowcafe/rain-bot:${RENDER_GIT_COMMIT}

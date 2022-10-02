@@ -2,8 +2,9 @@ services:
   - type: worker
     name: rain-bot
     env: docker
-    branch: main # optional
+    dockerfilePath: ./Dockerfile.render
     plan: starter
+    autoDeploy: false
 
 databases:
   - name: rain

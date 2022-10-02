@@ -3,4 +3,5 @@ jest.mock('../../src/db/models/Guild/GuildConfig');
 jest.mock('../../src/db/models/modules/AutoRole/AutoRoleConfig');
 jest.mock('../../src/db/models/modules/WelcomeConfig');
 
+process.env.DISCORD_CLIENT_ID = '<test-client-id>';
 process.env.DISCORD_TOKEN = '<test-token>';

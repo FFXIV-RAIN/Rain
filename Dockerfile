@@ -4,5 +4,6 @@ WORKDIR /rain-bot
 ADD . .
 
 RUN npm ci
+ENV ENVIRONMENT="live"
 
 CMD ["npm", "start"]

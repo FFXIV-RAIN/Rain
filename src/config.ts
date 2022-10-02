@@ -1,3 +1,4 @@
+import {config} from 'dotenv';
 import {LOG_LEVEL} from '@rain/logger';
 import {Environment} from './@types/environment';
 
@@ -18,7 +19,7 @@ export function get<T = string>(defaultValue: T, ...names: string[]): T {
 }
 
 export interface Config {
-    CLIENT_ID: string;
+    DISCORD_CLIENT_ID: string;
     DISCORD_TOKEN: string;
     DATABASE_URL: string;
     ENVIRONMENT: Environment;
@@ -33,24 +34,30 @@ export interface FeatureFlags {
     WELCOME: boolean;
 }
 
-const CLIENT_IDS: {
-    [key in Environment]: string;
-} = {
-    [Environment.LIVE]: '966131732476739595',
-    [Environment.LOCAL]: '966202122599292948'
-};
-
 const ENVIRONMENT = get<Environment>(Environment.LOCAL, 'ENVIRONMENT');
 
-const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+config({
+    path: `.env.${ENVIRONMENT}`
+});
 
-if (!DISCORD_TOKEN) throw new Error(`Token cannot be null or undefined`);
+const REQUIRED_KEYS: (keyof Config)[] = [
+    'DISCORD_TOKEN',
+    'DISCORD_CLIENT_ID',
+];
+
+const missingKeys = REQUIRED_KEYS.filter((key) => !process.env[key]);
+
+if (missingKeys.length) {
+    console.error(`The following environment variables were missing! ("${missingKeys.join('", "')}")`);
+    process.exit(1);
+}
 
 const VERSION = get('local', 'RENDER_GIT_COMMIT');
 
 export const CONFIG: Config = {
-    CLIENT_ID: CLIENT_IDS[ENVIRONMENT],
-    DISCORD_TOKEN,
+    // TODO: Figure out how to get Typescript to respect the required keys above
+    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID as string,
+    DISCORD_TOKEN: process.env.DISCORD_TOKEN as string,
     DATABASE_URL: get('sqlite::memory:', 'DATABASE_URL'),
     ENVIRONMENT,
     LOG_LEVEL: get<LOG_LEVEL>(LOG_LEVEL.INFO, 'LOG_LEVEL'),

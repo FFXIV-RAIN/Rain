@@ -12,7 +12,7 @@ export async function startup() {
 
     const [bot, commands] = await Promise.all([
         RainBot.Initialize({
-            clientId: CONFIG.CLIENT_ID,
+            clientId: CONFIG.DISCORD_CLIENT_ID,
             token: CONFIG.DISCORD_TOKEN,
             partials: [
                 Partials.GuildMember,
@@ -40,7 +40,7 @@ export async function startup() {
     if (!bot.client.user) return;
 
     logger.info(`${bot.client.user.username} is online.`);
-    logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.CLIENT_ID}&permissions=8&scope=bot`)
+    logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.DISCORD_CLIENT_ID}&permissions=8&scope=bot`)
 
     bot.client.on('guildCreate', (guild) => guildsSetup(guild.id));
     bot.client.on('guildDelete', (guild) => GuildService.setInactiveStatus(guild.id, true));

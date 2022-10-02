@@ -18,10 +18,6 @@ export class RainBot {
     public client: Client;
     public commands: RainCommandModule;
 
-    private _listeners: {
-        tick: ((client: Client, msOfLastUpdate: number) => void)[];
-    };
-
     public static async Initialize(config: RSConfig): Promise<RainBot> {
         const bot = new RainBot(config);
 
@@ -39,10 +35,6 @@ export class RainBot {
         this.logger = new Logger({
             level: this.config.logLevel
         });
-
-        this._listeners = {
-            tick: [],
-        };
 
         this.client = new Client({
             partials: this.config.partials,
