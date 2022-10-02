@@ -20,9 +20,16 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run test:coverage
+      - name: Install Packages
+        run: npm ci
+      - name: Linting
+        run: npm run lint
+      - name: Coverage
+        run: npm run test:coverage
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploy

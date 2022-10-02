@@ -8,6 +8,13 @@ const jestConfig: JestConfigWithTsJest = {
   transform: {
     ...tsjPreset.transform,
   },
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*',
+    '<rootDir>/@rain/**/*'
+  ],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/test/'
+  ],
   moduleNameMapper: pathsToModuleNameMapper(
     compilerOptions.paths /*, { prefix: '<rootDir>/' } */
   ),
