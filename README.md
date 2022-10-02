@@ -1,5 +1,7 @@
 _**⚠️ This repo is still a WIP and things are always subject to change. ⚠️**_
 
+[![Docker Hub Version](https://img.shields.io/docker/v/rainbowcafe/rain-bot?label=Docker%20Hub%20Version)](https://hub.docker.com/repository/docker/rainbowcafe/rain-bot)
+
 ## Rain
 
 ### Supports
