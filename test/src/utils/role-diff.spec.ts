@@ -1,7 +1,7 @@
 import {GuildMember} from 'discord.js';
-import {RoleDiff} from '../../src/utils/role-diff';
-import {chance} from '../__utils__/chance';
-import {mockDiscordMember} from '../__utils__/mock';
+import {RoleDiff} from 'src/utils/role-diff';
+import {chance} from 'test/__utils__/chance';
+import {mockDiscordMember} from 'test/__utils__/mock';
 
 describe('utils(RoleDiff)', () => {
     describe('func(add)', () => {

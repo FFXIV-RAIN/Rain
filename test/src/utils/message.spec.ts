@@ -1,5 +1,5 @@
-import {chance} from '../__utils__/chance';
-import {parseMessage} from '../../src/utils/message';
+import {chance} from 'test/__utils__/chance';
+import {parseMessage} from 'src/utils/message';
 
 describe('utils(message)', () => {
     describe('func(parseMessage)', () => {

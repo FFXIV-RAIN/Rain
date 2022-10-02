@@ -3,7 +3,7 @@ function getCircularReplacer() {
     return (_: string, value: any) => {
         if (typeof value === 'object' && value !== null) {
             if (seen.has(value)) {
-            return;
+                return '<circular>';
             }
             seen.add(value);
         }
@@ -12,6 +12,8 @@ function getCircularReplacer() {
 
 }
 
-export function StringifySafe(value: any, space?: string | number) {
+export function StringifySafe(value: any, space?: string | number): string {
+    if (typeof value === 'string') return value;
+
     return JSON.stringify(value, getCircularReplacer(), space);
 }

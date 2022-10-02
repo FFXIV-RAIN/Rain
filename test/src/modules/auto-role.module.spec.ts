@@ -1,14 +1,14 @@
 import {RainBot} from '@rain/bot';
-import {AutoRoleModule} from '../../src/modules/AutoRoleModule';
-import {RoleDiff} from '../../src/utils/role-diff';
-import {mockDiscordMember, mockDiscordUser} from '../__utils__/mock';
-import {DiffCacheManager} from '../../src/managers/DiffCacheManager';
-import {AutoRoleConfigService} from '../../src/services/AutoRoleConfigService';
-import {chance} from '../__utils__/chance';
-import {AutoRoleConfig} from '../../src/db/models/modules/AutoRole/AutoRoleConfig';
+import {AutoRoleModule} from 'src/modules/AutoRoleModule';
+import {RoleDiff} from 'src/utils/role-diff';
+import {mockDiscordMember, mockDiscordUser} from 'test/__utils__/mock';
+import {DiffCacheManager} from 'src/managers/DiffCacheManager';
+import {AutoRoleConfigService} from 'src/services/AutoRoleConfigService';
+import {chance} from 'test/__utils__/chance';
+import {AutoRoleConfig} from 'src/db/models/modules/AutoRole/AutoRoleConfig';
 
-jest.mock('../../src/services/AutoRoleConfigService');
-jest.mock('../../src/managers/DiffCacheManager');
+jest.mock('src/services/AutoRoleConfigService');
+jest.mock('src/managers/DiffCacheManager');
 
 const MockedConfigs = jest.mocked(AutoRoleConfigService);
 const MockedManager = jest.mocked(DiffCacheManager);

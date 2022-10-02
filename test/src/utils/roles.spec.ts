@@ -1,5 +1,5 @@
 import {GuildMember} from 'discord.js';
-import {chance} from '../__utils__/chance';
+import {chance} from 'test/__utils__/chance';
 import {
     hasRole,
     hasAnyRole,
@@ -7,8 +7,8 @@ import {
     wasAnyRoleAdded,
     wasAnyRoleRemoved,
     ROLE_CHANGED,
-} from '../../src/utils/roles';
-import {mockDiscordMember, mockDiscordRoleCache, mockDiscordRoles} from '../__utils__/mock';
+} from 'src/utils/roles';
+import {mockDiscordMember, mockDiscordRoleCache, mockDiscordRoles} from 'test/__utils__/mock';
 
 describe('utils(Roles)', () => {
     const mockDiscordRolesHas = (hasRole: boolean | ((roleID: string) => boolean)): GuildMember => {
