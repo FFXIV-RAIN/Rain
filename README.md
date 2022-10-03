@@ -18,13 +18,13 @@ _**⚠️ This repo is still a WIP and things are always subject to change. ⚠�
 ### Supported Databases
 
 - 🐘 Postgres
-- 🦭 MariaDB (MySQL)
+- 🐬 MariaDB (MySQL)
 - Ⓜ️ SQL Server
-- 🪶 SQLite
+- 🐤 SQLite
 
 ### Getting Started
 
-#### Docker
+#### 🐳 Docker
 
 ```sh
 $ docker run -d \
@@ -36,7 +36,7 @@ $ docker run -d \
       rainbowcafe/rain-bot
 ```
 
-#### Docker Compose
+#### 🐋 Docker Compose
 
 ```yml
 version: "3"

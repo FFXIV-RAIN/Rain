@@ -67,5 +67,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: peterevans/dockerhub-description
+        continue-on-error: true
 
       - run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
