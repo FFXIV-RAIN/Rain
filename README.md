@@ -2,7 +2,7 @@ _**⚠️ This repo is still a WIP and things are always subject to change. ⚠�
 
 [![Docker Hub Version](https://img.shields.io/docker/v/rainbowcafe/rain-bot?label=Docker%20Hub%20Version)](https://hub.docker.com/repository/docker/rainbowcafe/rain-bot)
 
-![Coveralls](https://img.shields.io/coveralls/github/rain-cafe-xiv/rain-bot)
+[![Coveralls](https://img.shields.io/coveralls/github/rain-cafe-xiv/rain-bot)](https://coveralls.io/github/rain-cafe-xiv/rain-bot)
 
 ## Rain
 
