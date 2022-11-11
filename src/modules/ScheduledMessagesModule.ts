@@ -52,7 +52,7 @@ export class ScheduledMessagesModule implements IModule {
         }
     }
 
-    private clear(message: ScheduledMessage) {
+    public clear(message: ScheduledMessage) {
         clearTimeout(this.timeouts[message.id]);
     }
 
@@ -64,3 +64,5 @@ export class ScheduledMessagesModule implements IModule {
         }, message.timeTill);
     }
 }
+
+export const scheduledMessagesModule = new ScheduledMessagesModule();
