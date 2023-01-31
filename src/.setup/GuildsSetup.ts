@@ -6,6 +6,7 @@ import {Guild} from '../db/models/Guild/Guild';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
 import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {ScheduledMessagesConfig} from '../db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
+import {ReminderConfig} from 'src/db/models/modules/Reminders/ReminderConfig';
 
 export async function setup(...guilds: string[]) {
     await Guild.bulkCreate(guilds.map((guildId) => ({
@@ -29,6 +30,11 @@ export async function setup(...guilds: string[]) {
         }))),
 
         ScheduledMessagesConfig.bulkCreate(guilds.map((guildId) => ({
+            guildId,
+            enabled: false,
+        }))),
+
+        ReminderConfig.bulkCreate(guilds.map((guildId) => ({
             guildId,
             enabled: false,
         })))

@@ -69,6 +69,14 @@ export class Timestamp {
     timeOfDay(): number {
         return this.timeOfUnit(Timestamp.UnitTypes.DAY);
     }
+
+    get isToday(): boolean {
+        return new Date(this._ms).getUTCDay() === new Date().getUTCDay();
+    }
+
+    get isNotToday(): boolean {
+        return !this.isToday;
+    }
     
     dayOfWeek(): number;
     dayOfWeek(humanized: boolean): string;
