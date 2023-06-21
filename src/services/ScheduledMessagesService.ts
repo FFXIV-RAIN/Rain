@@ -1,6 +1,7 @@
 import {Op} from 'sequelize';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
 import {Timestamp} from '../utils/timestamp';
+import {ScheduledMessagesConfig} from '../db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
 
 export class ScheduledMessagesService {
     static async findAllByGuildID(guildId: string): Promise<ScheduledMessage[]|null> {
@@ -20,7 +21,15 @@ export class ScheduledMessagesService {
                 minutes: {
                     [Op.gte]: Timestamp.now().round(Timestamp.UnitTypes.MINUTE).timeOfDay() / Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE]
                 }
-            }
+            },
+            include: [{
+                model: ScheduledMessagesConfig,
+                where: {
+                    enabled: true
+                },
+                attributes: [],
+                required: true
+            }]
         });
     }
 
