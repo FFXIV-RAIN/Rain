@@ -7,28 +7,10 @@
     },
     "compilerOptions": {
         "resolveJsonModule": true,
-        "experimentalDecorators": true,
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "module": "node16",
-        "moduleResolution": "node",
-        "skipLibCheck": true,
-        "declaration": true,
-        "strict": true,
-        "declarationDir": "./types",
-        "target": "es6",
-        "baseUrl": "./",
-        "paths": {
-            "@rain/*": [
-                "@rain/*"
-            ]
-        }
+        "lib": ["ES2022"],
+        "module": "NodeNext",
+        "target": "ES2022",
     },
-    "include": [
-        "src/**/*",
-        "@rain/**/*"
-    ],
     "exclude": [
         "node_modules",
         "dist"

@@ -1,5 +1,5 @@
 import {config} from 'dotenv';
-import {LOG_LEVEL} from '@rain/logger';
+import {LogLevel} from '@flarie/core';
 import {Environment} from './@types/environment';
 
 export function isFeatureFlagEnabled(name: string) {
@@ -23,7 +23,7 @@ export interface Config {
     DISCORD_TOKEN: string;
     DATABASE_URL: string;
     ENVIRONMENT: Environment;
-    LOG_LEVEL: LOG_LEVEL;
+    LOG_LEVEL: LogLevel;
     IS_LIVE: boolean;
     VERSION: string;
     VERSION_LINK: string;
@@ -60,7 +60,7 @@ export const CONFIG: Config = {
     DISCORD_TOKEN: process.env.DISCORD_TOKEN as string,
     DATABASE_URL: get('sqlite::memory:', 'DATABASE_URL'),
     ENVIRONMENT,
-    LOG_LEVEL: get<LOG_LEVEL>(LOG_LEVEL.INFO, 'LOG_LEVEL'),
+    LOG_LEVEL: get<LogLevel>(LogLevel.INFO, 'LOG_LEVEL'),
     IS_LIVE: ENVIRONMENT === Environment.LIVE,
     VERSION,
     VERSION_LINK: VERSION ? `https://github.com/rain-cafe-xiv/rain-bot/commit/${VERSION}` : 'https://github.com/rain-cafe-xiv/rain-bot'

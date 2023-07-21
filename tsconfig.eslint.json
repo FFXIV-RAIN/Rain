@@ -1,16 +1,25 @@
 {
+    "ts-node": {
+        "files": true,
+        "require": [
+            "tsconfig-paths/register"
+        ]
+    },
     "compilerOptions": {
         "resolveJsonModule": true,
-        "experimentalDecorators": true,
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "moduleResolution": "node",
-        "skipLibCheck": true,
+        "lib": ["ES2022"],
+        "module": "commonjs",
+        "target": "ES2022",
         "declaration": true,
-        "strict": true,
         "declarationDir": "./types",
-        "rootDir": "./src",
-        "target": "es6"
-    }
+        "baseUrl": "./"
+    },
+    "include": [
+        "packages/**/*",
+        "demo/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
 }

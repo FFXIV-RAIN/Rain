@@ -1,5 +1,12 @@
 {
-    "typescript.preferences.quoteStyle": "single",
-    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false
+  "typescript.preferences.quoteStyle": "single",
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

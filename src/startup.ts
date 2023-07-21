@@ -1,17 +1,19 @@
-import {ActivityType, Partials} from 'discord.js';
-import {RainBot} from '@rain/bot';
-import {dbSetup, guildsStartup, guildsSetup} from './.setup';
-import {getRainCommands} from './commands';
+// import {ActivityType, Partials} from 'discord.js';
+// import {RainBot} from '@rain/bot';
+// import {dbSetup, guildsStartup, guildsSetup} from './.setup';
+// import {getRainCommands} from './commands';
 import {CONFIG} from './config';
-import {modules} from './modules';
-import {GuildService} from './services/GuildService';
-import {logger} from './utils/logger';
+// import {modules} from './modules';
+// import {GuildService} from './services/GuildService';
+// import {logger} from './utils/logger';
+import {Flarie, FlarieInteraction, FlarieCommand, Logger} from '@flarie/core';
+import {DiscordPlatform, Partials} from '@flarie/discord';
 
 export async function startup() {
-    logger.info(`Starting up Rain v${CONFIG.VERSION}`);
+    Logger.info(`Starting up Rain v${CONFIG.VERSION}`);
 
-    const [bot, commands] = await Promise.all([
-        RainBot.Initialize({
+    const flarie = new Flarie({
+        platform: new DiscordPlatform({
             clientId: CONFIG.DISCORD_CLIENT_ID,
             token: CONFIG.DISCORD_TOKEN,
             partials: [
@@ -22,38 +24,62 @@ export async function startup() {
                 'GuildMembers',
             ]
         }),
-        getRainCommands(),
-        dbSetup()
-    ]);
+        commands: [
+            new FlarieCommand('ping', async (interaction: FlarieInteraction) => {
+                await interaction.reply('pong!')
+            })
+        ],
+        level: CONFIG.LOG_LEVEL
+    });
 
-    logger.info('Initializing post startup setup...');
+    flarie.on('ready', () => {
+      flarie.send('966502697341698108', '987612495625719829', 'Rawr!');
+    });
 
-    bot.setStatus('online');
-    bot.setActivity(ActivityType.Listening, 'your hopes and dreams~');
+    // const [bot, commands] = await Promise.all([
+    //     RainBot.Initialize({
+    //         clientId: CONFIG.DISCORD_CLIENT_ID,
+    //         token: CONFIG.DISCORD_TOKEN,
+    //         partials: [
+    //             Partials.GuildMember,
+    //         ],
+    //         intents: [
+    //             'Guilds',
+    //             'GuildMembers',
+    //         ]
+    //     }),
+    //     getRainCommands(),
+    //     dbSetup()
+    // ]);
 
-    await Promise.all([
-        bot.commands.publish(commands),
-        guildsStartup(bot),
-    ]);
+    // logger.info('Initializing post startup setup...');
 
-    logger.info('Starting up modules...');
+    // bot.setStatus('online');
+    // bot.setActivity(ActivityType.Listening, 'your hopes and dreams~');
 
-    bot.addModules(modules);
+    // await Promise.all([
+    //     bot.commands.publish(commands),
+    //     guildsStartup(bot),
+    // ]);
 
-    if (!bot.authenticated) {
-        logger.error('Failed to authenticate, shutting down...');
-        process.exit(1);
-    }
+    // logger.info('Starting up modules...');
 
-    logger.info(`${bot.username} is online.`);
-    logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.DISCORD_CLIENT_ID}&permissions=8&scope=bot`)
+    // bot.addModules(modules);
 
-    bot.client.on('guildCreate', (guild) => guildsSetup(guild.id));
-    bot.client.on('guildDelete', (guild) => GuildService.setInactiveStatus(guild.id, true));
+    // if (!bot.authenticated) {
+    //     logger.error('Failed to authenticate, shutting down...');
+    //     process.exit(1);
+    // }
+
+    // logger.info(`${bot.username} is online.`);
+    // logger.info(`Invite Link: https://discord.com/api/oauth2/authorize?client_id=${CONFIG.DISCORD_CLIENT_ID}&permissions=8&scope=bot`)
+
+    // bot.client.on('guildCreate', (guild) => guildsSetup(guild.id));
+    // bot.client.on('guildDelete', (guild) => GuildService.setInactiveStatus(guild.id, true));
 }
 
 startup();
 
-process.on('SIGTERM', () => {
-    logger.info('Acknowledged request for the heat death of the universe, terminating...');
-});
+// process.on('SIGTERM', () => {
+//     logger.info('Acknowledged request for the heat death of the universe, terminating...');
+// });
