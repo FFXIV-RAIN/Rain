@@ -1,41 +1,50 @@
-import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement} from 'sequelize-typescript';
-import {Guild} from '../../Guild/Guild';
-import {AutoRoleConfig} from './AutoRoleConfig';
+import {
+  Table,
+  Column,
+  Model,
+  BelongsTo,
+  PrimaryKey,
+  DataType,
+  ForeignKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
+import { Guild } from '../../Guild/Guild';
+import { AutoRoleConfig } from './AutoRoleConfig';
 
 @Table
 export class AutoRoleAssignments extends Model {
-    @AutoIncrement
-    @PrimaryKey
-    @Column(DataType.BIGINT)
-    declare id: number;
+  @AutoIncrement
+  @PrimaryKey
+  @Column(DataType.BIGINT)
+  declare id: number;
 
-    @ForeignKey(() => Guild)
-    @ForeignKey(() => AutoRoleConfig)
-    @Column(DataType.TEXT)
-    declare guildId: string;
+  @ForeignKey(() => Guild)
+  @ForeignKey(() => AutoRoleConfig)
+  @Column(DataType.TEXT)
+  declare guildId: string;
 
-    @Column({
-        type: DataType.BOOLEAN,
-        defaultValue: false,
-   })
-    declare enabled: boolean;
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  declare enabled: boolean;
 
-    @Column(DataType.ARRAY(DataType.TEXT))
-    validationRoles?: string[];
+  @Column(DataType.ARRAY(DataType.TEXT))
+  declare validationRoles?: string[];
 
-    @Column(DataType.ARRAY(DataType.TEXT))
-    trueRoles?: string[];
+  @Column(DataType.ARRAY(DataType.TEXT))
+  declare trueRoles?: string[];
 
-    @Column(DataType.ARRAY(DataType.TEXT))
-    falseRoles?: string[];
+  @Column(DataType.ARRAY(DataType.TEXT))
+  declare falseRoles?: string[];
 
-    @BelongsTo(() => Guild)
-    declare guild: Guild;
+  @BelongsTo(() => Guild)
+  declare guild: Guild;
 
-    @BelongsTo(() => AutoRoleConfig)
-    declare autoRoleConfig: AutoRoleConfig;
+  @BelongsTo(() => AutoRoleConfig)
+  declare autoRoleConfig: AutoRoleConfig;
 
-    get disabled() {
-        return !this.enabled;
-   }
+  get disabled() {
+    return !this.enabled;
+  }
 }

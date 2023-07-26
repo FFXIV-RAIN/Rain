@@ -1,23 +1,22 @@
-import {SlashCommandBuilder} from '@discordjs/builders';
-import {InteractionReplyOptions} from 'discord.js';
-import {RainCommand} from '@rain/bot';
-import {WelcomeMessageService} from '../services/WelcomeMessageService';
-import {logger} from '../utils/logger';
+import { WelcomeMessageService } from '../services/WelcomeMessageService';
+import { FlarieCommand } from '@flarie/core';
+import { Logger } from '@flarie/logger';
 
-export const command: RainCommand = {
-    data: new SlashCommandBuilder()
-        .setName('welcome')
-        .setDescription('Let me welcome all of your new members! c:')
-        .setDefaultMemberPermissions('0')
-        .setDMPermission(false),
-    async execute(interaction) {
-        const container = await WelcomeMessageService.createWelcomeMessage(interaction.guild, interaction.member);
+export const WelcomeCommand = new FlarieCommand(
+  {
+    name: 'welcome',
+    description: 'Let me welcome all of your new members! c:',
+    allowDMs: false,
+    disabled: true,
+  },
+  async (interaction) => {
+    const message = await WelcomeMessageService.createWelcomeMessage(interaction.context);
 
-        logger.trace(`Sending welcome message...`);
-        
-        await interaction.reply({
-            ...container.message,
-            ephemeral: true
-        } as InteractionReplyOptions);
-    }
-};
+    Logger.silly(`Sending welcome message...`);
+
+    await interaction.reply({
+      ...message,
+      ephemeral: true,
+    });
+  }
+);

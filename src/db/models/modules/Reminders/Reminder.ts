@@ -1,48 +1,57 @@
-import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, AutoIncrement} from 'sequelize-typescript';
-import {Timestamp} from '../../../../utils/timestamp';
-import {Guild} from '../../Guild/Guild';
-import {ReminderConfig} from './ReminderConfig';
+import {
+  Table,
+  Column,
+  Model,
+  BelongsTo,
+  PrimaryKey,
+  DataType,
+  ForeignKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
+import { Timestamp } from '../../../../utils/timestamp';
+import { Guild } from '../../Guild/Guild';
+import { ReminderConfig } from './ReminderConfig';
 
 @Table
 export class Reminder extends Model {
-    @AutoIncrement
-    @PrimaryKey
-    @Column(DataType.BIGINT)
-    declare id: number;
+  @AutoIncrement
+  @PrimaryKey
+  @Column(DataType.BIGINT)
+  declare id: number;
 
-    @ForeignKey(() => Guild)
-    @ForeignKey(() => ReminderConfig)
-    @Column(DataType.TEXT)
-    declare guildId: string;
+  @ForeignKey(() => Guild)
+  @ForeignKey(() => ReminderConfig)
+  @Column(DataType.TEXT)
+  declare guildId: string;
 
-    @Column({
-        type: DataType.TEXT,
-        allowNull: false
-    })
-    declare channelId: string;
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  declare channelId: string;
 
-    @Column({
-        type: DataType.TEXT,
-        allowNull: false
-    })
-    declare userId: string;
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  declare userId: string;
 
-    @Column({
-        type: DataType.DATE,
-        allowNull: false,
-    })
-    declare date: Date;
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  declare date: Date;
 
-    @Column(DataType.TEXT)
-    declare message: string;
+  @Column(DataType.TEXT)
+  declare message: string;
 
-    @BelongsTo(() => Guild)
-    declare guild: Guild;
+  @BelongsTo(() => Guild)
+  declare guild: Guild;
 
-    @BelongsTo(() => ReminderConfig)
-    declare reminderConfig: ReminderConfig;
+  @BelongsTo(() => ReminderConfig)
+  declare reminderConfig: ReminderConfig;
 
-    get timeTill(): number {
-        return new Timestamp(this.date).remove(Timestamp.UnitTypes.MILLISECOND, Timestamp.now().ms).ms;
-    }
+  get timeTill(): number {
+    return new Timestamp(this.date).remove(Timestamp.UnitTypes.MILLISECOND, Timestamp.now().ms).ms;
+  }
 }

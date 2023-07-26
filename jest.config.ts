@@ -6,13 +6,8 @@ const jestConfig: JestConfigWithTsJest = {
   transform: {
     ...tsjPreset.transform,
   },
-  collectCoverageFrom: [
-    '<rootDir>/src/**/*',
-    '<rootDir>/@rain/**/*'
-  ],
-  coveragePathIgnorePatterns: [
-    '<rootDir>/test/'
-  ],
+  collectCoverageFrom: ['<rootDir>/src/**/*', '<rootDir>/@rain/**/*'],
+  coveragePathIgnorePatterns: ['<rootDir>/test/'],
   modulePaths: ['<rootDir>'],
   setupFiles: ['./test/__utils__/.setup.ts'],
 };

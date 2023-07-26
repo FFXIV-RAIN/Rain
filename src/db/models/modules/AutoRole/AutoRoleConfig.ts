@@ -1,33 +1,42 @@
-import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, HasMany} from 'sequelize-typescript';
-import {Guild} from '../../Guild/Guild';
-import {AutoRoleAssignments} from './AutoRoleAssignments';
+import {
+  Table,
+  Column,
+  Model,
+  BelongsTo,
+  PrimaryKey,
+  DataType,
+  ForeignKey,
+  HasMany,
+} from 'sequelize-typescript';
+import { Guild } from '../../Guild/Guild';
+import { AutoRoleAssignments } from './AutoRoleAssignments';
 
 @Table
 export class AutoRoleConfig extends Model {
-    @PrimaryKey
-    @ForeignKey(() => Guild)
-    @Column(DataType.TEXT)
-    declare guildId: string;
+  @PrimaryKey
+  @ForeignKey(() => Guild)
+  @Column(DataType.TEXT)
+  declare guildId: string;
 
-    @Column({
-        type: DataType.BOOLEAN,
-        defaultValue: false,
-   })
-    declare enabled: boolean;
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  declare enabled: boolean;
 
-    @Column(DataType.ARRAY(DataType.TEXT))
-    memberJoinRoles?: string[];
+  @Column(DataType.ARRAY(DataType.TEXT))
+  declare memberJoinRoles?: string[];
 
-    @Column(DataType.ARRAY(DataType.TEXT))
-    botJoinRoles?: string[];
+  @Column(DataType.ARRAY(DataType.TEXT))
+  declare botJoinRoles?: string[];
 
-    @BelongsTo(() => Guild)
-    declare guild: Guild;
+  @BelongsTo(() => Guild)
+  declare guild: Guild;
 
-    @HasMany(() => AutoRoleAssignments)
-    declare assignments: AutoRoleAssignments[];
+  @HasMany(() => AutoRoleAssignments)
+  declare assignments: AutoRoleAssignments[];
 
-    get disabled() {
-        return !this.enabled;
-   }
+  get disabled() {
+    return !this.enabled;
+  }
 }

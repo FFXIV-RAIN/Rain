@@ -16,8 +16,9 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@flarie/core": "^1.0.7",
-    "@flarie/discord": "^1.0.8",
+    "@flarie/core": "^1.0.18",
+    "@flarie/discord": "^1.0.18",
+    "@flarie/logger": "^1.0.18",
     "dotenv": "^16.0.0",
     "endent": "^2.1.0",
     "mariadb": "^3.0.1",

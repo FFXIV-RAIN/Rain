@@ -1,30 +1,30 @@
-import {Table, Column, Model, PrimaryKey, HasOne, DataType, HasMany} from 'sequelize-typescript';
-import {GuildConfig} from './GuildConfig';
-import {GuildPromotionQueue} from './GuildPromotionQueue';
-import {WelcomeConfig} from '../modules/WelcomeConfig';
-import {XivFreeCompany} from '../XIV/XivFreeCompany';
+import { Table, Column, Model, PrimaryKey, HasOne, DataType, HasMany } from 'sequelize-typescript';
+import { GuildConfig } from './GuildConfig';
+import { GuildPromotionQueue } from './GuildPromotionQueue';
+import { WelcomeConfig } from '../modules/WelcomeConfig';
+import { XivFreeCompany } from '../XIV/XivFreeCompany';
 
 @Table
 export class Guild extends Model {
-    @PrimaryKey
-    @Column(DataType.TEXT)
-    declare id: number;
+  @PrimaryKey
+  @Column(DataType.TEXT)
+  declare id: number;
 
-    @Column({
-        type: DataType.BOOLEAN,
-        defaultValue: false,
-    })
-    declare inactive: boolean;
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  declare inactive: boolean;
 
-    @HasOne(() => GuildConfig)
-    declare config: GuildConfig;
+  @HasOne(() => GuildConfig)
+  declare config: GuildConfig;
 
-    @HasMany(() => GuildPromotionQueue)
-    promotionQueue?: GuildPromotionQueue[];
+  @HasMany(() => GuildPromotionQueue)
+  declare promotionQueue?: GuildPromotionQueue[];
 
-    @HasOne(() => WelcomeConfig)
-    declare welcomeConfig: WelcomeConfig;
+  @HasOne(() => WelcomeConfig)
+  declare welcomeConfig: WelcomeConfig;
 
-    @HasOne(() => XivFreeCompany)
-    freeCompany?: XivFreeCompany;
+  @HasOne(() => XivFreeCompany)
+  declare freeCompany?: XivFreeCompany;
 }

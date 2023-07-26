@@ -1,7 +1,9 @@
-import {BumpCommand} from './BumpCommand';
 import {InfoCommand} from './InfoCommand';
+import {WelcomeCommand} from './WelcomeCommand';
+import {BumpCommand} from './BumpCommand';
 
 export const commands = [
   InfoCommand,
-  BumpCommand
+  WelcomeCommand,
+  BumpCommand,
 ];
