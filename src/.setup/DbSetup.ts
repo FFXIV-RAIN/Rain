@@ -1,12 +1,12 @@
-import {logger} from '../utils/logger';
+import {Logger} from '@flarie/core';
 import {db} from '../db';
 
 export async function setup() {
-    logger.info('Syncing database...');
-  
+    Logger.info('Syncing database...');
+
     await db.sync();
-  
-    logger.info('Database synced!');
-  
+
+    Logger.info('Database synced!');
+
     return db;
  }

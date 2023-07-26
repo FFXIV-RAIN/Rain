@@ -6,27 +6,27 @@ export class GuildMessageEmbedFieldTemplate extends Model {
     @AutoIncrement
     @PrimaryKey
     @Column(DataType.BIGINT)
-    id!: number;
+    declare id: number;
 
     @ForeignKey(() => GuildMessageEmbedTemplate)
     @Column(DataType.BIGINT)
-    embedId!: number;
+    declare embedId: number;
 
     @Column({
         type: DataType.STRING(100),
         allowNull: false
     })
-    name!: string;
+    declare name: string;
 
     @Column({
         type: DataType.STRING(100),
         allowNull: false
     })
-    value!: string;
+    declare value: string;
 
     @Column(DataType.BOOLEAN)
     inline?: boolean;
 
     @BelongsTo(() => GuildMessageEmbedTemplate)
-    embedTemplate!: GuildMessageEmbedTemplate;
+    declare embedTemplate: GuildMessageEmbedTemplate;
 }

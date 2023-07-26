@@ -1,68 +1,65 @@
-import {Op} from 'sequelize';
-import {RainBot} from '@rain/bot';
-import {logger} from '../utils/logger';
 import {GuildConfig} from '../db/models/Guild/GuildConfig';
 import {Guild} from '../db/models/Guild/Guild';
 import {WelcomeConfig} from '../db/models/modules/WelcomeConfig';
 import {AutoRoleConfig} from '../db/models/modules/AutoRole/AutoRoleConfig';
 import {ScheduledMessagesConfig} from '../db/models/modules/ScheduledMessages/ScheduledMessagesConfig';
-import {ReminderConfig} from 'src/db/models/modules/Reminders/ReminderConfig';
+import {ReminderConfig} from '../db/models/modules/Reminders/ReminderConfig';
 
-export async function setup(...guilds: string[]) {
-    await Guild.bulkCreate(guilds.map((guildId) => ({
+export async function setup(...servers: string[]) {
+    await Guild.bulkCreate(servers.map((guildId) => ({
         id: guildId,
     })));
 
     await Promise.all([
-        GuildConfig.bulkCreate(guilds.map((guildId) => ({
+        GuildConfig.bulkCreate(servers.map((guildId) => ({
             guildId,
         }))),
 
-        WelcomeConfig.bulkCreate(guilds.map((guildId) => ({
+        WelcomeConfig.bulkCreate(servers.map((guildId) => ({
             guildId,
             enabled: false,
         }))),
 
-        AutoRoleConfig.bulkCreate(guilds.map((guildId) => ({
+        AutoRoleConfig.bulkCreate(servers.map((guildId) => ({
             guildId,
             enabled: false,
             joinRoles: []
         }))),
 
-        ScheduledMessagesConfig.bulkCreate(guilds.map((guildId) => ({
+        ScheduledMessagesConfig.bulkCreate(servers.map((guildId) => ({
             guildId,
             enabled: false,
         }))),
 
-        ReminderConfig.bulkCreate(guilds.map((guildId) => ({
+        ReminderConfig.bulkCreate(servers.map((guildId) => ({
             guildId,
             enabled: false,
         })))
     ]);
 }
 
-export async function startup(bot: RainBot) {
-    logger.info('Verifying all guilds are setup ...');
+// export async function startup(bot: RainBot) {
+//     logger.info('Verifying all guilds are setup ...');
 
-    const guildIds = bot.client.guilds.cache.map((_, id) => id);
+//     const guildIds = bot.client.guilds.cache.map((_, id) => id);
 
-    const guilds = await Guild.findAll({
-        attributes: ['id'],
-        where: {
-            id: {
-                [Op.in]: guildIds
-            }
-        }
-    });
+//     const guilds = await Guild.findAll({
+//         attributes: ['id'],
+//         where: {
+//             id: {
+//                 [Op.in]: guildIds
+//             }
+//         }
+//     });
 
-    // Find the IDs that don't have a guild yet.
-    const guildsToSetup = guildIds.filter((guildId) =>
-        !guilds.find((guild) => guild.id === guildId)
-    );
+//     // Find the IDs that don't have a guild yet.
+//     const guildsToSetup = guildIds.filter((guildId) =>
+//         !guilds.find((guild) => guild.id === guildId)
+//     );
 
-    logger.info(`Determined ${guildsToSetup.length} guild(s) need to be set up`);
+//     logger.info(`Determined ${guildsToSetup.length} guild(s) need to be set up`);
 
-    if (guildsToSetup.length > 0) {
-        await setup(...guildsToSetup);
-    }
-}
+//     if (guildsToSetup.length > 0) {
+//         await setup(...guildsToSetup);
+//     }
+// }

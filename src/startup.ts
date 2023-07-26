@@ -1,16 +1,19 @@
 // import {ActivityType, Partials} from 'discord.js';
 // import {RainBot} from '@rain/bot';
+import {dbSetup} from './.setup';
 // import {dbSetup, guildsStartup, guildsSetup} from './.setup';
-// import {getRainCommands} from './commands';
+import {commands} from './commands';
 import {CONFIG} from './config';
 // import {modules} from './modules';
 // import {GuildService} from './services/GuildService';
 // import {logger} from './utils/logger';
-import {Flarie, FlarieInteraction, FlarieCommand, Logger} from '@flarie/core';
+import {Flarie, Logger} from '@flarie/core';
 import {DiscordPlatform, Partials} from '@flarie/discord';
 
 export async function startup() {
     Logger.info(`Starting up Rain v${CONFIG.VERSION}`);
+
+    await dbSetup();
 
     const flarie = new Flarie({
         platform: new DiscordPlatform({
@@ -24,11 +27,7 @@ export async function startup() {
                 'GuildMembers',
             ]
         }),
-        commands: [
-            new FlarieCommand('ping', async (interaction: FlarieInteraction) => {
-                await interaction.reply('pong!')
-            })
-        ],
+        commands,
         level: CONFIG.LOG_LEVEL
     });
 

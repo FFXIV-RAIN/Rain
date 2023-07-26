@@ -6,22 +6,22 @@ export class DalamudConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
    })
-    enabled!: boolean;
+    declare enabled: boolean;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
    })
-    autoPromotion!: boolean;
+    declare autoPromotion: boolean;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 
     get disabled() {
         return !this.enabled;

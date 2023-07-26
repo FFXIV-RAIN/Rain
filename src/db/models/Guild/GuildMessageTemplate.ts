@@ -8,11 +8,11 @@ export class GuildMessageTemplate extends Model {
     @AutoIncrement
     @PrimaryKey
     @Column(DataType.BIGINT)
-    id!: number;
+    declare id: number;
 
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column(DataType.STRING(2000))
     content?: string | null;
@@ -21,7 +21,7 @@ export class GuildMessageTemplate extends Model {
     // components?: (MessageActionRow | (Required<BaseMessageComponentOptions> & MessageActionRowOptions))[];
 
     @BelongsTo(() => Guild)
-    config!: Guild;
+    declare config: Guild;
 
     @HasMany(() => ScheduledMessage)
     scheduledMessage?: ScheduledMessage;

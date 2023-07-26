@@ -8,22 +8,22 @@ import {XivFreeCompany} from '../XIV/XivFreeCompany';
 export class Guild extends Model {
     @PrimaryKey
     @Column(DataType.TEXT)
-    id!: string;
-    
+    declare id: number;
+
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    inactive!: boolean;
+    declare inactive: boolean;
 
     @HasOne(() => GuildConfig)
-    config!: GuildConfig;
+    declare config: GuildConfig;
 
     @HasMany(() => GuildPromotionQueue)
     promotionQueue?: GuildPromotionQueue[];
 
     @HasOne(() => WelcomeConfig)
-    welcomeConfig!: WelcomeConfig;
+    declare welcomeConfig: WelcomeConfig;
 
     @HasOne(() => XivFreeCompany)
     freeCompany?: XivFreeCompany;

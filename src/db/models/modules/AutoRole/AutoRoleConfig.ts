@@ -7,13 +7,13 @@ export class AutoRoleConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
    })
-    enabled!: boolean;
+    declare enabled: boolean;
 
     @Column(DataType.ARRAY(DataType.TEXT))
     memberJoinRoles?: string[];
@@ -22,10 +22,10 @@ export class AutoRoleConfig extends Model {
     botJoinRoles?: string[];
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 
     @HasMany(() => AutoRoleAssignments)
-    assignments!: AutoRoleAssignments[];
+    declare assignments: AutoRoleAssignments[];
 
     get disabled() {
         return !this.enabled;

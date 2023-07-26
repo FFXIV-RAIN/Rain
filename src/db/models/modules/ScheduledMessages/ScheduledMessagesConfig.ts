@@ -7,19 +7,19 @@ export class ScheduledMessagesConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
    })
-    enabled!: boolean;
+    declare enabled: boolean;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 
     @HasMany(() => ScheduledMessage)
-    messages!: ScheduledMessage[];
+    declare messages: ScheduledMessage[];
 
     get disabled() {
         return !this.enabled;

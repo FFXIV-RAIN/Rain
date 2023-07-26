@@ -6,15 +6,15 @@ export class XivFreeCompanyRanks extends Model {
     @PrimaryKey
     @ForeignKey(() => XivFreeCompany)
     @Column(DataType.TEXT)
-    freeCompanyId!: string;
-    
+    declare freeCompanyId: string;
+
     @PrimaryKey
     @Column(DataType.TEXT)
-    freeCompanyRank!: string;
+    declare freeCompanyRank: string;
 
     @Column(DataType.TEXT)
-    discordRank!: string;
+    declare discordRank: string;
 
     @BelongsTo(() => XivFreeCompany)
-    freeCompany!: XivFreeCompany;
+    declare freeCompany: XivFreeCompany;
 }

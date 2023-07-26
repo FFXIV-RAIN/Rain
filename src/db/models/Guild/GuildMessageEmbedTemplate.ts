@@ -7,12 +7,12 @@ export class GuildMessageEmbedTemplate extends Model {
     @AutoIncrement
     @PrimaryKey
     @Column(DataType.BIGINT)
-    id!: number;
+    declare id: number;
 
     @ForeignKey(() => GuildMessageTemplate)
     @Column(DataType.BIGINT)
-    templateId!: number;
-    
+    declare templateId: number;
+
     @Column(DataType.STRING(200))
     title?: string;
 
@@ -29,5 +29,5 @@ export class GuildMessageEmbedTemplate extends Model {
     fields?: GuildMessageEmbedFieldTemplate[];
 
     @BelongsTo(() => GuildMessageTemplate)
-    messageTemplate!: GuildMessageTemplate;
+    declare messageTemplate: GuildMessageTemplate;
 }

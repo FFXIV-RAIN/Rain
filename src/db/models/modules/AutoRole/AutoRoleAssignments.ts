@@ -7,18 +7,18 @@ export class AutoRoleAssignments extends Model {
     @AutoIncrement
     @PrimaryKey
     @Column(DataType.BIGINT)
-    id!: number;
+    declare id: number;
 
     @ForeignKey(() => Guild)
     @ForeignKey(() => AutoRoleConfig)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
    })
-    enabled!: boolean;
+    declare enabled: boolean;
 
     @Column(DataType.ARRAY(DataType.TEXT))
     validationRoles?: string[];
@@ -30,10 +30,10 @@ export class AutoRoleAssignments extends Model {
     falseRoles?: string[];
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
-    
+    declare guild: Guild;
+
     @BelongsTo(() => AutoRoleConfig)
-    autoRoleConfig!: AutoRoleConfig;
+    declare autoRoleConfig: AutoRoleConfig;
 
     get disabled() {
         return !this.enabled;

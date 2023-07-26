@@ -6,15 +6,15 @@ export class GuildPromotionQueue extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @PrimaryKey
     @Column(DataType.TEXT)
-    characterName!: string;
+    declare characterName: string;
 
     @Column(DataType.TEXT)
-    rank!: string;
+    declare rank: string;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 }

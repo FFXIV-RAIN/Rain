@@ -9,60 +9,60 @@ export class ScheduledMessage extends Model {
     @AutoIncrement
     @PrimaryKey
     @Column(DataType.BIGINT)
-    id!: number;
+    declare id: number;
 
     @ForeignKey(() => Guild)
     @ForeignKey(() => ScheduledMessagesConfig)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column({
         type: DataType.TEXT,
         allowNull: false
     })
-    channelId!: string;
+    declare channelId: string;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    monday!: boolean;
+    declare monday: boolean;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    tuesday!: boolean;
+    declare tuesday: boolean;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    wednesday!: boolean;
+    declare wednesday: boolean;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    thursday!: boolean;
+    declare thursday: boolean;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    friday!: boolean;
+    declare friday: boolean;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    saturday!: boolean;
+    declare saturday: boolean;
 
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false,
     })
-    sunday!: boolean;
+    declare sunday: boolean;
 
     /**
      * The number of minutes into the day we should send the message. (between 0 and 1440)
@@ -71,23 +71,23 @@ export class ScheduledMessage extends Model {
         type: DataType.SMALLINT,
         allowNull: false,
     })
-    minutes!: number;
+    declare minutes: number;
 
     @ForeignKey(() => GuildMessageTemplate)
     @Column({
         type: DataType.BIGINT,
         allowNull: false
     })
-    messageTemplateId!: number;
+    declare messageTemplateId: number;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 
     @BelongsTo(() => GuildMessageTemplate)
     messageTemplate?: GuildMessageTemplate;
 
     @BelongsTo(() => ScheduledMessagesConfig)
-    scheduledMessagesConfig!: ScheduledMessagesConfig;
+    declare scheduledMessagesConfig: ScheduledMessagesConfig;
 
     get timeTill(): number {
         const milliseconds = this.minutes * Timestamp.UNIT_TYPE_TO_UNIT[Timestamp.UnitTypes.MINUTE];

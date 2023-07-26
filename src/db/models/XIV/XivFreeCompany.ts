@@ -8,24 +8,24 @@ import {XivFreeCompanyPromotionQueue} from './XivFreeCompanyPromotionQueue';
 export class XivFreeCompany extends Model {
     @PrimaryKey
     @Column(DataType.TEXT)
-    freeCompanyId!: string;
+    declare freeCompanyId: string;
 
     @Column(DataType.TEXT)
-    name!: string;
+    declare name: string;
 
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 
     @HasMany(() => XivCharacter)
-    characters!: XivCharacter[];
+    declare characters: XivCharacter[];
 
     @HasMany(() => XivFreeCompanyRanks)
-    ranks!: XivFreeCompanyRanks[];
+    declare ranks: XivFreeCompanyRanks[];
 
     @HasMany(() => XivFreeCompanyPromotionQueue)
-    promotionQueue!: XivFreeCompanyPromotionQueue[];
+    declare promotionQueue: XivFreeCompanyPromotionQueue[];
 }

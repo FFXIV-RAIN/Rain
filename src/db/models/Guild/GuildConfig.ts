@@ -6,8 +6,8 @@ export class GuildConfig extends Model {
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 }

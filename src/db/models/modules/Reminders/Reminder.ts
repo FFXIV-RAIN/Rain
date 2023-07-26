@@ -8,39 +8,39 @@ export class Reminder extends Model {
     @AutoIncrement
     @PrimaryKey
     @Column(DataType.BIGINT)
-    id!: number;
+    declare id: number;
 
     @ForeignKey(() => Guild)
     @ForeignKey(() => ReminderConfig)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column({
         type: DataType.TEXT,
         allowNull: false
     })
-    channelId!: string;
+    declare channelId: string;
 
     @Column({
         type: DataType.TEXT,
         allowNull: false
     })
-    userId!: string;
+    declare userId: string;
 
     @Column({
         type: DataType.DATE,
         allowNull: false,
     })
-    date!: Date;
+    declare date: Date;
 
     @Column(DataType.TEXT)
-    message!: string;
+    declare message: string;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 
     @BelongsTo(() => ReminderConfig)
-    reminderConfig!: ReminderConfig;
+    declare reminderConfig: ReminderConfig;
 
     get timeTill(): number {
         return new Timestamp(this.date).remove(Timestamp.UnitTypes.MILLISECOND, Timestamp.now().ms).ms;
