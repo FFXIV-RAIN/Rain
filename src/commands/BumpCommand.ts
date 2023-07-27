@@ -1,52 +1,60 @@
-import {SlashCommandBuilder} from '@discordjs/builders';
-import {Guild, InteractionReplyOptions} from 'discord.js';
-import {RainCommand} from '@rain/bot';
-import {logger} from '../utils/logger';
-import {ScheduledMessagesService} from '../services/ScheduledMessagesService';
-import {convertMessageTemplateToMessage} from '../utils/message';
-import {GuildMessageTemplateService} from 'src/services/GuildMessageTemplateService';
-import {scheduledMessagesModule} from 'src/modules/ScheduledMessagesModule';
+import { FlarieCommand, FlarieError, FlarieInteraction } from '@flarie/core';
+import { Logger } from '@flarie/logger';
+import { ScheduledMessagesService } from '../services/ScheduledMessagesService';
+import { GuildMessageTemplateService } from '../services/GuildMessageTemplateService';
+import { scheduledMessagesModule } from '../modules/ScheduledMessagesModule';
+import { convertMessageTemplateToMessage } from '../utils/message';
 
-export const command: RainCommand = {
-    data: new SlashCommandBuilder()
-        .setName('bump')
-        .setDescription('Bump the next scheduled message out to the next occurance for the current day')
-        .setDefaultMemberPermissions('0')
-        .setDMPermission(false),
-    async execute(interaction) {
-        const message = await ScheduledMessagesService.findNextMessageByGuildID(interaction.guildId as string);
-
-        if (message === null) {
-            await interaction.reply({
-                content: 'There are no pending messages!',
-                ephemeral: true
-            } as InteractionReplyOptions);
-        } else {
-            logger.trace(`Message found, bumping out the next occurance...`);
-
-            scheduledMessagesModule.clear(message);
-            
-            const messageTemplate = await GuildMessageTemplateService.findById(message.messageTemplateId);
-
-            if (messageTemplate === null) {
-                await interaction.reply({
-                    content: 'Bumped out the next scheduled message',
-                    ephemeral: true
-                } as InteractionReplyOptions);
-            } else {
-                await interaction.reply({
-                    ...convertMessageTemplateToMessage(messageTemplate, {
-                        guild: {
-                            name: (interaction.guild as Guild).name,
-                        },
-                        user: {
-                            id: null,
-                        }
-                    }),
-                    content: 'Bumped out the next occurance of the following message:',
-                    ephemeral: true
-                } as InteractionReplyOptions);
-            }
-        }
+export const BumpCommand = new FlarieCommand(
+  {
+    name: 'bump',
+    allowDMs: false,
+    description: 'Bump the next scheduled message out to the next occurance for the current day',
+    disabled: true,
+  },
+  async (interaction: FlarieInteraction) => {
+    if (!interaction.context.isServer()) {
+      throw FlarieError.Builder.new()
+        .message('Welcome messages are only supported in servers!')
+        .error()
+        .build();
     }
-};
+
+    const message = await ScheduledMessagesService.findNextMessageByGuildID(
+      interaction.context.server.id
+    );
+
+    if (message === null) {
+      return interaction.reply({
+        content: 'There are no pending messages!',
+        ephemeral: true,
+      });
+    }
+
+    Logger.silly('Message found, bumping out the next occurance...');
+
+    scheduledMessagesModule.clear(message);
+
+    const messageTemplate = await GuildMessageTemplateService.findById(message.messageTemplateId);
+
+    if (messageTemplate === null) {
+      return interaction.reply({
+        content: 'Bumped out the next scheduled message',
+        ephemeral: true,
+      });
+    }
+
+    await interaction.reply({
+      ...convertMessageTemplateToMessage(messageTemplate, {
+        guild: {
+          name: interaction.context.server.name,
+        },
+        user: {
+          id: null,
+        },
+      }),
+      content: 'Bumped out the next occurance of the following message:',
+      ephemeral: true,
+    });
+  }
+);

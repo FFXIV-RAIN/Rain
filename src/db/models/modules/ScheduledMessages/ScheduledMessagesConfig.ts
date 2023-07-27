@@ -1,27 +1,36 @@
-import {Table, Column, Model, BelongsTo, PrimaryKey, DataType, ForeignKey, HasMany} from 'sequelize-typescript';
-import {Guild} from '../../Guild/Guild';
-import {ScheduledMessage} from './ScheduledMessage';
+import {
+  Table,
+  Column,
+  Model,
+  BelongsTo,
+  PrimaryKey,
+  DataType,
+  ForeignKey,
+  HasMany,
+} from 'sequelize-typescript';
+import { Guild } from '../../Guild/Guild';
+import { ScheduledMessage } from './ScheduledMessage';
 
 @Table
 export class ScheduledMessagesConfig extends Model {
-    @PrimaryKey
-    @ForeignKey(() => Guild)
-    @Column(DataType.TEXT)
-    guildId!: string;
+  @PrimaryKey
+  @ForeignKey(() => Guild)
+  @Column(DataType.TEXT)
+  declare guildId: string;
 
-    @Column({
-        type: DataType.BOOLEAN,
-        defaultValue: false,
-   })
-    enabled!: boolean;
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  declare enabled: boolean;
 
-    @BelongsTo(() => Guild)
-    guild!: Guild;
+  @BelongsTo(() => Guild)
+  declare guild: Guild;
 
-    @HasMany(() => ScheduledMessage)
-    messages!: ScheduledMessage[];
+  @HasMany(() => ScheduledMessage)
+  declare messages: ScheduledMessage[];
 
-    get disabled() {
-        return !this.enabled;
-    }
+  get disabled() {
+    return !this.enabled;
+  }
 }

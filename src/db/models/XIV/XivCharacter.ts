@@ -6,21 +6,21 @@ import {XivFreeCompany} from './XivFreeCompany';
 export class XivCharacter extends Model {
     @PrimaryKey
     @Column(DataType.TEXT)
-    characterId!: string;
-    
+    declare characterId: string;
+
     @PrimaryKey
     @ForeignKey(() => Guild)
     @Column(DataType.TEXT)
-    guildId!: string;
+    declare guildId: string;
 
     @Column(DataType.TEXT)
-    discordId!: string;
+    declare discordId: string;
 
     @Column(DataType.TEXT)
-    homeWorld!: string;
+    declare homeWorld: string;
 
     @Column(DataType.TEXT)
-    characterName!: string;
+    declare characterName: string;
 
     @Column({
         type: DataType.TEXT,
@@ -36,8 +36,8 @@ export class XivCharacter extends Model {
     freeCompanyId?: string;
 
     @BelongsTo(() => XivFreeCompany)
-    freeCompany!: XivFreeCompany;
+    declare freeCompany: XivFreeCompany;
 
     @BelongsTo(() => Guild)
-    guild!: Guild;
+    declare guild: Guild;
 }

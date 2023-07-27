@@ -1,11 +1,10 @@
-import {ScheduledMessagesService} from '../services/ScheduledMessagesService';
-import {IModule, Cron, RainBot} from '@rain/bot';
-import {logger} from '../utils/logger';
+// import {ScheduledMessagesService} from '../services/ScheduledMessagesService';
+// import {logger} from '../utils/logger';
 import {ScheduledMessage} from '../db/models/modules/ScheduledMessages/ScheduledMessage';
-import {convertMessageTemplateToMessage} from '../utils/message';
-import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';
+// import {convertMessageTemplateToMessage} from '../utils/message';
+// import {GuildMessageTemplateService} from '../services/GuildMessageTemplateService';
 
-export class ScheduledMessagesModule implements IModule {
+export class ScheduledMessagesModule {
     name = 'Scheduled Messages';
     timeouts: {
         [key: number]: NodeJS.Timeout
@@ -15,42 +14,42 @@ export class ScheduledMessagesModule implements IModule {
         this.timeouts = [];
     }
 
-    @Cron({
-        cron: '0 0 * * *',
-        allowInit: true
-    })
-    public async daily(bot: RainBot) {
-        const upcommingMessages = await ScheduledMessagesService.findUpcommingMessages();
+    // @Cron({
+    //     cron: '0 0 * * *',
+    //     allowInit: true
+    // })
+    // public async daily(bot: RainBot) {
+    //     const upcommingMessages = await ScheduledMessagesService.findUpcommingMessages();
 
-        logger.info(`Detected ${upcommingMessages.length} upcomming message(s)...`);
-        
-        for (const message of upcommingMessages) {
-            logger.info(`Message ${message.id} will trigger in ${message.timeTill}ms`);
-            this.timeout(message, async () => {
-                const [
-                    messageTemplate,
-                    guild,
-                    channel,
-                ] = await Promise.all([
-                    // TODO: Figure out lazy fetching
-                    GuildMessageTemplateService.findById(message.messageTemplateId),
-                    bot.client.guilds.cache.get(message.guildId),
-                    bot.client.channels.cache.get(message.channelId)
-                ]);
+    //     logger.info(`Detected ${upcommingMessages.length} upcomming message(s)...`);
 
-                if (!messageTemplate || !guild || !channel || !channel.isTextBased()) return;
+    //     for (const message of upcommingMessages) {
+    //         logger.info(`Message ${message.id} will trigger in ${message.timeTill}ms`);
+    //         this.timeout(message, async () => {
+    //             const [
+    //                 messageTemplate,
+    //                 guild,
+    //                 channel,
+    //             ] = await Promise.all([
+    //                 // TODO: Figure out lazy fetching
+    //                 GuildMessageTemplateService.findById(message.messageTemplateId),
+    //                 bot.client.guilds.cache.get(message.guildId),
+    //                 bot.client.channels.cache.get(message.channelId)
+    //             ]);
 
-                await channel.send(convertMessageTemplateToMessage(messageTemplate, {
-                    guild: {
-                        name: guild.name,
-                    },
-                    user: {
-                        id: null,
-                    }
-                }));
-            });
-        }
-    }
+    //             if (!messageTemplate || !guild || !channel || !channel.isTextBased()) return;
+
+    //             await channel.send(convertMessageTemplateToMessage(messageTemplate, {
+    //                 guild: {
+    //                     name: guild.name,
+    //                 },
+    //                 user: {
+    //                     id: null,
+    //                 }
+    //             }));
+    //         });
+    //     }
+    // }
 
     public clear(message: ScheduledMessage) {
         clearTimeout(this.timeouts[message.id]);

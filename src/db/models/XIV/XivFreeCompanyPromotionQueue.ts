@@ -7,18 +7,18 @@ export class XivFreeCompanyPromotionQueue extends Model {
     @PrimaryKey
     @ForeignKey(() => XivFreeCompany)
     @Column(DataType.TEXT)
-    freeCompanyId!: string;
+    declare freeCompanyId: string;
 
     @PrimaryKey
     @ForeignKey(() => XivCharacter)
     @Column(DataType.TEXT)
-    characterId!: string;
+    declare characterId: string;
 
     @Column(DataType.TEXT)
-    rank!: string;
+    declare rank: string;
 
     @BelongsTo(() => XivFreeCompany)
-    freeCompany!: XivFreeCompany;
+    declare freeCompany: XivFreeCompany;
 
     @BelongsTo(() => XivCharacter)
     character?: XivCharacter;
